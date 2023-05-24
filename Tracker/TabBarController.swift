@@ -15,19 +15,27 @@ final class TabBarController: UITabBarController {
     }
     
     private func setupTabBar() {
-        let trackerViewController = TrackerViewController()
-        let statisticViewController = StatisticViewController()
+        let trackerNavigationController = UINavigationController(rootViewController: TrackerViewController())
+        let statisticNavigationController = UINavigationController(rootViewController: StatisticViewController())
+        
+        trackerNavigationController.navigationBar.prefersLargeTitles = true
+        trackerNavigationController.navigationItem.largeTitleDisplayMode = .automatic
+        trackerNavigationController.navigationBar.topItem?.title = "Трекеры"
+        
+        statisticNavigationController.navigationBar.prefersLargeTitles = true
+        statisticNavigationController.navigationItem.largeTitleDisplayMode = .automatic
+        statisticNavigationController.navigationBar.topItem?.title = "Статистика"
         
         tabBar.layer.borderWidth = 0.5
         tabBar.layer.borderColor = UIColor.ypGray.cgColor
         
-        trackerViewController.tabBarItem = UITabBarItem(title: "Трекеры",
+        trackerNavigationController.tabBarItem = UITabBarItem(title: "Трекеры",
                                                         image: UIImage(systemName: "record.circle.fill"),
                                                         selectedImage: nil)
-        statisticViewController.tabBarItem = UITabBarItem(title: "Статистика",
+        statisticNavigationController.tabBarItem = UITabBarItem(title: "Статистика",
                                                           image: UIImage(systemName: "hare.fill"),
                                                           selectedImage: nil)
         
-        self.viewControllers = [trackerViewController, statisticViewController]
+        self.viewControllers = [trackerNavigationController, statisticNavigationController]
     }
 }
