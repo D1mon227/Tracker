@@ -30,21 +30,36 @@ final class NewTrackerView {
         return element
     }()
     
+    lazy var warningLabel: UILabel = {
+        let element = UILabel()
+        element.text = "Ограничение 38 символов"
+        element.font = .systemFont(ofSize: 17, weight: .regular)
+        element.textColor = .ypRed
+        return element
+    }()
+    
     lazy var categoryAndScheduleTableView: UITableView = {
         let element = UITableView()
         element.separatorStyle = .singleLine
         element.layer.cornerRadius = 16
+        element.isScrollEnabled = false
+        return element
+    }()
+    
+    lazy var scrollView: UIScrollView = {
+        let element = UIScrollView()
         return element
     }()
     
     lazy var collectionView: UICollectionView = {
         let element = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         element.backgroundColor = .ypWhite
+        element.isScrollEnabled = false
         return element
     }()
     
     lazy var cancelButton: UIButton = {
-        let element = UIButton()
+        let element = UIButton(type: .system)
         element.layer.cornerRadius = 16
         element.layer.borderWidth = 1
         element.layer.borderColor = UIColor.ypRed.cgColor
@@ -52,16 +67,16 @@ final class NewTrackerView {
         element.titleLabel?.textAlignment = .center
         element.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         element.backgroundColor = .ypWhite
-        element.setTitleColor(.ypRed, for: .normal)
+        element.tintColor = .ypRed
         return element
     }()
     
     lazy var createButton: UIButton = {
-        let element = UIButton()
+        let element = UIButton(type: .system)
         element.layer.cornerRadius = 16
         element.setTitle("Создать", for: .normal)
         element.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        element.setTitleColor(.white, for: .normal)
+        element.tintColor = .white
         element.backgroundColor = .ypGray
         return element
     }()

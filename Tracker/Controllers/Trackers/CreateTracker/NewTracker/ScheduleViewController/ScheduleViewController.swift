@@ -26,6 +26,7 @@ final class ScheduleViewController: UIViewController {
     }
 }
 
+//MARK: UITableViewDataSource
 extension ScheduleViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return days.count
@@ -46,10 +47,12 @@ extension ScheduleViewController: UITableViewDataSource {
     
 }
 
+//MARK: UITableViewDelegate
 extension ScheduleViewController: UITableViewDelegate {
     
 }
 
+//MARK: SetupViews
 extension ScheduleViewController {
     private func addView() {
         view.backgroundColor = .ypWhite

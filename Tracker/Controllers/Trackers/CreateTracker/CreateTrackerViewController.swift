@@ -36,6 +36,7 @@ final class CreateTrackerViewController: UIViewController {
     }
 }
 
+//MARK: SetupViews
 extension CreateTrackerViewController {
     private func addViews() {
         view.backgroundColor = .ypWhite

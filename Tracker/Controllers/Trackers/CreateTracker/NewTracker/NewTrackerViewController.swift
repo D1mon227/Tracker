@@ -36,6 +36,7 @@ final class NewTrackerViewController: UIViewController {
         setupViews()
         setupTableView()
         setupCollectionView()
+        setupTarget()
     }
     
     private func setupTableView() {
@@ -52,6 +53,14 @@ final class NewTrackerViewController: UIViewController {
         newTrackerView.collectionView.delegate = self
     }
     
+    private func setupTarget() {
+        newTrackerView.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
+    }
+    
+    @objc private func dismissVC() {
+        dismiss(animated: true)
+    }
+    
     @objc private func switchToCategoryViewController() {
         let categoryVC = CategoryViewController()
         present(categoryVC, animated: true)
@@ -63,6 +72,17 @@ final class NewTrackerViewController: UIViewController {
     }
 }
 
+extension NewTrackerViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.becomeFirstResponder()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
+}
+
+//MARK: UITableViewDataSource
 extension NewTrackerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch tracker {
@@ -86,12 +106,14 @@ extension NewTrackerViewController: UITableViewDataSource {
     }
 }
 
+//MARK: UITableViewDelegate
 extension NewTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath {
         case IndexPath(row: 0, section: 0):
             switchToCategoryViewController()
@@ -103,6 +125,7 @@ extension NewTrackerViewController: UITableViewDelegate {
     }
 }
 
+//MARK: UICollectionViewDataSource
 extension NewTrackerViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
@@ -162,7 +185,7 @@ extension NewTrackerViewController: UICollectionViewDataSource {
         return view
     }
 }
-
+//MARK: UICollectionViewDelegateFlowLayout
 extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch indexPath.section {
@@ -219,13 +242,15 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+//MARK: SetupViews
 extension NewTrackerViewController {
     private func setupViews() {
         view.backgroundColor = .ypWhite
         view.addSubview(newTrackerView.newHabitLabel)
-        view.addSubview(newTrackerView.habitNameTextField)
-        view.addSubview(newTrackerView.categoryAndScheduleTableView)
-        view.addSubview(newTrackerView.collectionView)
+        view.addSubview(newTrackerView.scrollView)
+        newTrackerView.scrollView.addSubview(newTrackerView.habitNameTextField)
+        newTrackerView.scrollView.addSubview(newTrackerView.categoryAndScheduleTableView)
+        newTrackerView.scrollView.addSubview(newTrackerView.collectionView)
         view.addSubview(newTrackerView.cancelButton)
         view.addSubview(newTrackerView.createButton)
         addConstraints()
@@ -242,8 +267,14 @@ extension NewTrackerViewController {
             make.centerX.equalToSuperview()
         }
         
+        newTrackerView.scrollView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(newTrackerView.newHabitLabel.snp.bottom).offset(14)
+            make.bottom.equalTo(newTrackerView.cancelButton.snp.top).offset(-16)
+        }
+        
         newTrackerView.habitNameTextField.snp.makeConstraints { make in
-            make.top.equalTo(newTrackerView.newHabitLabel.snp.bottom).offset(38)
+            make.top.equalToSuperview().offset(24)
             make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(75)
         }
@@ -255,7 +286,7 @@ extension NewTrackerViewController {
                 make.height.equalTo(75)
                 newTrackerView.categoryAndScheduleTableView.separatorStyle = .none
             }
-            
+
             make.top.equalTo(newTrackerView.habitNameTextField.snp.bottom).offset(24)
             make.leading.trailing.equalToSuperview().inset(16)
         }
@@ -263,7 +294,9 @@ extension NewTrackerViewController {
         newTrackerView.collectionView.snp.makeConstraints { make in
             make.top.equalTo(newTrackerView.categoryAndScheduleTableView.snp.bottom).offset(32)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(newTrackerView.cancelButton.snp.top).offset(-16)
+            make.height.equalTo(460)
+            make.bottom.equalToSuperview()
+            make.width.equalTo(newTrackerView.scrollView)
         }
         
         newTrackerView.cancelButton.snp.makeConstraints { make in

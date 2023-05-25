@@ -35,7 +35,7 @@ final class NewTrackerEmojiCollectionViewCell: UICollectionViewCell {
     
     private func addConstraints() {
         emojiLabel.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalToSuperview()
+            make.center.equalToSuperview()
         }
     }
 }

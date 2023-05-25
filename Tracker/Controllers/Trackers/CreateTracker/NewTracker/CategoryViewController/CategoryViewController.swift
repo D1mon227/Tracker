@@ -27,6 +27,7 @@ final class CategoryViewController: UIViewController {
     }
 }
 
+//MARK: SetupViews
 extension CategoryViewController {
     private func addView() {
         view.backgroundColor = .ypWhite

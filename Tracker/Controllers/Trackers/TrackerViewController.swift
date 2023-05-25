@@ -10,74 +10,190 @@ import SnapKit
 
 final class TrackerViewController: UIViewController {
     
-    private lazy var collectionView: UICollectionView = {
-        let collectionViewLayout = UICollectionViewFlowLayout()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-        return collectionView
-    }()
+    private let trackerView = TrackerView()
+    var currentDate: Date?
     
-    private lazy var datePicker: UIDatePicker = {
-        let element = UIDatePicker()
-        element.preferredDatePickerStyle = .compact
-        element.datePickerMode = .date
-        element.layer.cornerRadius = 8
-        return element
-    }()
+    var emojies: [String] = [
+        "🙂", "😻", "🌺", "🐶", "❤️", "😱",
+        "😇", "😡", "🥶", "🤔", "🙌", "🍔",
+        "🥦", "🏓", "🥇", "🎸", "🏝", "😪",
+        ]
+    
+    var colors: [UIColor] = [
+        .colorSelection1, .colorSelection2, .colorSelection3, .colorSelection4, .colorSelection5, .colorSelection6,
+        .colorSelection7, .colorSelection8, .colorSelection9, .colorSelection10, .colorSelection11, .colorSelection12,
+        .colorSelection13, .colorSelection14, .colorSelection15, .colorSelection16, .colorSelection17, .colorSelection18,
+    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
         setupViews()
         setupNavigationController()
+        addTarget()
     }
 
     private func setupViews() {
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.dataSource = self
+        trackerView.trackersCollectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "TrackerCollectionViewCell")
+        trackerView.trackersCollectionView.register(TrackerSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        trackerView.trackersCollectionView.dataSource = self
+        trackerView.trackersCollectionView.delegate = self
+        
+        trackerView.searchTextField.delegate = self
     }
     
     private func setupNavigationController() {
-        if let navBar = navigationController?.navigationBar {
-            let leftButton = UIBarButtonItem(barButtonSystemItem: .add,
-                                             target: self,
-                                             action: #selector(addNewTrack))
-            leftButton.tintColor = .ypBlack
-            navBar.topItem?.setLeftBarButton(leftButton, animated: false)
-        }
+        guard let navBar = navigationController?.navigationBar else { return }
+        let leftButton = UIBarButtonItem(barButtonSystemItem: .add,
+                                         target: self,
+                                         action: #selector(addNewTrack))
+        leftButton.tintColor = .ypBlack
+        navBar.topItem?.setLeftBarButton(leftButton, animated: false)
     }
 
     @objc private func addNewTrack() {
         let newtrackerVC = CreateTrackerViewController()
         present(newtrackerVC, animated: true)
     }
+    
+    private func addTarget() {
+        trackerView.filterButton.addTarget(self, action: #selector(switchToFilterViewController), for: .touchUpInside)
+    }
+    
+    @objc private func switchToFilterViewController() {
+        let filterVC = FilterViewController()
+        present(filterVC, animated: true)
+    }
 
 }
 
+//MARK: UICollectionViewDataSource
 extension TrackerViewController: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: (collectionView.bounds.width - 41) / 2, height: 148)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100
+        switch section {
+        case 0:
+            return 1
+        case 1:
+            return 5
+        default:
+            return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        cell.contentView.backgroundColor = .red
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCollectionViewCell", for: indexPath) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
+        
+        cell.configureCell(cellColor: colors[indexPath.row], doneColor: colors[indexPath.row], emoji: emojies[indexPath.row])
+        
         return cell
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        var id: String
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            id = "header"
+        default:
+            id = ""
+        }
+        
+        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                         withReuseIdentifier: id,
+                                                                         for: indexPath) as? TrackerSupplementaryView else { return UICollectionReusableView() }
+        switch indexPath.section {
+        case 0:
+            view.headerLabel.text = "Домашний уют"
+        case 1:
+            view.headerLabel.text = "Радостные мелочи"
+        default:
+            view.headerLabel.text = ""
+        }
+        
+        return view
+    }
 }
 
+//MARK: UICollectionViewDelegateFlowLayout
+extension TrackerViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 9
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let indexPath = IndexPath(row: 0, section: section)
+        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
+        return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width,
+                                                         height: collectionView.frame.height),
+                                                  withHorizontalFittingPriority: .required,
+                                                  verticalFittingPriority: .fittingSizeLevel)
+    }
+}
+
+//MARK: UITextFieldDelegate
+extension TrackerViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
+}
+
+//MARK: SetupViews
 extension TrackerViewController {
     private func addViews() {
+        guard let navBar = navigationController?.navigationBar else { return }
         view.backgroundColor = .ypWhite
-        view.addSubview(collectionView)
+        view.addSubview(trackerView.searchTextField)
+        view.addSubview(trackerView.trackersCollectionView)
+        view.addSubview(trackerView.filterButton)
+        view.addSubview(trackerView.datePicker)
+        navBar.addSubview(trackerView.datePicker)
         addConstraints()
     }
     
     private func addConstraints() {
-        collectionView.snp.makeConstraints { make in
+        guard let navBar = navigationController?.navigationBar else { return }
+        
+        trackerView.datePicker.snp.makeConstraints { make in
+            make.height.equalTo(34)
+            make.trailing.equalTo(navBar.snp.trailing).offset(-16)
+            make.bottom.equalTo(navBar.snp.bottom).offset(-11)
+        }
+        
+        trackerView.searchTextField.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(36)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+        }
+        
+        trackerView.trackersCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(trackerView.searchTextField.snp.bottom).offset(10)
+        }
+        
+        trackerView.filterButton.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-17)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(50)
+            make.width.equalTo(114)
         }
     }
 }

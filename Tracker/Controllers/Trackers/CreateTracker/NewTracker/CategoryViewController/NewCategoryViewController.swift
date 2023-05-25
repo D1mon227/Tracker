@@ -19,6 +19,7 @@ final class NewCategoryViewController: UIViewController {
     
 }
 
+//MARK: SetupViews
 extension NewCategoryViewController {
     private func addView() {
         view.backgroundColor = .ypWhite
@@ -37,7 +38,7 @@ extension NewCategoryViewController {
         newCategoryView.newCategoryTextField.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(newCategoryView.categoryLabel.snp.bottom).offset(38)
-            make.height.equalTo(75 )
+            make.height.equalTo(75)
         }
         
         newCategoryView.addCategoryButton.snp.makeConstraints { make in
