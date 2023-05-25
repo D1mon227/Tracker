@@ -15,6 +15,11 @@ final class TabBarController: UITabBarController {
     }
     
     private func setupTabBar() {
+        
+        let appearance = UITabBarAppearance()
+        appearance.backgroundColor = .ypWhite
+        self.tabBar.standardAppearance = appearance
+        
         let trackerNavigationController = UINavigationController(rootViewController: TrackerViewController())
         let statisticNavigationController = UINavigationController(rootViewController: StatisticViewController())
         
@@ -25,9 +30,6 @@ final class TabBarController: UITabBarController {
         statisticNavigationController.navigationBar.prefersLargeTitles = true
         statisticNavigationController.navigationItem.largeTitleDisplayMode = .automatic
         statisticNavigationController.navigationBar.topItem?.title = "Статистика"
-        
-        tabBar.layer.borderWidth = 0.5
-        tabBar.layer.borderColor = UIColor.ypGray.cgColor
         
         trackerNavigationController.tabBarItem = UITabBarItem(title: "Трекеры",
                                                         image: UIImage(systemName: "record.circle.fill"),

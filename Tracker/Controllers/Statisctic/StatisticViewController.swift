@@ -15,7 +15,7 @@ final class StatisticViewController: UIViewController {
         element.text = "Анализировать пока нечего"
         element.textColor = .ypBlack
         element.textAlignment = .center
-        element.font = .systemFont(ofSize: 12)
+        element.font = .systemFont(ofSize: 12, weight: .medium)
         return element
     }()
     
@@ -27,14 +27,14 @@ final class StatisticViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        addViews()
+        setupViews()
     }
     
 }
 
 extension StatisticViewController {
-    private func addViews() {
+    private func setupViews() {
+        view.backgroundColor = .ypWhite
         view.addSubview(emptyImage)
         view.addSubview(emptyLabel)
         addConstraints()
@@ -47,6 +47,7 @@ extension StatisticViewController {
         
         emptyLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(emptyImage.snp.bottom).offset(8)
         }
     }

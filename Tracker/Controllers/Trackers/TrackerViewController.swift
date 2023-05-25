@@ -15,10 +15,17 @@ final class TrackerViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
         return collectionView
     }()
+    
+    private lazy var datePicker: UIDatePicker = {
+        let element = UIDatePicker()
+        element.preferredDatePickerStyle = .compact
+        element.datePickerMode = .date
+        element.layer.cornerRadius = 8
+        return element
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         addViews()
         setupViews()
         setupNavigationController()
@@ -31,20 +38,24 @@ final class TrackerViewController: UIViewController {
     
     private func setupNavigationController() {
         if let navBar = navigationController?.navigationBar {
-            let leftButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewTrack))
+            let leftButton = UIBarButtonItem(barButtonSystemItem: .add,
+                                             target: self,
+                                             action: #selector(addNewTrack))
+            leftButton.tintColor = .ypBlack
             navBar.topItem?.setLeftBarButton(leftButton, animated: false)
         }
     }
 
     @objc private func addNewTrack() {
-
+        let newtrackerVC = CreateTrackerViewController()
+        present(newtrackerVC, animated: true)
     }
 
 }
 
 extension TrackerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 15
+        return 100
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -58,6 +69,7 @@ extension TrackerViewController: UICollectionViewDataSource {
 
 extension TrackerViewController {
     private func addViews() {
+        view.backgroundColor = .ypWhite
         view.addSubview(collectionView)
         addConstraints()
     }
