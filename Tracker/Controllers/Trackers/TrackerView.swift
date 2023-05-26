@@ -9,7 +9,7 @@ import UIKit
 
 final class TrackerView {
     
-    private lazy var emptyLabel: UILabel = {
+    lazy var emptyLabel: UILabel = {
         let element = UILabel()
         element.text = "Что будем отслеживать?"
         element.textColor = .ypBlack
@@ -18,7 +18,7 @@ final class TrackerView {
         return element
     }()
     
-    private lazy var emptyImage: UIImageView = {
+    lazy var emptyImage: UIImageView = {
         let element = UIImageView()
         element.image = Resourses.Images.trackerEmptyImage
         return element
@@ -27,6 +27,7 @@ final class TrackerView {
     lazy var trackersCollectionView: UICollectionView = {
         let collectionViewLayout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+        collectionView.backgroundColor = .ypWhite
         return collectionView
     }()
     
@@ -42,7 +43,7 @@ final class TrackerView {
         let element = UISearchTextField()
         element.placeholder = "Поиск"
         element.font = .systemFont(ofSize: 17, weight: .regular)
-        element.returnKeyType = .go
+        element.returnKeyType = .search
         element.textColor = .ypBlack
         return element
     }()

@@ -39,6 +39,7 @@ final class NewCategoryView {
         element.titleLabel?.textAlignment = .center
         element.setTitleColor(.white, for: .normal)
         element.backgroundColor = .ypGray
+        element.isEnabled = false
         return element
     }()
 }

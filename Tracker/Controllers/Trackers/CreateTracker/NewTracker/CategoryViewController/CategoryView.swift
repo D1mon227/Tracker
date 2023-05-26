@@ -33,6 +33,14 @@ final class CategoryView {
         return element
     }()
     
+    lazy var categoryTableView: UITableView = {
+        let element = UITableView()
+        element.layer.cornerRadius = 16
+        element.separatorStyle = .singleLine
+        element.isScrollEnabled = false
+        return element
+    }()
+    
     lazy var addCategoryButton: UIButton = {
         let element = UIButton(type: .system)
         element.layer.cornerRadius = 16

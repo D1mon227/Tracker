@@ -24,7 +24,7 @@ final class NewTrackerView {
         element.clearButtonMode = .whileEditing
         element.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         element.leftViewMode = .always
-        element.returnKeyType = .go
+        element.returnKeyType = .done
         element.font = .systemFont(ofSize: 17, weight: .regular)
         element.textColor = .ypBlack
         return element
@@ -76,8 +76,9 @@ final class NewTrackerView {
         element.layer.cornerRadius = 16
         element.setTitle("Создать", for: .normal)
         element.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        element.tintColor = .white
+        element.setTitleColor(.white, for: .normal)
         element.backgroundColor = .ypGray
+        element.isEnabled = false
         return element
     }()
 }

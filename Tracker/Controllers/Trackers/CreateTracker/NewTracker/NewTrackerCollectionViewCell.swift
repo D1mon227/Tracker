@@ -8,10 +8,17 @@
 import UIKit
 import SnapKit
 
-final class NewTrackerEmojiCollectionViewCell: UICollectionViewCell {
+final class NewTrackerCollectionViewCell: UICollectionViewCell {
     
     private lazy var emojiLabel: UILabel = {
         let element = UILabel()
+        element.font = .systemFont(ofSize: 32)
+        return element
+    }()
+    
+    private lazy var colorImage: UIImageView = {
+        let element = UIImageView()
+        element.layer.cornerRadius = 8
         return element
     }()
     
@@ -25,17 +32,26 @@ final class NewTrackerEmojiCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(emoji: String) {
+    func configureEmojiCell(emoji: String) {
         emojiLabel.text = emoji
+    }
+    
+    func configureColorCell(color: UIColor) {
+        colorImage.backgroundColor = color
     }
     
     private func setupViews() {
         addSubview(emojiLabel)
+        addSubview(colorImage)
     }
     
     private func addConstraints() {
         emojiLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
+        }
+        
+        colorImage.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.equalToSuperview().inset(5)
         }
     }
 }

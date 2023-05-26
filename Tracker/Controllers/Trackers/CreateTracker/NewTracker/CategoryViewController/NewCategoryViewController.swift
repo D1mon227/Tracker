@@ -15,8 +15,40 @@ final class NewCategoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addView()
+        setupTextField()
+        addTarget()
     }
     
+    private func setupTextField() {
+        newCategoryView.newCategoryTextField.delegate = self
+    }
+    
+    private func addTarget() {
+        newCategoryView.addCategoryButton.addTarget(self, action: #selector(addCategory), for: .touchUpInside)
+    }
+    
+    @objc private func addCategory() {
+        dismiss(animated: true)
+    }
+}
+
+extension NewCategoryViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        newCategoryView.newCategoryTextField.endEditing(true)
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if textField.text != "" {
+            newCategoryView.addCategoryButton.isEnabled = true
+            newCategoryView.addCategoryButton.backgroundColor = .black
+            return true
+        } else {
+            newCategoryView.addCategoryButton.isEnabled = false
+            newCategoryView.addCategoryButton.backgroundColor = .ypGray
+            return true
+        }
+    }
 }
 
 //MARK: SetupViews

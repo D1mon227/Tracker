@@ -36,6 +36,7 @@ final class NewTrackerViewController: UIViewController {
         setupViews()
         setupTableView()
         setupCollectionView()
+        setupTextField()
         setupTarget()
     }
     
@@ -46,11 +47,14 @@ final class NewTrackerViewController: UIViewController {
     }
     
     private func setupCollectionView() {
-        newTrackerView.collectionView.register(NewTrackerEmojiCollectionViewCell.self, forCellWithReuseIdentifier: "EmojiCollectionViewCell")
-        newTrackerView.collectionView.register(NewTrackerColorsCollectionViewCell.self, forCellWithReuseIdentifier: "ColorsCollectionViewCell")
+        newTrackerView.collectionView.register(NewTrackerCollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
         newTrackerView.collectionView.register(NewTrackerSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         newTrackerView.collectionView.dataSource = self
         newTrackerView.collectionView.delegate = self
+    }
+    
+    private func setupTextField() {
+        newTrackerView.habitNameTextField.delegate = self
     }
     
     private func setupTarget() {
@@ -73,12 +77,21 @@ final class NewTrackerViewController: UIViewController {
 }
 
 extension NewTrackerViewController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.becomeFirstResponder()
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        newTrackerView.habitNameTextField.endEditing(true)
+        return true
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if textField.text != "" {
+            newTrackerView.createButton.isEnabled = true
+            newTrackerView.createButton.backgroundColor = .black
+            return true
+        } else {
+            newTrackerView.createButton.isEnabled = false
+            newTrackerView.createButton.backgroundColor = .ypGray
+            return true
+        }
     }
 }
 
@@ -143,18 +156,15 @@ extension NewTrackerViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? NewTrackerCollectionViewCell else { return UICollectionViewCell() }
+        
         switch indexPath.section {
         case 0:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmojiCollectionViewCell", for: indexPath) as? NewTrackerEmojiCollectionViewCell else { return UICollectionViewCell() }
-            
-            cell.configureCell(emoji: emojies[indexPath.row])
-            
+            cell.configureEmojiCell(emoji: emojies[indexPath.row])
             return cell
         case 1:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorsCollectionViewCell", for: indexPath) as? NewTrackerColorsCollectionViewCell else { return UICollectionViewCell() }
-            
-            cell.configureCell(color: colors[indexPath.row])
-            
+            cell.configureColorCell(color: colors[indexPath.row])
             return cell
         default:
             return UICollectionViewCell()
@@ -190,9 +200,9 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch indexPath.section {
         case 0:
-            return CGSize(width: 32, height: 38)
+            return CGSize(width: 52, height: 52)
         case 1:
-            return CGSize(width: 40, height: 40)
+            return CGSize(width: 46, height: 46)
         default:
             return CGSize(width: 40, height: 40)
         }
@@ -213,9 +223,9 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         switch section {
         case 0:
-            return 25
+            return 5
         case 1:
-            return 17
+            return 11
         default:
             return 25
         }
@@ -233,12 +243,37 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         switch section {
         case 0:
-            return UIEdgeInsets(top: 0, left: 29, bottom: 47, right: 29)
+            return UIEdgeInsets(top: 0, left: 19, bottom: 40, right: 19)
         case 1:
-            return UIEdgeInsets(top: 0, left: 25, bottom: 47, right: 25)
+            return UIEdgeInsets(top: 0, left: 22, bottom: 40, right: 22)
         default:
-            return UIEdgeInsets(top: 0, left: 29, bottom: 47, right: 29)
+            return UIEdgeInsets(top: 0, left: 19, bottom: 40, right: 19)
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? NewTrackerCollectionViewCell else { return }
+        
+        switch indexPath.section {
+        case 0:
+            cell.layer.cornerRadius = 16
+            cell.backgroundColor = .ypLightGray
+        case 1:
+            cell.layer.cornerRadius = 11
+            cell.layer.borderColor = colors[indexPath.row].withAlphaComponent(0.3).cgColor
+            cell.layer.borderWidth = 3
+            
+        default:
+            cell.backgroundColor = .gray
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? NewTrackerCollectionViewCell else { return }
+        
+        cell.backgroundColor = .none
+        cell.layer.borderWidth = 0
     }
 }
 
@@ -294,7 +329,7 @@ extension NewTrackerViewController {
         newTrackerView.collectionView.snp.makeConstraints { make in
             make.top.equalTo(newTrackerView.categoryAndScheduleTableView.snp.bottom).offset(32)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(460)
+            make.height.equalTo(500)
             make.bottom.equalToSuperview()
             make.width.equalTo(newTrackerView.scrollView)
         }

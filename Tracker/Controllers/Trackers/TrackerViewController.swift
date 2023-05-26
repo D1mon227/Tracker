@@ -11,6 +11,8 @@ import SnapKit
 final class TrackerViewController: UIViewController {
     
     private let trackerView = TrackerView()
+    var categories: [TrackerCategory]?
+    var completedTrackers: [TrackerRecord]?
     var currentDate: Date?
     
     var emojies: [String] = [
@@ -31,6 +33,7 @@ final class TrackerViewController: UIViewController {
         setupViews()
         setupNavigationController()
         addTarget()
+        checkCellsCount()
     }
 
     private func setupViews() {
@@ -49,6 +52,35 @@ final class TrackerViewController: UIViewController {
                                          action: #selector(addNewTrack))
         leftButton.tintColor = .ypBlack
         navBar.topItem?.setLeftBarButton(leftButton, animated: false)
+    }
+    
+    private func checkCellsCount() {
+        if categories == nil {
+            view.addSubview(trackerView.emptyImage)
+            view.addSubview(trackerView.emptyLabel)
+            trackerView.filterButton.removeFromSuperview()
+            
+            trackerView.emptyImage.snp.makeConstraints { make in
+                make.center.equalToSuperview()
+            }
+            
+            trackerView.emptyLabel.snp.makeConstraints { make in
+                make.centerX.equalToSuperview()
+                make.leading.trailing.equalToSuperview().inset(16)
+                make.top.equalTo(trackerView.emptyImage.snp.bottom).offset(8)
+            }
+        } else {
+            trackerView.emptyImage.removeFromSuperview()
+            trackerView.emptyLabel.removeFromSuperview()
+            view.addSubview(trackerView.filterButton)
+            
+            trackerView.filterButton.snp.makeConstraints { make in
+                make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-17)
+                make.centerX.equalToSuperview()
+                make.height.equalTo(50)
+                make.width.equalTo(114)
+            }
+        }
     }
 
     @objc private func addNewTrack() {
@@ -71,11 +103,7 @@ final class TrackerViewController: UIViewController {
 extension TrackerViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (collectionView.bounds.width - 41) / 2, height: 148)
+        return categories?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -125,6 +153,10 @@ extension TrackerViewController: UICollectionViewDataSource {
 //MARK: UICollectionViewDelegateFlowLayout
 extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: (collectionView.bounds.width - 41) / 2, height: 148)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
@@ -149,9 +181,17 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
 
 //MARK: UITextFieldDelegate
 extension TrackerViewController: UITextFieldDelegate {
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        trackerView.searchTextField.endEditing(true)
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if textField.text != "" {
+            return true
+        } else {
+            return true
+        }
     }
 }
 
@@ -162,7 +202,7 @@ extension TrackerViewController {
         view.backgroundColor = .ypWhite
         view.addSubview(trackerView.searchTextField)
         view.addSubview(trackerView.trackersCollectionView)
-        view.addSubview(trackerView.filterButton)
+//        view.addSubview(trackerView.filterButton)
         view.addSubview(trackerView.datePicker)
         navBar.addSubview(trackerView.datePicker)
         addConstraints()
@@ -189,11 +229,11 @@ extension TrackerViewController {
             make.top.equalTo(trackerView.searchTextField.snp.bottom).offset(10)
         }
         
-        trackerView.filterButton.snp.makeConstraints { make in
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-17)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(50)
-            make.width.equalTo(114)
-        }
+//        trackerView.filterButton.snp.makeConstraints { make in
+//            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-17)
+//            make.centerX.equalToSuperview()
+//            make.height.equalTo(50)
+//            make.width.equalTo(114)
+//        }
     }
 }
