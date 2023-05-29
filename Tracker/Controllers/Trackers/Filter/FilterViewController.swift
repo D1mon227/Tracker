@@ -94,7 +94,7 @@ extension FilterViewController {
         filterTableView.snp.makeConstraints { make in
             make.top.equalTo(filterLabel.snp.bottom).offset(38)
             make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(300)
+            make.height.equalTo(299)
         }
     }
 }

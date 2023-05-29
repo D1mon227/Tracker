@@ -8,18 +8,12 @@
 import UIKit
 import SnapKit
 
-final class TrackerViewController: UIViewController {
+final class TrackerViewController: UIViewController, TrackerViewControllerProtocol {
     
     private let trackerView = TrackerView()
-    var categories: [TrackerCategory]?
+    var presenter: TrackerViewPresenterProtocol?
     var completedTrackers: [TrackerRecord]?
     var currentDate: Date?
-    
-    var emojies: [String] = [
-        "🙂", "😻", "🌺", "🐶", "❤️", "😱",
-        "😇", "😡", "🥶", "🤔", "🙌", "🍔",
-        "🥦", "🏓", "🥇", "🎸", "🏝", "😪",
-        ]
     
     var colors: [UIColor] = [
         .colorSelection1, .colorSelection2, .colorSelection3, .colorSelection4, .colorSelection5, .colorSelection6,
@@ -55,7 +49,7 @@ final class TrackerViewController: UIViewController {
     }
     
     private func checkCellsCount() {
-        if categories == nil {
+        if presenter?.categories?.count == 0 {
             view.addSubview(trackerView.emptyImage)
             view.addSubview(trackerView.emptyLabel)
             trackerView.filterButton.removeFromSuperview()
@@ -85,6 +79,8 @@ final class TrackerViewController: UIViewController {
 
     @objc private func addNewTrack() {
         let newtrackerVC = CreateTrackerViewController()
+        newtrackerVC.presenter = presenter
+        newtrackerVC.viewController = self
         present(newtrackerVC, animated: true)
     }
     
@@ -103,24 +99,25 @@ final class TrackerViewController: UIViewController {
 extension TrackerViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return categories?.count ?? 0
+        return presenter?.categories?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 1
-        case 1:
-            return 5
-        default:
-            return 0
-        }
+        guard let presenter = presenter?.categories?[section] else { return 0 }
+        
+        return presenter.trackerArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCollectionViewCell", for: indexPath) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCollectionViewCell", for: indexPath) as? TrackerCollectionViewCell,
+              let category = presenter?.categories?[indexPath.section] else { return UICollectionViewCell() }
         
-        cell.configureCell(cellColor: colors[indexPath.row], doneColor: colors[indexPath.row], emoji: emojies[indexPath.row])
+        let tracker = category.trackerArray[indexPath.row]
+        
+        cell.configureCell(cellColor: tracker.color,
+                           trackerName: tracker.name,
+                           doneColor: tracker.color,
+                           emoji: tracker.emoji)
         
         return cell
     }
@@ -137,15 +134,8 @@ extension TrackerViewController: UICollectionViewDataSource {
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                          withReuseIdentifier: id,
                                                                          for: indexPath) as? TrackerSupplementaryView else { return UICollectionReusableView() }
-        switch indexPath.section {
-        case 0:
-            view.headerLabel.text = "Домашний уют"
-        case 1:
-            view.headerLabel.text = "Радостные мелочи"
-        default:
-            view.headerLabel.text = ""
-        }
-        
+        view.headerLabel.text = presenter?.categories?[indexPath.section].name
+    
         return view
     }
 }
@@ -202,7 +192,7 @@ extension TrackerViewController {
         view.backgroundColor = .ypWhite
         view.addSubview(trackerView.searchTextField)
         view.addSubview(trackerView.trackersCollectionView)
-//        view.addSubview(trackerView.filterButton)
+        view.addSubview(trackerView.filterButton)
         view.addSubview(trackerView.datePicker)
         navBar.addSubview(trackerView.datePicker)
         addConstraints()

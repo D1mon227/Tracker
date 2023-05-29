@@ -8,11 +8,12 @@
 import UIKit
 import SnapKit
 
-final class CategoryViewController: UIViewController {
+final class CategoryViewController: UIViewController, CategoryViewControllerProtocol {
     
     private let categoryView = CategoryView()
-    private let trackerVC = TrackerViewController()
-    let titles: [String] = ["Все трекеры", "Трекеры на сегодня", "Завершенные", "Не завершенные"]
+    var presenter: TrackerViewPresenterProtocol?
+    var viewController: NewTrackerViewControllerProtocol?
+    var selectedIndexPath: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +29,8 @@ final class CategoryViewController: UIViewController {
     
     @objc private func switchToNewCategoryViewController() {
         let newCategoryVC = NewCategoryViewController()
+        newCategoryVC.presenter = presenter
+        newCategoryVC.viewController = self
         present(newCategoryVC, animated: true)
     }
     
@@ -37,8 +40,8 @@ final class CategoryViewController: UIViewController {
         categoryView.categoryTableView.delegate = self
     }
     
-    private func checkCellsCount() {
-        if trackerVC.categories == nil {
+    func checkCellsCount() {
+        if presenter?.categories?.count == 0 {
             view.addSubview(categoryView.emptyImage)
             view.addSubview(categoryView.emptyLabel)
             categoryView.categoryTableView.removeFromSuperview()
@@ -62,21 +65,25 @@ final class CategoryViewController: UIViewController {
                 make.leading.trailing.equalToSuperview().inset(16)
                 make.height.equalTo(300)
             }
+            
         }
+    }
+    
+    func reloadTableView() {
+        categoryView.categoryTableView.reloadData()
     }
 }
 
 //MARK: UITableViewDataSource
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return trackerVC.categories?.count ?? 0
+        return presenter?.categories?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableViewCell", for: indexPath) as? CategoryTableViewCell else { return UITableViewCell() }
         
-        cell.configureCell(text: titles[indexPath.row])
-        cell.backgroundColor = .ypBackground
+        cell.configureCell(text: presenter?.categories?[indexPath.row].name ?? "")
         
         return cell
     }
@@ -91,12 +98,24 @@ extension CategoryViewController: UITableViewDataSource {
 extension CategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if let cell = tableView.cellForRow(at: indexPath) {
-            if cell.accessoryType == .checkmark {
-                cell.accessoryType = .none
-            } else {
-                cell.accessoryType = .checkmark
+        if let selectedIndexPath = selectedIndexPath {
+            if let selectedCell = tableView.cellForRow(at: selectedIndexPath) as? CategoryTableViewCell {
+                selectedCell.accessoryType = .none
+
+                if selectedIndexPath == indexPath {
+                    self.selectedIndexPath = nil
+                    return
+                }
             }
+        }
+
+        if let cell = tableView.cellForRow(at: indexPath) as? CategoryTableViewCell {
+            cell.accessoryType = .checkmark
+            selectedIndexPath = indexPath
+
+            viewController?.selectedCategory = cell.label.text
+            viewController?.reloadTableView()
+            dismiss(animated: true)
         }
     }
 }

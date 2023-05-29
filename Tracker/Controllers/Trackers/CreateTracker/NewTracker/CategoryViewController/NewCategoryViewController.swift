@@ -8,9 +8,11 @@
 import UIKit
 import SnapKit
 
-final class NewCategoryViewController: UIViewController {
+final class NewCategoryViewController: UIViewController, NewCategoryViewControllerProtocol {
     
     private let newCategoryView = NewCategoryView()
+    var presenter: TrackerViewPresenterProtocol?
+    var viewController: CategoryViewControllerProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +30,12 @@ final class NewCategoryViewController: UIViewController {
     }
     
     @objc private func addCategory() {
+        guard let categoryName = newCategoryView.newCategoryTextField.text else { return }
+        presenter?.categories?.append(TrackerCategory(name: categoryName,
+                                                     trackerArray: []))
         dismiss(animated: true)
+        viewController?.checkCellsCount()
+        viewController?.reloadTableView()
     }
 }
 
@@ -41,7 +48,8 @@ extension NewCategoryViewController: UITextFieldDelegate {
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.text != "" {
             newCategoryView.addCategoryButton.isEnabled = true
-            newCategoryView.addCategoryButton.backgroundColor = .black
+            newCategoryView.addCategoryButton.backgroundColor = .ypBlack
+            newCategoryView.addCategoryButton.setTitleColor(.ypWhite, for: .normal)
             return true
         } else {
             newCategoryView.addCategoryButton.isEnabled = false

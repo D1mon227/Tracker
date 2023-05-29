@@ -55,6 +55,7 @@ final class NewTrackerView {
         let element = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         element.backgroundColor = .ypWhite
         element.isScrollEnabled = false
+        element.allowsMultipleSelection = true
         return element
     }()
     

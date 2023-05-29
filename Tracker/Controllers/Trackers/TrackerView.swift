@@ -28,6 +28,7 @@ final class TrackerView {
         let collectionViewLayout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
         collectionView.backgroundColor = .ypWhite
+        collectionView.contentInset = UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 0)
         return collectionView
     }()
     

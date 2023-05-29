@@ -10,16 +10,19 @@ import SnapKit
 
 final class ScheduleTableViewCell: UITableViewCell {
     
-    private lazy var label: UILabel = {
+    var delegate: ScheduleViewControllerDelegate?
+    
+    lazy var label: UILabel = {
         let element = UILabel()
         element.font = .systemFont(ofSize: 17, weight: .regular)
         element.textColor = .ypBlack
         return element
     }()
     
-    private lazy var switcher: UISwitch = {
+    lazy var switcher: UISwitch = {
         let element = UISwitch()
         element.onTintColor = .ypBlue
+        element.addTarget(self, action: #selector(addSchedule), for: .allTouchEvents)
         return element
     }()
     
@@ -27,10 +30,15 @@ final class ScheduleTableViewCell: UITableViewCell {
         super.layoutSubviews()
         setupView()
         addConstraints()
+        backgroundColor = .ypBackground
     }
     
     func configureCell(text: String) {
         label.text = text
+    }
+    
+    @objc private func addSchedule() {
+        delegate?.addDaysToSchedule(cell: self)
     }
     
     private func setupView() {

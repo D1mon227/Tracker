@@ -9,6 +9,8 @@ import UIKit
 
 final class TabBarController: UITabBarController {
     
+    var presenter: TrackerViewPresenterProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()
@@ -20,7 +22,11 @@ final class TabBarController: UITabBarController {
         appearance.backgroundColor = .ypWhite
         self.tabBar.standardAppearance = appearance
         
-        let trackerNavigationController = UINavigationController(rootViewController: TrackerViewController())
+        let trackerViewPresenter = TrackerViewPresenter()
+        let trackerViewController = TrackerViewController()
+        trackerViewController.presenter = trackerViewPresenter
+        
+        let trackerNavigationController = UINavigationController(rootViewController: trackerViewController)
         let statisticNavigationController = UINavigationController(rootViewController: StatisticViewController())
         
         trackerNavigationController.navigationBar.prefersLargeTitles = true

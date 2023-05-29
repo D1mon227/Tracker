@@ -68,8 +68,9 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(cellColor: UIColor, doneColor: UIColor, emoji: String) {
+    func configureCell(cellColor: UIColor, trackerName: String, doneColor: UIColor, emoji: String) {
         cellView.backgroundColor = cellColor
+        cellLabel.text = trackerName
         doneButton.backgroundColor = doneColor
         emojiLabel.text = emoji
     }

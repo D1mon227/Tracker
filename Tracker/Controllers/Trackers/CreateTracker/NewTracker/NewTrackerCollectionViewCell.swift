@@ -10,7 +10,7 @@ import SnapKit
 
 final class NewTrackerCollectionViewCell: UICollectionViewCell {
     
-    private lazy var emojiLabel: UILabel = {
+    lazy var emojiLabel: UILabel = {
         let element = UILabel()
         element.font = .systemFont(ofSize: 32)
         return element
@@ -21,6 +21,15 @@ final class NewTrackerCollectionViewCell: UICollectionViewCell {
         element.layer.cornerRadius = 8
         return element
     }()
+    
+    override var isSelected: Bool {
+        didSet {
+            if !isSelected {
+                backgroundColor = .none
+                layer.borderWidth = 0
+            }
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
