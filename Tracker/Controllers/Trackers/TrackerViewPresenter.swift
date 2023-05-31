@@ -17,12 +17,12 @@ final class TrackerViewPresenter: TrackerViewPresenterProtocol {
                                                                name: "Учиться делать iOS-приложения",
                                                                color: .colorSelection1,
                                                                emoji: "🐶",
-                                                               schedule: [1, 2, 4, 6]),
+                                                               schedule: [ 2, 4, 6]),
                                                        Tracker(id: UUID(),
                                                                name: "Получить права",
                                                                color: .colorSelection2,
                                                                emoji: "😻",
-                                                               schedule: [1, 3, 5, 6, 7])]),
+                                                               schedule: [ 3, 5, 6, 7])]),
         TrackerCategory(name: "Уборка", trackerArray: [Tracker(id: UUID(),
                                                                name: "Полить цветы",
                                                                color: .colorSelection3,
@@ -32,7 +32,7 @@ final class TrackerViewPresenter: TrackerViewPresenterProtocol {
                                                                name: "Влажная уборка",
                                                                color: .colorSelection4,
                                                                emoji: "😇",
-                                                               schedule: [1, 4, 6])])
+                                                               schedule: [ 4, 6])])
     ]
     
     var visibleCategories: [TrackerCategory]? = []
@@ -46,7 +46,7 @@ final class TrackerViewPresenter: TrackerViewPresenterProtocol {
     
     var currentDate: Date?
     
-    func filterTrackersFromDate(text: String?) {
+    func filterTrackers(text: String?) {
         guard let categories = categories,
               let date = currentDate,
               let text = text?.lowercased() else { return }

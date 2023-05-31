@@ -13,5 +13,5 @@ protocol TrackerViewPresenterProtocol: AnyObject {
     var completedTrackers: [TrackerRecord]? { get set }
     var emojies: [String] { get }
     var currentDate: Date? { get set }
-    func filterTrackersFromDate(text: String?)
+    func filterTrackers(text: String?)
 }

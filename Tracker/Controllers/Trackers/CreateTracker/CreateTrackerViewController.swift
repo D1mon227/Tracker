@@ -43,7 +43,6 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     
     func switchToTrackerVC() {
         dismiss(animated: true)
-        viewController?.checkCellsCount()
         viewController?.reloadCollectionView()
     }
 }

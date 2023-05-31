@@ -11,5 +11,6 @@ enum Resourses {
     enum Images {
         static let statisticEmptyImage = UIImage(named: "statisticEmptyImage")
         static let trackerEmptyImage = UIImage(named: "trackerEmptyImage")
+        static let searchEmptyImage = UIImage(named: "searchEmptyImage")
     }
 }

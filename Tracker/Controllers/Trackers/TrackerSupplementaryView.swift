@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class TrackerSupplementaryView: UICollectionReusableView {
     
@@ -31,9 +32,8 @@ final class TrackerSupplementaryView: UICollectionReusableView {
     
     private func addConstraints() {
         headerLabel.snp.makeConstraints { make in
-            make.top.equalTo(snp.top)
-            make.leading.equalTo(snp.leading).offset(28)
-            make.bottom.equalTo(snp.bottom).offset(-12)
+            make.top.bottom.equalToSuperview()
+            make.leading.equalToSuperview().offset(28)
         }
     }
 }

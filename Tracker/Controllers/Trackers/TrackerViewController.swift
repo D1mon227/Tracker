@@ -26,7 +26,7 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
         setupViews()
         setupNavigationController()
         addTarget()
-        checkCellsCount()
+        checkCellsCount(image: Resourses.Images.trackerEmptyImage!, text: "Что будем отслеживать?")
         setupTrackersFromDatePicker()
     }
 
@@ -43,7 +43,7 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
         guard let navBar = navigationController?.navigationBar else { return }
         let leftButton = UIBarButtonItem(barButtonSystemItem: .add,
                                          target: self,
-                                         action: #selector(addNewTrack))
+                                         action: #selector(addNewTracker))
         leftButton.tintColor = .ypBlack
         navBar.topItem?.setLeftBarButton(leftButton, animated: false)
     }
@@ -52,10 +52,12 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
         trackerView.trackersCollectionView.reloadData()
     }
     
-    func checkCellsCount() {
-        if presenter?.categories?.count == 0 {
+    func checkCellsCount(image: UIImage, text: String) {
+        if presenter?.visibleCategories?.count == 0 {
             view.addSubview(trackerView.emptyImage)
             view.addSubview(trackerView.emptyLabel)
+            trackerView.emptyImage.image = image
+            trackerView.emptyLabel.text = text
             trackerView.filterButton.removeFromSuperview()
             
             trackerView.emptyImage.snp.makeConstraints { make in
@@ -81,7 +83,7 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
         }
     }
 
-    @objc private func addNewTrack() {
+    @objc private func addNewTracker() {
         let newtrackerVC = CreateTrackerViewController()
         newtrackerVC.presenter = presenter
         newtrackerVC.viewController = self
@@ -134,17 +136,21 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
     }
     
     @objc private func setupTrackersFromDatePicker() {
+        guard let image = Resourses.Images.trackerEmptyImage else { return }
         presenter?.currentDate = trackerView.datePicker.date
         
-        presenter?.filterTrackersFromDate(text: "")
+        presenter?.filterTrackers(text: "")
         trackerView.trackersCollectionView.reloadData()
+        checkCellsCount(image: image, text: "Что будем отслеживать?")
     }
     
     @objc private func setupTrackersFromTextField() {
-        guard let text = trackerView.searchTextField.text else { return }
+        guard let text = trackerView.searchTextField.text,
+              let image = Resourses.Images.trackerEmptyImage else { return }
         
-        presenter?.filterTrackersFromDate(text: text)
+        presenter?.filterTrackers(text: text)
         trackerView.trackersCollectionView.reloadData()
+        checkCellsCount(image: image, text: "Ничего не найдено")
     }
 }
 
@@ -224,7 +230,7 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16)
+        return UIEdgeInsets(top: 12, left: 16, bottom: 16, right: 16)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {

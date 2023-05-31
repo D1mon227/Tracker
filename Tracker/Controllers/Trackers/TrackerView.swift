@@ -11,7 +11,7 @@ final class TrackerView {
     
     lazy var emptyLabel: UILabel = {
         let element = UILabel()
-        element.text = "Что будем отслеживать?"
+        //element.text = "Что будем отслеживать?"
         element.textColor = .ypBlack
         element.textAlignment = .center
         element.font = .systemFont(ofSize: 12, weight: .medium)
@@ -20,7 +20,7 @@ final class TrackerView {
     
     lazy var emptyImage: UIImageView = {
         let element = UIImageView()
-        element.image = Resourses.Images.trackerEmptyImage
+        //element.image = Resourses.Images.trackerEmptyImage
         return element
     }()
     
