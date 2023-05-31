@@ -41,8 +41,7 @@ final class NewCategoryViewController: UIViewController, NewCategoryViewControll
 
 extension NewCategoryViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        newCategoryView.newCategoryTextField.endEditing(true)
-        return true
+        textField.resignFirstResponder()
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {

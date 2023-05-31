@@ -14,10 +14,12 @@ enum TypeOfTracker {
 }
 
 final class NewTrackerViewController: UIViewController, NewTrackerViewControllerProtocol {
+    
     var trackerPresenter: TrackerViewPresenterProtocol?
     var presenter: NewTrackerViewPresenterProtocol?
+    var createViewController: CreateTrackerViewControllerProtocol?
     private let newTrackerView = NewTrackerView()
-    var tracker: TypeOfTracker?
+    var typeOfTracker: TypeOfTracker?
     
     var selectedCategory: String?
     var selectedSchedule: String?
@@ -25,6 +27,7 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     var trackerName: String?
     var trackerEmoji: String?
     var trackerColor: UIColor?
+    var schedule: [Int]?
     
     var colors: [UIColor] = [
         .colorSelection1, .colorSelection2, .colorSelection3, .colorSelection4, .colorSelection5, .colorSelection6,
@@ -42,6 +45,7 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
         setupCollectionView()
         setupTextField()
         setupTarget()
+        
     }
     
     private func setupTableView() {
@@ -57,16 +61,35 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
         newTrackerView.collectionView.delegate = self
     }
     
+    func enableCreateButton() {
+        newTrackerView.createButton.isEnabled = true
+        newTrackerView.createButton.backgroundColor = .ypBlack
+        newTrackerView.createButton.setTitleColor(.ypWhite, for: .normal)
+    }
+    
+    func disableCreateButton() {
+        newTrackerView.createButton.isEnabled = false
+        newTrackerView.createButton.backgroundColor = .ypGray
+    }
+    
     private func setupTextField() {
         newTrackerView.habitNameTextField.delegate = self
     }
     
     private func setupTarget() {
         newTrackerView.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
+        newTrackerView.createButton.addTarget(self, action: #selector(createTracker), for: .touchUpInside)
     }
     
     @objc private func dismissVC() {
         dismiss(animated: true)
+    }
+    
+    @objc private func createTracker() {
+        let newCategories = createNewTracker()
+        trackerPresenter?.categories = newCategories
+        dismiss(animated: true)
+        createViewController?.switchToTrackerVC()
     }
     
     @objc private func switchToCategoryViewController() {
@@ -82,38 +105,71 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
         present(scheduleVC, animated: true)
     }
     
+    func checkCreateButton() {
+        if trackerName != nil &&
+            selectedCategory != nil &&
+            trackerEmoji != nil &&
+            trackerColor != nil {
+            switch typeOfTracker {
+            case .unregularEvent:
+                enableCreateButton()
+            case .habit:
+                selectedSchedule != nil ? enableCreateButton() : disableCreateButton()
+            default:
+                disableCreateButton()
+            }
+        } else {
+            disableCreateButton()
+        }
+    }
+    
     func reloadTableView() {
         newTrackerView.categoryAndScheduleTableView.reloadData()
+    }
+    
+    func createNewTracker() -> [TrackerCategory] {
+        guard let categories = trackerPresenter?.categories,
+              let trackerColor = trackerColor,
+              let trackerName = trackerName,
+              let trackerEmoji = trackerEmoji else { return [] }
+        
+        let newTracker = Tracker(id: UUID(),
+                                 name: trackerName,
+                                 color: trackerColor,
+                                 emoji: trackerEmoji,
+                                 schedule: schedule)
+        
+        var newCategory: [TrackerCategory] = []
+        
+        categories.forEach { category in
+            if selectedCategory == category.name {
+                var newTrackers = category.trackerArray
+                newTrackers.append(newTracker)
+                newCategory.append(TrackerCategory(name: category.name, trackerArray: newTrackers))
+            } else {
+                newCategory.append(category)
+            }
+        }
+        
+        return newCategory
     }
 }
 
 extension NewTrackerViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        newTrackerView.habitNameTextField.endEditing(true)
-        return true
-    }
-    
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if textField.text != "" {
-            newTrackerView.createButton.isEnabled = true
-            newTrackerView.createButton.backgroundColor = .black
-            return true
-        } else {
-            newTrackerView.createButton.isEnabled = false
-            newTrackerView.createButton.backgroundColor = .ypGray
-            return true
-        }
+        textField.resignFirstResponder()
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         trackerName = textField.text
+        checkCreateButton()
     }
 }
 
 //MARK: UITableViewDataSource
 extension NewTrackerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch tracker {
+        switch typeOfTracker {
         case .habit:
             return 2
         case .unregularEvent:
@@ -302,6 +358,8 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
         default:
             cell.backgroundColor = .gray
         }
+        
+        checkCreateButton()
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -309,6 +367,7 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
         
         cell.backgroundColor = .none
         cell.layer.borderWidth = 0
+        checkCreateButton()
     }
     
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
@@ -336,7 +395,7 @@ extension NewTrackerViewController {
     }
     
     private func setupTitle() {
-        newTrackerView.newHabitLabel.text = tracker == .habit ? "Новая привычка" : "Новое нерегулярное событие"
+        newTrackerView.newHabitLabel.text = typeOfTracker == .habit ? "Новая привычка" : "Новое нерегулярное событие"
     }
     
     private func addConstraints() {
@@ -358,7 +417,7 @@ extension NewTrackerViewController {
         }
         
         newTrackerView.categoryAndScheduleTableView.snp.makeConstraints { make in
-            if tracker == .habit {
+            if typeOfTracker == .habit {
                 make.height.equalTo(149)
             } else {
                 make.height.equalTo(75)

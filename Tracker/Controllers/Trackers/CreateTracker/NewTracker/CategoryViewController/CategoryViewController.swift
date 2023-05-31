@@ -65,7 +65,7 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
                 make.leading.trailing.equalToSuperview().inset(16)
                 make.height.equalTo(300)
             }
-            
+
         }
     }
     
@@ -125,9 +125,6 @@ extension CategoryViewController {
     private func addView() {
         view.backgroundColor = .ypWhite
         view.addSubview(categoryView.categoryLabel)
-//        view.addSubview(categoryView.categoryTableView)
-//        view.addSubview(categoryView.emptyImage)
-//        view.addSubview(categoryView.emptyLabel)
         view.addSubview(categoryView.addCategoryButton)
         addConstraints()
     }
@@ -137,22 +134,6 @@ extension CategoryViewController {
             make.top.equalToSuperview().offset(27)
             make.centerX.equalToSuperview()
         }
-        
-//        categoryView.categoryTableView.snp.makeConstraints { make in
-//            make.top.equalTo(categoryView.categoryLabel.snp.bottom).offset(38)
-//            make.leading.trailing.equalToSuperview().inset(16)
-//            make.height.equalTo(300)
-//        }
-        
-//        categoryView.emptyImage.snp.makeConstraints { make in
-//            make.center.equalToSuperview()
-//        }
-//
-//        categoryView.emptyLabel.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-//            make.leading.trailing.equalToSuperview().inset(16)
-//            make.top.equalTo(categoryView.emptyImage.snp.bottom).offset(8)
-//        }
         
         categoryView.addCategoryButton.snp.makeConstraints { make in
             make.height.equalTo(60)

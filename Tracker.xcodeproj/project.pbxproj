@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		730F6CDD2A26446000B752CD /* DateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730F6CDC2A26446000B752CD /* DateService.swift */; };
 		7319D2882A1E84790075EE1F /* NewTrackerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7319D2872A1E84790075EE1F /* NewTrackerTableViewCell.swift */; };
 		7319D28A2A1EAEF40075EE1F /* NewTrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7319D2892A1EAEF40075EE1F /* NewTrackerCollectionViewCell.swift */; };
 		7319D28C2A1EB4080075EE1F /* NewTrackerSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7319D28B2A1EB4080075EE1F /* NewTrackerSupplementaryView.swift */; };
@@ -55,6 +56,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		730F6CDC2A26446000B752CD /* DateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateService.swift; sourceTree = "<group>"; };
 		7319D2872A1E84790075EE1F /* NewTrackerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerTableViewCell.swift; sourceTree = "<group>"; };
 		7319D2892A1EAEF40075EE1F /* NewTrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		7319D28B2A1EB4080075EE1F /* NewTrackerSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerSupplementaryView.swift; sourceTree = "<group>"; };
@@ -218,8 +220,8 @@
 			isa = PBXGroup;
 			children = (
 				7340A44A2A1E726E00F5A9E3 /* NewTrackerView.swift */,
-				7340A4482A1E726200F5A9E3 /* NewTrackerViewController.swift */,
 				7337BBEE2A25638900EEDA6F /* NewTrackerViewPresenter.swift */,
+				7340A4482A1E726200F5A9E3 /* NewTrackerViewController.swift */,
 				7319D2872A1E84790075EE1F /* NewTrackerTableViewCell.swift */,
 				7319D2892A1EAEF40075EE1F /* NewTrackerCollectionViewCell.swift */,
 				7319D28B2A1EB4080075EE1F /* NewTrackerSupplementaryView.swift */,
@@ -247,6 +249,7 @@
 		73CA05052A25136C008536D4 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				730F6CDC2A26446000B752CD /* DateService.swift */,
 				73CA05062A251383008536D4 /* ScheduleService.swift */,
 			);
 			path = Services;
@@ -396,6 +399,7 @@
 				7337BBEF2A25638900EEDA6F /* NewTrackerViewPresenter.swift in Sources */,
 				73CA04F52A213E62008536D4 /* CategoryTableViewCell.swift in Sources */,
 				73CA050B2A2522A4008536D4 /* ScheduleViewControllerDelegate.swift in Sources */,
+				730F6CDD2A26446000B752CD /* DateService.swift in Sources */,
 				73CA04FE2A24DC43008536D4 /* CreateTrackerViewControllerProtocol.swift in Sources */,
 				7319D2AC2A1FCA620075EE1F /* Tracker.swift in Sources */,
 				73CA05022A24DC84008536D4 /* CategoryViewControllerProtocol.swift in Sources */,

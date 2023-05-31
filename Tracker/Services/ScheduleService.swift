@@ -20,19 +20,19 @@ final class ScheduleService {
     func addDayToSchedule(day: String) -> Int {
         switch day {
         case "Понедельник":
-            return 1
-        case "Вторник":
             return 2
-        case "Среда":
+        case "Вторник":
             return 3
-        case "Четверг":
+        case "Среда":
             return 4
-        case "Пятница":
+        case "Четверг":
             return 5
-        case "Суббота":
+        case "Пятница":
             return 6
-        case "Воскресенье":
+        case "Суббота":
             return 7
+        case "Воскресенье":
+            return 1
         default:
             return 0
         }
@@ -41,19 +41,19 @@ final class ScheduleService {
     func changeDayToShortName(day: Int) -> String {
         switch day {
         case 1:
-            return "Пн"
-        case 2:
-            return "Вт"
-        case 3:
-            return "Ср"
-        case 4:
-            return "Чт"
-        case 5:
-            return "Пт"
-        case 6:
-            return "Сб"
-        case 7:
             return "Вс"
+        case 2:
+            return "Пн"
+        case 3:
+            return "Вт"
+        case 4:
+            return "Ср"
+        case 5:
+            return "Чт"
+        case 6:
+            return "Пт"
+        case 7:
+            return "Сб"
         default:
             return ""
         }

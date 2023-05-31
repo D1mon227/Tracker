@@ -10,6 +10,7 @@ import SnapKit
 
 final class ScheduleViewController: UIViewController, ScheduleViewControllerProtocol {
     
+    static let shared = ScheduleViewController()
     var presenter: TrackerViewPresenterProtocol?
     var viewController: NewTrackerViewControllerProtocol?
 
@@ -38,6 +39,7 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
     @objc private func returnToNewTrackerVC() {
         let scheduleDay = daysInInt.count == 7 ? "Каждый день" : scheduleService.arrayToString(array: daysInInt)
         viewController?.selectedSchedule = scheduleDay
+        viewController?.schedule = daysInInt
         viewController?.reloadTableView()
         dismiss(animated: true)
     }

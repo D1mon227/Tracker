@@ -8,6 +8,11 @@
 import UIKit
 import SnapKit
 
+protocol TrackerCollectionViewCellDelegate: AnyObject {
+    func completeTracker(id: UUID, at indexPath: IndexPath)
+    func uncompleteTracker(id: UUID, at indexPath: IndexPath)
+}
+
 final class TrackerCollectionViewCell: UICollectionViewCell {
     
     private lazy var cellView: UIView = {
@@ -44,7 +49,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let element = UILabel()
         element.font = .systemFont(ofSize: 12, weight: .medium)
         element.textColor = .ypBlack
-        element.text = "5 дней"
+        element.text = "0 дней"
         return element
     }()
     
@@ -57,6 +62,12 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return element
     }()
     
+    weak var delegate: TrackerCollectionViewCellDelegate?
+    
+    private var isCompleted: Bool = false
+    private var trackerID: UUID?
+    private var indexPath: IndexPath?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -68,11 +79,35 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(cellColor: UIColor, trackerName: String, doneColor: UIColor, emoji: String) {
-        cellView.backgroundColor = cellColor
-        cellLabel.text = trackerName
-        doneButton.backgroundColor = doneColor
-        emojiLabel.text = emoji
+    private func formatDaysString(_ days: Int) -> String {
+        let lastDigit = days % 10
+        let twoLastDigits = days % 100
+        
+        if twoLastDigits >= 11 && twoLastDigits <= 20 {
+            return "\(days) дней"
+        } else if lastDigit == 1 {
+            return "\(days) день"
+        } else if lastDigit >= 2 && lastDigit <= 4 {
+            return "\(days) дня"
+        } else {
+            return "\(days) дней"
+        }
+    }
+    
+    func configureCell(tracker: Tracker, isCompleted: Bool, completedDays: Int, indexPath: IndexPath) {
+        cellView.backgroundColor = tracker.color
+        cellLabel.text = tracker.name
+        doneButton.backgroundColor = tracker.color
+        emojiLabel.text = tracker.emoji
+        dateLabel.text = formatDaysString(completedDays)
+        self.isCompleted = isCompleted
+        self.trackerID = tracker.id
+        self.indexPath = indexPath
+        
+        let doneButtonTitle = isCompleted ? "✓" : "+"
+        
+        doneButton.setTitle(doneButtonTitle, for: .normal)
+        doneButton.alpha = isCompleted ? 0.5 : 1
     }
     
     private func setupTarget() {
@@ -80,12 +115,12 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }
     
     @objc private func doneTracker() {
-        if doneButton.titleLabel?.text == "+" {
-            doneButton.setTitle("✓", for: .normal)
-            doneButton.alpha = 0.5
+        guard let trackerID = trackerID,
+              let indexPath = indexPath else { return }
+        if isCompleted {
+            delegate?.uncompleteTracker(id: trackerID, at: indexPath)
         } else {
-            doneButton.setTitle("+", for: .normal)
-            doneButton.alpha = 1
+            delegate?.completeTracker(id: trackerID, at: indexPath)
         }
     }
     
