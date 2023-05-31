@@ -123,6 +123,7 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
     }
 
     @objc private func removeCancelButton() {
+        guard let image = Resourses.Images.trackerEmptyImage else { return }
         trackerView.searchTextField.text = .none
         trackerView.searchTextField.endEditing(true)
         trackerView.cancelButton.removeFromSuperview()
@@ -133,6 +134,7 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
             make.height.equalTo(36)
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
+        checkCellsCount(image: image, text: "Что будем отслеживать?")
     }
     
     @objc private func setupTrackersFromDatePicker() {
@@ -146,7 +148,7 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
     
     @objc private func setupTrackersFromTextField() {
         guard let text = trackerView.searchTextField.text,
-              let image = Resourses.Images.trackerEmptyImage else { return }
+              let image = Resourses.Images.searchEmptyImage else { return }
         
         presenter?.filterTrackers(text: text)
         trackerView.trackersCollectionView.reloadData()
@@ -266,14 +268,6 @@ extension TrackerViewController: TrackerCollectionViewCellDelegate {
 extension TrackerViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-    }
-    
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if textField.text != "" {
-            return true
-        } else {
-            return true
-        }
     }
 }
 
