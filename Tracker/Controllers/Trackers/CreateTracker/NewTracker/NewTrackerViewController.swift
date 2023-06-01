@@ -136,6 +136,16 @@ extension NewTrackerViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as? NewTrackerTableViewCell else { return UITableViewCell() }
         cell.label.text = presenter?.tableViewTitle[indexPath.row]
         
+        if indexPath.row + 1 == presenter?.tableViewTitle.count {
+            cell.layer.masksToBounds = true
+            cell.layer.cornerRadius = 16
+            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 400, bottom: 0, right: 0)
+        } else {
+            cell.layer.cornerRadius = 0
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        }
+        
         switch indexPath.row {
         case 0:
             if let selectedCategory = storage.selectedCategory {

@@ -84,7 +84,17 @@ extension CategoryViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableViewCell", for: indexPath) as? CategoryTableViewCell else { return UITableViewCell() }
         
         cell.configureCell(text: storage.categories?[indexPath.row].name ?? "")
+        cell.accessoryType = cell.label.text == storage.selectedCategory ? .checkmark : .none
         
+        if indexPath.row + 1 == storage.categories?.count {
+            cell.layer.masksToBounds = true
+            cell.layer.cornerRadius = 16
+            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 400, bottom: 0, right: 0)
+        } else {
+            cell.layer.cornerRadius = 0
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        }
         return cell
     }
     

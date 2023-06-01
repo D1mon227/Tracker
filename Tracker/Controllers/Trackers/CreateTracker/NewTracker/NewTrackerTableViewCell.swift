@@ -37,8 +37,6 @@ final class NewTrackerTableViewCell: UITableViewCell {
             make.leading.equalToSuperview().offset(16)
             make.centerY.equalToSuperview()
         }
-        
-        //label.text = text
     }
     
     func configureCellWithCategory(_ with: String) {
