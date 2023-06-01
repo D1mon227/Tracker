@@ -49,16 +49,14 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
 //MARK: UITableViewDataSource
 extension ScheduleViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let days = presenter?.days.count else { return 0 }
-        return days
+        return Resourses.WeekDay.allCases.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as? ScheduleTableViewCell,
-              let textDay = presenter?.days else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as? ScheduleTableViewCell else { return UITableViewCell() }
         
         cell.delegate = self
-        cell.configureCell(text: textDay[indexPath.row])
+        cell.configureCell(text: Resourses.WeekDay.allCases[indexPath.row].rawValue)
         
         return cell
     }
