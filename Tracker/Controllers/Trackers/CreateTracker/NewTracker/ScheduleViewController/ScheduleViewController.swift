@@ -10,17 +10,17 @@ import SnapKit
 
 final class ScheduleViewController: UIViewController, ScheduleViewControllerProtocol {
     
-    static let shared = ScheduleViewController()
-    var presenter: TrackerViewPresenterProtocol?
+    var presenter: ScheduleViewPresenterProtocol?
     var viewController: NewTrackerViewControllerProtocol?
 
     private let scheduleView = ScheduleView()
     private let scheduleService = ScheduleService()
-    var daysInInt: [Int] = []
-    var days: [String] = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+    private let storage = TrackerStorage.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter = SchedulePresenter()
+        
         addView()
         setupTableView()
         addTarget()
@@ -37,9 +37,10 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
     }
     
     @objc private func returnToNewTrackerVC() {
-        let scheduleDay = daysInInt.count == 7 ? "Каждый день" : scheduleService.arrayToString(array: daysInInt)
-        viewController?.selectedSchedule = scheduleDay
-        viewController?.schedule = daysInInt
+        let schedule = presenter?.daysInInt ?? []
+        let scheduleDay = presenter?.daysInInt.count == 7 ? "Каждый день" : scheduleService.arrayToString(array: schedule)
+        storage.selectedSchedule = scheduleDay
+        storage.schedule = schedule
         viewController?.reloadTableView()
         dismiss(animated: true)
     }
@@ -48,14 +49,16 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
 //MARK: UITableViewDataSource
 extension ScheduleViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return days.count
+        guard let days = presenter?.days.count else { return 0 }
+        return days
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as? ScheduleTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as? ScheduleTableViewCell,
+              let textDay = presenter?.days else { return UITableViewCell() }
         
         cell.delegate = self
-        cell.configureCell(text: days[indexPath.row])
+        cell.configureCell(text: textDay[indexPath.row])
         
         return cell
     }
@@ -78,10 +81,10 @@ extension ScheduleViewController: ScheduleViewControllerDelegate {
         
         let shortNameOfDay = scheduleService.addDayToSchedule(day: fullNameofDay)
         if cell.switcher.isOn {
-            daysInInt.append(shortNameOfDay)
+            presenter?.daysInInt.append(shortNameOfDay)
         } else {
-            if let index = daysInInt.firstIndex(of: shortNameOfDay) {
-                daysInInt.remove(at: index)
+            if let index = presenter?.daysInInt.firstIndex(of: shortNameOfDay) {
+                presenter?.daysInInt.remove(at: index)
             }
         }
     }

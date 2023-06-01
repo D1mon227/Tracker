@@ -53,6 +53,10 @@
 		73DBA1702A1652CF003FB173 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73DBA16F2A1652CF003FB173 /* Assets.xcassets */; };
 		73DBA1732A1652CF003FB173 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73DBA1712A1652CF003FB173 /* LaunchScreen.storyboard */; };
 		73DBA17C2A167603003FB173 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 73DBA17B2A167603003FB173 /* SnapKit */; };
+		73FB36BB2A28B79C00411A25 /* TrackerStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FB36BA2A28B79C00411A25 /* TrackerStorage.swift */; };
+		73FB36C42A28C33000411A25 /* TrackerCollectionViewCellDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FB36C32A28C33000411A25 /* TrackerCollectionViewCellDelegate.swift */; };
+		73FB36C62A28C3AD00411A25 /* SchedulePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FB36C52A28C3AD00411A25 /* SchedulePresenter.swift */; };
+		73FB36C82A28C44700411A25 /* ScheduleViewPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FB36C72A28C44700411A25 /* ScheduleViewPresenterProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -103,6 +107,10 @@
 		73DBA16F2A1652CF003FB173 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		73DBA1722A1652CF003FB173 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		73DBA1742A1652CF003FB173 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		73FB36BA2A28B79C00411A25 /* TrackerStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStorage.swift; sourceTree = "<group>"; };
+		73FB36C32A28C33000411A25 /* TrackerCollectionViewCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCellDelegate.swift; sourceTree = "<group>"; };
+		73FB36C52A28C3AD00411A25 /* SchedulePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulePresenter.swift; sourceTree = "<group>"; };
+		73FB36C72A28C44700411A25 /* ScheduleViewPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewPresenterProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +128,7 @@
 		7319D28F2A1EDBC70075EE1F /* CategoryViewController */ = {
 			isa = PBXGroup;
 			children = (
+				73FB36C12A28C2A700411A25 /* Protocols */,
 				7319D2952A1EDD830075EE1F /* CategoryView.swift */,
 				7319D2902A1EDBE40075EE1F /* CategoryViewController.swift */,
 				73CA04F42A213E62008536D4 /* CategoryTableViewCell.swift */,
@@ -132,10 +141,12 @@
 		7319D2922A1EDC680075EE1F /* ScheduleViewController */ = {
 			isa = PBXGroup;
 			children = (
+				73FB36BD2A28C24000411A25 /* Delegates */,
+				73FB36BC2A28C21800411A25 /* Protocols */,
 				7319D2972A1EE1F30075EE1F /* ScheduleView.swift */,
+				73FB36C52A28C3AD00411A25 /* SchedulePresenter.swift */,
 				7319D2932A1EDC860075EE1F /* ScheduleViewController.swift */,
 				7319D2992A1EE53F0075EE1F /* ScheduleTableViewCell.swift */,
-				73CA050A2A2522A4008536D4 /* ScheduleViewControllerDelegate.swift */,
 			);
 			path = ScheduleViewController;
 			sourceTree = "<group>";
@@ -179,6 +190,8 @@
 		7340A43C2A1E52C600F5A9E3 /* Trackers */ = {
 			isa = PBXGroup;
 			children = (
+				73FB36C22A28C30E00411A25 /* Delegates */,
+				73FB36BE2A28C25A00411A25 /* Protocols */,
 				7319D29F2A1F5BF90075EE1F /* TrackerView.swift */,
 				73CA04FB2A24C9CB008536D4 /* TrackerViewPresenter.swift */,
 				73DBA16A2A1652CD003FB173 /* TrackerViewController.swift */,
@@ -209,6 +222,7 @@
 		7340A4412A1E67AA00F5A9E3 /* CreateTracker */ = {
 			isa = PBXGroup;
 			children = (
+				73FB36BF2A28C28500411A25 /* Protocols */,
 				7340A4452A1E68A600F5A9E3 /* CreateTrackerView.swift */,
 				7340A4422A1E686900F5A9E3 /* CreateTrackerViewController.swift */,
 				7340A4442A1E689200F5A9E3 /* NewTracker */,
@@ -219,6 +233,7 @@
 		7340A4442A1E689200F5A9E3 /* NewTracker */ = {
 			isa = PBXGroup;
 			children = (
+				73FB36C02A28C29200411A25 /* Protocols */,
 				7340A44A2A1E726E00F5A9E3 /* NewTrackerView.swift */,
 				7337BBEE2A25638900EEDA6F /* NewTrackerViewPresenter.swift */,
 				7340A4482A1E726200F5A9E3 /* NewTrackerViewController.swift */,
@@ -231,26 +246,12 @@
 			path = NewTracker;
 			sourceTree = "<group>";
 		};
-		73CA04F62A24B0BB008536D4 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				73CA04F72A24B0DE008536D4 /* TrackerViewPresenterProtocol.swift */,
-				73CA04F92A24B15E008536D4 /* TrackerViewControllerProtocol.swift */,
-				73CA04FD2A24DC42008536D4 /* CreateTrackerViewControllerProtocol.swift */,
-				7337BBF02A25651400EEDA6F /* NewTrackerViewPresenterProtocol.swift */,
-				73CA04FF2A24DC66008536D4 /* NewTrackerViewControllerProtocol.swift */,
-				73CA05012A24DC84008536D4 /* CategoryViewControllerProtocol.swift */,
-				73CA05032A24DFAD008536D4 /* NewCategoryViewControllerProtocol.swift */,
-				73CA05082A251777008536D4 /* ScheduleViewControllerProtocol.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
 		73CA05052A25136C008536D4 /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				730F6CDC2A26446000B752CD /* DateService.swift */,
 				73CA05062A251383008536D4 /* ScheduleService.swift */,
+				73FB36BA2A28B79C00411A25 /* TrackerStorage.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -277,7 +278,6 @@
 				73DBA1662A1652CD003FB173 /* AppDelegate.swift */,
 				73DBA1682A1652CD003FB173 /* SceneDelegate.swift */,
 				7319D2AA2A1FCA490075EE1F /* Model */,
-				73CA04F62A24B0BB008536D4 /* Protocols */,
 				73CA05052A25136C008536D4 /* Services */,
 				7340A4342A1E45F500F5A9E3 /* Controllers */,
 				7340A4352A1E460900F5A9E3 /* TabBarController.swift */,
@@ -288,6 +288,66 @@
 				73DBA1742A1652CF003FB173 /* Info.plist */,
 			);
 			path = Tracker;
+			sourceTree = "<group>";
+		};
+		73FB36BC2A28C21800411A25 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				73CA05082A251777008536D4 /* ScheduleViewControllerProtocol.swift */,
+				73FB36C72A28C44700411A25 /* ScheduleViewPresenterProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		73FB36BD2A28C24000411A25 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				73CA050A2A2522A4008536D4 /* ScheduleViewControllerDelegate.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
+		73FB36BE2A28C25A00411A25 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				73CA04F92A24B15E008536D4 /* TrackerViewControllerProtocol.swift */,
+				73CA04F72A24B0DE008536D4 /* TrackerViewPresenterProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		73FB36BF2A28C28500411A25 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				73CA04FD2A24DC42008536D4 /* CreateTrackerViewControllerProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		73FB36C02A28C29200411A25 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				73CA04FF2A24DC66008536D4 /* NewTrackerViewControllerProtocol.swift */,
+				7337BBF02A25651400EEDA6F /* NewTrackerViewPresenterProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		73FB36C12A28C2A700411A25 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				73CA05032A24DFAD008536D4 /* NewCategoryViewControllerProtocol.swift */,
+				73CA05012A24DC84008536D4 /* CategoryViewControllerProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		73FB36C22A28C30E00411A25 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				73FB36C32A28C33000411A25 /* TrackerCollectionViewCellDelegate.swift */,
+			);
+			path = Delegates;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -385,6 +445,8 @@
 				7319D2A42A1F8A390075EE1F /* TrackerSupplementaryView.swift in Sources */,
 				73CA05072A251383008536D4 /* ScheduleService.swift in Sources */,
 				73CA05092A251777008536D4 /* ScheduleViewControllerProtocol.swift in Sources */,
+				73FB36C62A28C3AD00411A25 /* SchedulePresenter.swift in Sources */,
+				73FB36C42A28C33000411A25 /* TrackerCollectionViewCellDelegate.swift in Sources */,
 				7319D29E2A1EEA3F0075EE1F /* NewCategoryView.swift in Sources */,
 				73CA04F82A24B0DE008536D4 /* TrackerViewPresenterProtocol.swift in Sources */,
 				73DBA1672A1652CD003FB173 /* AppDelegate.swift in Sources */,
@@ -394,6 +456,8 @@
 				73CA04FA2A24B15E008536D4 /* TrackerViewControllerProtocol.swift in Sources */,
 				7340A43B2A1E497100F5A9E3 /* UIColor+Extension.swift in Sources */,
 				7340A4402A1E547900F5A9E3 /* Resourses.swift in Sources */,
+				73FB36C82A28C44700411A25 /* ScheduleViewPresenterProtocol.swift in Sources */,
+				73FB36BB2A28B79C00411A25 /* TrackerStorage.swift in Sources */,
 				7319D2A82A1F9D2C0075EE1F /* FilterTableViewCell.swift in Sources */,
 				7340A4382A1E46BF00F5A9E3 /* StatisticViewController.swift in Sources */,
 				7337BBEF2A25638900EEDA6F /* NewTrackerViewPresenter.swift in Sources */,

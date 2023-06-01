@@ -8,6 +8,6 @@
 import Foundation
 
 protocol ScheduleViewControllerProtocol: AnyObject {
-    var presenter: TrackerViewPresenterProtocol? { get set }
+    var presenter: ScheduleViewPresenterProtocol? { get set }
     var viewController: NewTrackerViewControllerProtocol? { get }
 }

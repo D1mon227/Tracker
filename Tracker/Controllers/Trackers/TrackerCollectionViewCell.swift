@@ -8,11 +8,6 @@
 import UIKit
 import SnapKit
 
-protocol TrackerCollectionViewCellDelegate: AnyObject {
-    func completeTracker(id: UUID, at indexPath: IndexPath)
-    func uncompleteTracker(id: UUID, at indexPath: IndexPath)
-}
-
 final class TrackerCollectionViewCell: UICollectionViewCell {
     
     private lazy var cellView: UIView = {

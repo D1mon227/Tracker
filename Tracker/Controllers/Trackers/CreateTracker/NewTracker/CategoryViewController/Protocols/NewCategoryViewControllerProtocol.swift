@@ -8,6 +8,5 @@
 import Foundation
 
 protocol NewCategoryViewControllerProtocol: AnyObject {
-    var presenter: TrackerViewPresenterProtocol? { get set }
     var viewController: CategoryViewControllerProtocol? { get }
 }

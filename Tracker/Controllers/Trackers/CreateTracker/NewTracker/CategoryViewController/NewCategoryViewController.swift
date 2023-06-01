@@ -11,7 +11,7 @@ import SnapKit
 final class NewCategoryViewController: UIViewController, NewCategoryViewControllerProtocol {
     
     private let newCategoryView = NewCategoryView()
-    var presenter: TrackerViewPresenterProtocol?
+    private let storage = TrackerStorage.shared
     var viewController: CategoryViewControllerProtocol?
     
     override func viewDidLoad() {
@@ -31,7 +31,7 @@ final class NewCategoryViewController: UIViewController, NewCategoryViewControll
     
     @objc private func addCategory() {
         guard let categoryName = newCategoryView.newCategoryTextField.text else { return }
-        presenter?.categories?.append(TrackerCategory(name: categoryName,
+        storage.categories?.append(TrackerCategory(name: categoryName,
                                                      trackerArray: []))
         dismiss(animated: true)
         viewController?.checkCellsCount()

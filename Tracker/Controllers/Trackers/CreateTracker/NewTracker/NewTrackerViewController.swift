@@ -8,32 +8,13 @@
 import UIKit
 import SnapKit
 
-enum TypeOfTracker {
-    case habit
-    case unregularEvent
-}
-
 final class NewTrackerViewController: UIViewController, NewTrackerViewControllerProtocol {
     
-    var trackerPresenter: TrackerViewPresenterProtocol?
     var presenter: NewTrackerViewPresenterProtocol?
     var createViewController: CreateTrackerViewControllerProtocol?
     private let newTrackerView = NewTrackerView()
+    private let storage = TrackerStorage.shared
     var typeOfTracker: TypeOfTracker?
-    
-    var selectedCategory: String?
-    var selectedSchedule: String?
-    
-    var trackerName: String?
-    var trackerEmoji: String?
-    var trackerColor: UIColor?
-    var schedule: [Int]?
-    
-    var colors: [UIColor] = [
-        .colorSelection1, .colorSelection2, .colorSelection3, .colorSelection4, .colorSelection5, .colorSelection6,
-        .colorSelection7, .colorSelection8, .colorSelection9, .colorSelection10, .colorSelection11, .colorSelection12,
-        .colorSelection13, .colorSelection14, .colorSelection15, .colorSelection16, .colorSelection17, .colorSelection18,
-    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +26,6 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
         setupCollectionView()
         setupTextField()
         setupTarget()
-        
     }
     
     private func setupTableView() {
@@ -86,15 +66,15 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     }
     
     @objc private func createTracker() {
-        let newCategories = createNewTracker()
-        trackerPresenter?.categories = newCategories
+        let newCategories = presenter?.createNewTracker()
+        storage.categories = newCategories
+        storage.resetNewTrackerInfo()
         dismiss(animated: true)
         createViewController?.switchToTrackerVC()
     }
     
     @objc private func switchToCategoryViewController() {
         let categoryVC = CategoryViewController()
-        categoryVC.presenter = trackerPresenter
         categoryVC.viewController = self
         present(categoryVC, animated: true)
     }
@@ -106,15 +86,15 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     }
     
     func checkCreateButton() {
-        if trackerName != nil &&
-            selectedCategory != nil &&
-            trackerEmoji != nil &&
-            trackerColor != nil {
+        if storage.trackerName != nil &&
+            storage.selectedCategory != nil &&
+            storage.trackerEmoji != nil &&
+            storage.trackerColor != nil {
             switch typeOfTracker {
             case .unregularEvent:
                 enableCreateButton()
             case .habit:
-                selectedSchedule != nil ? enableCreateButton() : disableCreateButton()
+                storage.selectedSchedule != nil ? enableCreateButton() : disableCreateButton()
             default:
                 disableCreateButton()
             }
@@ -126,33 +106,6 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     func reloadTableView() {
         newTrackerView.categoryAndScheduleTableView.reloadData()
     }
-    
-    func createNewTracker() -> [TrackerCategory] {
-        guard let categories = trackerPresenter?.categories,
-              let trackerColor = trackerColor,
-              let trackerName = trackerName,
-              let trackerEmoji = trackerEmoji else { return [] }
-        
-        let newTracker = Tracker(id: UUID(),
-                                 name: trackerName,
-                                 color: trackerColor,
-                                 emoji: trackerEmoji,
-                                 schedule: schedule)
-        
-        var newCategory: [TrackerCategory] = []
-        
-        categories.forEach { category in
-            if selectedCategory == category.name {
-                var newTrackers = category.trackerArray
-                newTrackers.append(newTracker)
-                newCategory.append(TrackerCategory(name: category.name, trackerArray: newTrackers))
-            } else {
-                newCategory.append(category)
-            }
-        }
-        
-        return newCategory
-    }
 }
 
 extension NewTrackerViewController: UITextFieldDelegate {
@@ -161,7 +114,7 @@ extension NewTrackerViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        trackerName = textField.text
+        storage.trackerName = textField.text
         checkCreateButton()
     }
 }
@@ -185,14 +138,14 @@ extension NewTrackerViewController: UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            if let selectedCategory = selectedCategory {
+            if let selectedCategory = storage.selectedCategory {
                 cell.label.snp.removeConstraints()
                 cell.configureCellWithCategory(selectedCategory)
             } else {
                 cell.configureCellWithoutCategory()
             }
         case 1:
-            if let selectedSchedule = selectedSchedule {
+            if let selectedSchedule = storage.selectedSchedule {
                 cell.label.snp.removeConstraints()
                 cell.configureCellWithCategory(selectedSchedule)
             } else {
@@ -232,13 +185,12 @@ extension NewTrackerViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let emojies = trackerPresenter?.emojies.count else { return 0 }
         
         switch section {
         case 0:
-            return emojies
+            return storage.emojies.count
         case 1:
-            return colors.count
+            return storage.colors.count
         default:
             return 10
         }
@@ -246,15 +198,14 @@ extension NewTrackerViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? NewTrackerCollectionViewCell,
-              let trackerPresenter = trackerPresenter else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? NewTrackerCollectionViewCell else { return UICollectionViewCell() }
         
         switch indexPath.section {
         case 0:
-            cell.configureEmojiCell(emoji: trackerPresenter.emojies[indexPath.row])
+            cell.configureEmojiCell(emoji: storage.emojies[indexPath.row])
             return cell
         case 1:
-            cell.configureColorCell(color: colors[indexPath.row])
+            cell.configureColorCell(color: storage.colors[indexPath.row])
             return cell
         default:
             return UICollectionViewCell()
@@ -349,12 +300,12 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
         case 0:
             cell.layer.cornerRadius = 16
             cell.backgroundColor = .ypLightGray
-            trackerEmoji = cell.emojiLabel.text
+            storage.trackerEmoji = cell.emojiLabel.text
         case 1:
             cell.layer.cornerRadius = 11
-            cell.layer.borderColor = colors[indexPath.row].withAlphaComponent(0.3).cgColor
+            cell.layer.borderColor = storage.colors[indexPath.row].withAlphaComponent(0.3).cgColor
             cell.layer.borderWidth = 3
-            trackerColor = colors[indexPath.row]
+            storage.trackerColor = storage.colors[indexPath.row]
         default:
             cell.backgroundColor = .gray
         }

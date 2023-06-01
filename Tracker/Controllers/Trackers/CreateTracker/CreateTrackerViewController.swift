@@ -27,7 +27,6 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     
     @objc private func switchToNewHabitViewController() {
         let newHabitVC = NewTrackerViewController()
-        newHabitVC.trackerPresenter = presenter
         newHabitVC.createViewController = self
         newHabitVC.typeOfTracker = .habit
         present(newHabitVC, animated: true)
@@ -35,7 +34,6 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     
     @objc private func switchToNewUnregularEventViewController() {
         let newHabitVC = NewTrackerViewController()
-        newHabitVC.trackerPresenter = presenter
         newHabitVC.createViewController = self
         newHabitVC.typeOfTracker = .unregularEvent
         present(newHabitVC, animated: true)
@@ -43,6 +41,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     
     func switchToTrackerVC() {
         dismiss(animated: true)
+        viewController?.setupTrackersFromDatePicker()
         viewController?.reloadCollectionView()
     }
 }

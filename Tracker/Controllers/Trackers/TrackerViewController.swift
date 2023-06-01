@@ -11,14 +11,8 @@ import SnapKit
 final class TrackerViewController: UIViewController, TrackerViewControllerProtocol {
     
     private let trackerView = TrackerView()
+    private let storage = TrackerStorage.shared
     var presenter: TrackerViewPresenterProtocol?
-    var viewController: NewTrackerViewControllerProtocol?
-    
-    var colors: [UIColor] = [
-        .colorSelection1, .colorSelection2, .colorSelection3, .colorSelection4, .colorSelection5, .colorSelection6,
-        .colorSelection7, .colorSelection8, .colorSelection9, .colorSelection10, .colorSelection11, .colorSelection12,
-        .colorSelection13, .colorSelection14, .colorSelection15, .colorSelection16, .colorSelection17, .colorSelection18,
-    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +47,7 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
     }
     
     func checkCellsCount(image: UIImage, text: String) {
-        if presenter?.visibleCategories?.count == 0 {
+        if storage.visibleCategories?.count == 0 {
             view.addSubview(trackerView.emptyImage)
             view.addSubview(trackerView.emptyLabel)
             trackerView.emptyImage.image = image
@@ -137,7 +131,7 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
         checkCellsCount(image: image, text: "Что будем отслеживать?")
     }
     
-    @objc private func setupTrackersFromDatePicker() {
+    @objc func setupTrackersFromDatePicker() {
         guard let image = Resourses.Images.trackerEmptyImage else { return }
         presenter?.currentDate = trackerView.datePicker.date
         
@@ -160,19 +154,19 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
 extension TrackerViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return presenter?.visibleCategories?.count ?? 0
+        return storage.visibleCategories?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let presenter = presenter?.visibleCategories?[section] else { return 0 }
+        guard let presenter = storage.visibleCategories?[section] else { return 0 }
         
         return presenter.trackerArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCollectionViewCell", for: indexPath) as? TrackerCollectionViewCell,
-              let category = presenter?.visibleCategories?[indexPath.section],
-              let days = presenter?.completedTrackers else { return UICollectionViewCell() }
+              let category = storage.visibleCategories?[indexPath.section],
+              let days = storage.completedTrackers else { return UICollectionViewCell() }
         
         let tracker = category.trackerArray[indexPath.row]
         
@@ -190,7 +184,7 @@ extension TrackerViewController: UICollectionViewDataSource {
     }
     
     private func isTrackerCompletedToday(id: UUID) -> Bool {
-        guard let completedTrackers = presenter?.completedTrackers else { return false }
+        guard let completedTrackers = storage.completedTrackers else { return false }
         
         return completedTrackers.contains { trackerRecord in
             let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: trackerView.datePicker.date)
@@ -210,7 +204,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                          withReuseIdentifier: id,
                                                                          for: indexPath) as? TrackerSupplementaryView else { return UICollectionReusableView() }
-        view.headerLabel.text = presenter?.categories?[indexPath.section].name
+        view.headerLabel.text = storage.categories?[indexPath.section].name
     
         return view
     }
@@ -249,13 +243,13 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
 extension TrackerViewController: TrackerCollectionViewCellDelegate {
     func completeTracker(id: UUID, at indexPath: IndexPath) {
         let trackerRecord = TrackerRecord(id: id, date: trackerView.datePicker.date)
-        presenter?.completedTrackers?.append(trackerRecord)
+        storage.completedTrackers?.append(trackerRecord)
         
         trackerView.trackersCollectionView.reloadItems(at: [indexPath])
     }
     
     func uncompleteTracker(id: UUID, at indexPath: IndexPath) {
-        presenter?.completedTrackers?.removeAll { trackerRecord in
+        storage.completedTrackers?.removeAll { trackerRecord in
             let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: trackerView.datePicker.date)
             return trackerRecord.id == id && isSameDay
         }

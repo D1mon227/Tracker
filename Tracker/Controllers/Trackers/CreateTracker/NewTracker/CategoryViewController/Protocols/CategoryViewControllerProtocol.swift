@@ -8,7 +8,6 @@
 import Foundation
 
 protocol CategoryViewControllerProtocol: AnyObject {
-    var presenter: TrackerViewPresenterProtocol? { get set }
     var viewController: NewTrackerViewControllerProtocol? { get }
     func checkCellsCount()
     func reloadTableView()

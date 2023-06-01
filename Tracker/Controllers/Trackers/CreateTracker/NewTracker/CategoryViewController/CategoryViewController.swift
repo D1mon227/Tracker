@@ -11,7 +11,7 @@ import SnapKit
 final class CategoryViewController: UIViewController, CategoryViewControllerProtocol {
     
     private let categoryView = CategoryView()
-    var presenter: TrackerViewPresenterProtocol?
+    private let storage = TrackerStorage.shared
     var viewController: NewTrackerViewControllerProtocol?
     var selectedIndexPath: IndexPath?
     
@@ -29,7 +29,7 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
     
     @objc private func switchToNewCategoryViewController() {
         let newCategoryVC = NewCategoryViewController()
-        newCategoryVC.presenter = presenter
+        //newCategoryVC.presenter = presenter
         newCategoryVC.viewController = self
         present(newCategoryVC, animated: true)
     }
@@ -41,7 +41,7 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
     }
     
     func checkCellsCount() {
-        if presenter?.categories?.count == 0 {
+        if storage.categories?.count == 0 {
             view.addSubview(categoryView.emptyImage)
             view.addSubview(categoryView.emptyLabel)
             categoryView.categoryTableView.removeFromSuperview()
@@ -77,13 +77,13 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
 //MARK: UITableViewDataSource
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter?.categories?.count ?? 0
+        return storage.categories?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableViewCell", for: indexPath) as? CategoryTableViewCell else { return UITableViewCell() }
         
-        cell.configureCell(text: presenter?.categories?[indexPath.row].name ?? "")
+        cell.configureCell(text: storage.categories?[indexPath.row].name ?? "")
         
         return cell
     }
@@ -113,7 +113,7 @@ extension CategoryViewController: UITableViewDelegate {
             cell.accessoryType = .checkmark
             selectedIndexPath = indexPath
 
-            viewController?.selectedCategory = cell.label.text
+            storage.selectedCategory = cell.label.text
             viewController?.reloadTableView()
             dismiss(animated: true)
         }
