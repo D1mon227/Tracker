@@ -11,7 +11,8 @@ import SnapKit
 final class CategoryViewController: UIViewController, CategoryViewControllerProtocol {
     
     private let categoryView = CategoryView()
-    private let storage = TrackerStorage.shared
+    //private let storage = TrackerStorage.shared
+    private let dataProvider = DataProvider.shared
     var viewController: NewTrackerViewControllerProtocol?
     var selectedIndexPath: IndexPath?
     
@@ -41,7 +42,7 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
     }
     
     func checkCellsCount() {
-        if storage.categories?.count == 0 {
+        if dataProvider.categories?.count == 0 {
             view.addSubview(categoryView.emptyImage)
             view.addSubview(categoryView.emptyLabel)
             categoryView.categoryTableView.removeFromSuperview()
@@ -77,16 +78,16 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
 //MARK: UITableViewDataSource
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return storage.categories?.count ?? 0
+        return dataProvider.numberOfCategories
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableViewCell", for: indexPath) as? CategoryTableViewCell else { return UITableViewCell() }
         
-        cell.configureCell(text: storage.categories?[indexPath.row].name ?? "")
-        cell.accessoryType = cell.label.text == storage.selectedCategory ? .checkmark : .none
+        cell.label.text = dataProvider.fetchCategoryName(index: indexPath.row)
+        cell.accessoryType = cell.label.text == dataProvider.selectedCategory ? .checkmark : .none
         
-        if indexPath.row + 1 == storage.categories?.count {
+        if indexPath.row + 1 == dataProvider.numberOfCategories {
             cell.layer.masksToBounds = true
             cell.layer.cornerRadius = 16
             cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -123,7 +124,7 @@ extension CategoryViewController: UITableViewDelegate {
             cell.accessoryType = .checkmark
             selectedIndexPath = indexPath
 
-            storage.selectedCategory = cell.label.text
+            dataProvider.selectedCategory = cell.label.text
             viewController?.reloadTableView()
             dismiss(animated: true)
         }

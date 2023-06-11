@@ -1,14 +1,22 @@
 //
-//  TrackerStorage.swift
+//  DataProvider.swift
 //  Tracker
 //
-//  Created by Dmitry Medvedev on 01.06.2023.
+//  Created by Dmitry Medvedev on 09.06.2023.
 //
 
 import UIKit
 
-final class TrackerStorage {
-    static let shared = TrackerStorage()
+struct CollectionStoreUpdate {
+    let insertedIndexes: IndexSet
+    let deletedIndexes: IndexSet
+}
+
+final class DataProvider {
+    static let shared = DataProvider()
+    
+    var trackerStore: TrackerStoreProtocol?
+    private let trackerCategoryStore = TrackerCategoryStore()
     
     var selectedCategory: String?
     var selectedSchedule: String?
@@ -63,4 +71,53 @@ final class TrackerStorage {
         trackerEmoji = nil
         trackerColor = nil
     }
+    
+    func getVisibleCategories() -> [TrackerCategory] {
+        visibleCategories ?? []
+    }
+    
+    func setupVisibleCategories(_ category: [TrackerCategory]) {
+        visibleCategories = category
+    }
+    
+    //MARK: TrackerStore:
+    func addTracker(_ tracker: Tracker) {
+        trackerStore?.addTracker(tracker)
+    }
+    
+    func fetchTracker(category: String, index: Int) -> Tracker {
+        let tracker = trackerStore?.fetchTracker(category: category, index: index)
+        
+        return Tracker(id: tracker?.id ?? UUID(),
+                       name: tracker?.name ?? "",
+                       color: tracker?.color ?? .clear,
+                       emoji: tracker?.emoji ?? "",
+                       schedule: tracker?.schedule)
+    }
+    
+    //MARK: TrackerCategoryStore:
+    var numberOfCategories: Int {
+        trackerCategoryStore.numberOfCategories
+    }
+    
+    func numberOfRowsInSection(section: Int) -> Int {
+        trackerCategoryStore.numberOfRowsInSection(section: section)
+    }
+    
+    func addCategory(category: String) {
+        trackerCategoryStore.addCategory(category: category)
+    }
+    
+    func fetchCategoryName(index: Int) -> String {
+        trackerCategoryStore.fetchCategoryName(index: index)
+    }
+    
+    func fetchNewCategoryName(category: String) -> TrackerCategoryCoreData? {
+        trackerCategoryStore.fetchNewCategoryName(name: category)
+    }
+    
+    //MARK: TrackerRecordStore:
+    
+    
 }
+

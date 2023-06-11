@@ -23,4 +23,12 @@ enum Resourses {
         case Суббота
         case Воскресенье
     }
+    
+    enum TrackerStoreError: Error {
+        case decodingErrorInvalidColorHex
+        case decodingErrorInvalidEmojies
+        case decodingErrorInvalidName
+        case decodingErrorInvalidId
+        case decodingErrorInvalidSchedule
+    }
 }

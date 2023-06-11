@@ -13,7 +13,8 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     var presenter: NewTrackerViewPresenterProtocol?
     var createViewController: CreateTrackerViewControllerProtocol?
     private let newTrackerView = NewTrackerView()
-    private let storage = TrackerStorage.shared
+    //private let storage = TrackerStorage.shared
+    private let dataProvider = DataProvider.shared
     var typeOfTracker: TypeOfTracker?
     
     override func viewDidLoad() {
@@ -66,10 +67,10 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     }
     
     @objc private func createTracker() {
-        let newCategories = presenter?.createNewTracker()
-        storage.categories = newCategories
-        storage.resetNewTrackerInfo()
-        dismiss(animated: true)
+        presenter?.createNewTracker()
+//        storage.categories = newCategories
+        dataProvider.resetNewTrackerInfo()
+        dismissVC()
         createViewController?.switchToTrackerVC()
     }
     
@@ -86,15 +87,15 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     }
     
     func checkCreateButton() {
-        if storage.trackerName != nil &&
-            storage.selectedCategory != nil &&
-            storage.trackerEmoji != nil &&
-            storage.trackerColor != nil {
+        if dataProvider.trackerName != nil &&
+            dataProvider.selectedCategory != nil &&
+            dataProvider.trackerEmoji != nil &&
+            dataProvider.trackerColor != nil {
             switch typeOfTracker {
             case .unregularEvent:
                 enableCreateButton()
             case .habit:
-                storage.selectedSchedule != nil ? enableCreateButton() : disableCreateButton()
+                dataProvider.selectedSchedule != nil ? enableCreateButton() : disableCreateButton()
             default:
                 disableCreateButton()
             }
@@ -114,7 +115,7 @@ extension NewTrackerViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        storage.trackerName = textField.text
+        dataProvider.trackerName = textField.text
         checkCreateButton()
     }
 }
@@ -148,14 +149,14 @@ extension NewTrackerViewController: UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            if let selectedCategory = storage.selectedCategory {
+            if let selectedCategory = dataProvider.selectedCategory {
                 cell.label.snp.removeConstraints()
                 cell.configureCellWithCategory(selectedCategory)
             } else {
                 cell.configureCellWithoutCategory()
             }
         case 1:
-            if let selectedSchedule = storage.selectedSchedule {
+            if let selectedSchedule = dataProvider.selectedSchedule {
                 cell.label.snp.removeConstraints()
                 cell.configureCellWithCategory(selectedSchedule)
             } else {
@@ -198,9 +199,9 @@ extension NewTrackerViewController: UICollectionViewDataSource {
         
         switch section {
         case 0:
-            return storage.emojies.count
+            return dataProvider.emojies.count
         case 1:
-            return storage.colors.count
+            return dataProvider.colors.count
         default:
             return 10
         }
@@ -212,10 +213,10 @@ extension NewTrackerViewController: UICollectionViewDataSource {
         
         switch indexPath.section {
         case 0:
-            cell.configureEmojiCell(emoji: storage.emojies[indexPath.row])
+            cell.configureEmojiCell(emoji: dataProvider.emojies[indexPath.row])
             return cell
         case 1:
-            cell.configureColorCell(color: storage.colors[indexPath.row])
+            cell.configureColorCell(color: dataProvider.colors[indexPath.row])
             return cell
         default:
             return UICollectionViewCell()
@@ -310,12 +311,12 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
         case 0:
             cell.layer.cornerRadius = 16
             cell.backgroundColor = .ypLightGray
-            storage.trackerEmoji = cell.emojiLabel.text
+            dataProvider.trackerEmoji = cell.emojiLabel.text
         case 1:
             cell.layer.cornerRadius = 11
-            cell.layer.borderColor = storage.colors[indexPath.row].withAlphaComponent(0.3).cgColor
+            cell.layer.borderColor = dataProvider.colors[indexPath.row].withAlphaComponent(0.3).cgColor
             cell.layer.borderWidth = 3
-            storage.trackerColor = storage.colors[indexPath.row]
+            dataProvider.trackerColor = dataProvider.colors[indexPath.row]
         default:
             cell.backgroundColor = .gray
         }
