@@ -8,15 +8,13 @@
 import UIKit
 import CoreData
 
-protocol TrackersCategoryDelegate: AnyObject, TrackerCategoryStoreProtocol {
-    func didUpdate(update: CollectionStoreUpdate)
-}
-
-final class TrackerCategoryStore: NSObject {
+final class TrackerCategoryStore: NSObject, TrackerCategoryStoreProtocol {
     
     private let context: NSManagedObjectContext
     private var insertedIndexes: IndexSet?
     private var deletedIndexes: IndexSet?
+    
+    private let dataProvider = DataProvider.shared
     
     weak var delegate: TrackersCategoryDelegate?
     
@@ -31,7 +29,7 @@ final class TrackerCategoryStore: NSObject {
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                                   managedObjectContext: context,
-                                                                  sectionNameKeyPath: "category.name",
+                                                                  sectionNameKeyPath: nil,
                                                                   cacheName: nil)
         fetchedResultsController.delegate = self
         try? fetchedResultsController.performFetch()
@@ -42,7 +40,7 @@ final class TrackerCategoryStore: NSObject {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistantContainer.viewContext
         self.init(context: context)
     }
-    
+
     init(context: NSManagedObjectContext) {
         self.context = context
     }
@@ -109,6 +107,7 @@ extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         guard let insertedIndexes = insertedIndexes,
               let deletedIndexes = deletedIndexes else { return }
+        dataProvider.fetchVisibleCategoriesFromStore()
         delegate?.didUpdate(update: CollectionStoreUpdate(insertedIndexes: insertedIndexes,
                                                           deletedIndexes: deletedIndexes))
         self.insertedIndexes = nil

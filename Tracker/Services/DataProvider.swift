@@ -16,7 +16,7 @@ final class DataProvider {
     static let shared = DataProvider()
     
     var trackerStore: TrackerStoreProtocol?
-    private let trackerCategoryStore = TrackerCategoryStore()
+    var trackerCategoryStore: TrackerCategoryStoreProtocol?
     
     var selectedCategory: String?
     var selectedSchedule: String?
@@ -27,26 +27,26 @@ final class DataProvider {
     var schedule: [Int]?
     
     var categories: [TrackerCategory]? = [
-        TrackerCategory(name: "Важное", trackerArray: [Tracker(id: UUID(),
-                                                               name: "Учиться делать iOS-приложения",
-                                                               color: .colorSelection1,
-                                                               emoji: "🐶",
-                                                               schedule: [ 2, 4, 6]),
-                                                       Tracker(id: UUID(),
-                                                               name: "Получить права",
-                                                               color: .colorSelection2,
-                                                               emoji: "😻",
-                                                               schedule: [ 3, 5, 6, 7])]),
-        TrackerCategory(name: "Уборка", trackerArray: [Tracker(id: UUID(),
-                                                               name: "Полить цветы",
-                                                               color: .colorSelection3,
-                                                               emoji: "🍔",
-                                                               schedule: [3, 4, 5, 6, 7]),
-                                                       Tracker(id: UUID(),
-                                                               name: "Влажная уборка",
-                                                               color: .colorSelection4,
-                                                               emoji: "😇",
-                                                               schedule: [ 4, 6])])
+//        TrackerCategory(name: "Важное", trackerArray: [Tracker(id: UUID(),
+//                                                               name: "Учиться делать iOS-приложения",
+//                                                               color: .colorSelection1,
+//                                                               emoji: "🐶",
+//                                                               schedule: [ 2, 4, 6]),
+//                                                       Tracker(id: UUID(),
+//                                                               name: "Получить права",
+//                                                               color: .colorSelection2,
+//                                                               emoji: "😻",
+//                                                               schedule: [ 3, 5, 6, 7])]),
+//        TrackerCategory(name: "Уборка", trackerArray: [Tracker(id: UUID(),
+//                                                               name: "Полить цветы",
+//                                                               color: .colorSelection3,
+//                                                               emoji: "🍔",
+//                                                               schedule: [3, 4, 5, 6, 7]),
+//                                                       Tracker(id: UUID(),
+//                                                               name: "Влажная уборка",
+//                                                               color: .colorSelection4,
+//                                                               emoji: "😇",
+//                                                               schedule: [ 4, 6])])
     ]
     
     var visibleCategories: [TrackerCategory]? = []
@@ -70,23 +70,28 @@ final class DataProvider {
         selectedSchedule = nil
         trackerEmoji = nil
         trackerColor = nil
+        schedule = nil
     }
     
     func getVisibleCategories() -> [TrackerCategory] {
         visibleCategories ?? []
     }
     
-    func setupVisibleCategories(_ category: [TrackerCategory]) {
-        visibleCategories = category
+    func fetchVisibleCategoriesFromStore() {
+        visibleCategories = trackerStore?.fetchTrackers()
     }
     
     //MARK: TrackerStore:
-    func addTracker(_ tracker: Tracker) {
+    func addTrackerToStore(_ tracker: Tracker) {
         trackerStore?.addTracker(tracker)
     }
     
-    func fetchTracker(category: String, index: Int) -> Tracker {
-        let tracker = trackerStore?.fetchTracker(category: category, index: index)
+    func deleteTrackerFromStore(id: UUID) {
+        trackerStore?.deleteTracker(id: id)
+    }
+    
+    func getTracker(category: String, index: Int) -> Tracker {
+        let tracker = trackerStore?.getTracker(category: category, index: index)
         
         return Tracker(id: tracker?.id ?? UUID(),
                        name: tracker?.name ?? "",
@@ -97,23 +102,23 @@ final class DataProvider {
     
     //MARK: TrackerCategoryStore:
     var numberOfCategories: Int {
-        trackerCategoryStore.numberOfCategories
+        trackerCategoryStore?.numberOfCategories ?? 0
     }
     
     func numberOfRowsInSection(section: Int) -> Int {
-        trackerCategoryStore.numberOfRowsInSection(section: section)
+        trackerCategoryStore?.numberOfRowsInSection(section: section) ?? 0
     }
     
     func addCategory(category: String) {
-        trackerCategoryStore.addCategory(category: category)
+        trackerCategoryStore?.addCategory(category: category)
     }
     
     func fetchCategoryName(index: Int) -> String {
-        trackerCategoryStore.fetchCategoryName(index: index)
+        trackerCategoryStore?.fetchCategoryName(index: index) ?? ""
     }
     
     func fetchNewCategoryName(category: String) -> TrackerCategoryCoreData? {
-        trackerCategoryStore.fetchNewCategoryName(name: category)
+        trackerCategoryStore?.fetchNewCategoryName(name: category)
     }
     
     //MARK: TrackerRecordStore:

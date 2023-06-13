@@ -11,7 +11,6 @@ import SnapKit
 final class CategoryViewController: UIViewController, CategoryViewControllerProtocol {
     
     private let categoryView = CategoryView()
-    //private let storage = TrackerStorage.shared
     private let dataProvider = DataProvider.shared
     var viewController: NewTrackerViewControllerProtocol?
     var selectedIndexPath: IndexPath?
@@ -30,7 +29,6 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
     
     @objc private func switchToNewCategoryViewController() {
         let newCategoryVC = NewCategoryViewController()
-        //newCategoryVC.presenter = presenter
         newCategoryVC.viewController = self
         present(newCategoryVC, animated: true)
     }
@@ -42,7 +40,7 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
     }
     
     func checkCellsCount() {
-        if dataProvider.categories?.count == 0 {
+        if dataProvider.numberOfCategories == 0 {
             view.addSubview(categoryView.emptyImage)
             view.addSubview(categoryView.emptyLabel)
             categoryView.categoryTableView.removeFromSuperview()
@@ -64,7 +62,8 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
             categoryView.categoryTableView.snp.makeConstraints { make in
                 make.top.equalTo(categoryView.categoryLabel.snp.bottom).offset(38)
                 make.leading.trailing.equalToSuperview().inset(16)
-                make.height.equalTo(300)
+                //make.height.equalTo(300)
+                make.bottom.equalTo(categoryView.addCategoryButton.snp.top).offset(-16)
             }
 
         }

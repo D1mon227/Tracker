@@ -13,7 +13,6 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     var presenter: NewTrackerViewPresenterProtocol?
     var createViewController: CreateTrackerViewControllerProtocol?
     private let newTrackerView = NewTrackerView()
-    //private let storage = TrackerStorage.shared
     private let dataProvider = DataProvider.shared
     var typeOfTracker: TypeOfTracker?
     
@@ -68,7 +67,6 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     
     @objc private func createTracker() {
         presenter?.createNewTracker()
-//        storage.categories = newCategories
         dataProvider.resetNewTrackerInfo()
         dismissVC()
         createViewController?.switchToTrackerVC()

@@ -14,7 +14,6 @@ enum TypeOfTracker {
 
 final class NewTrackerViewPresenter: NewTrackerViewPresenterProtocol {
     var view: NewTrackerViewControllerProtocol?
-    //private let storage = TrackerStorage.shared
     private let dataProvider = DataProvider.shared
     let tableViewTitle = ["Категория", "Расписание"]
     
@@ -28,19 +27,6 @@ final class NewTrackerViewPresenter: NewTrackerViewPresenterProtocol {
                                  color: trackerColor,
                                  emoji: trackerEmoji,
                                  schedule: dataProvider.schedule ?? [1,2,3,4,5,6,7])
-        dataProvider.addTracker(newTracker)
-//        var newCategory: [TrackerCategory] = []
-//
-//        categories.forEach { category in
-//            if storage.selectedCategory == category.name {
-//                var newTrackers = category.trackerArray
-//                newTrackers.append(newTracker)
-//                newCategory.append(TrackerCategory(name: category.name, trackerArray: newTrackers))
-//            } else {
-//                newCategory.append(category)
-//            }
-//        }
-//
-//        return newCategory
+        dataProvider.addTrackerToStore(newTracker)
     }
 }

@@ -9,5 +9,7 @@ import Foundation
 
 protocol TrackerViewPresenterProtocol: AnyObject {
     var currentDate: Date? { get set }
+    func getVisibleCategories() -> [TrackerCategory]
     func filterTrackers(text: String?)
+    func deleteTracker(id: UUID)
 }

@@ -68,6 +68,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         setupViews()
         addConstraints()
         setupTarget()
+        addContextMenuInteraction()
     }
     
     required init?(coder: NSCoder) {
@@ -119,6 +120,14 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    func deleteTracker(cell: TrackerCollectionViewCell) {
+        delegate?.deleteTracker(cell)
+    }
+    
+    func editTracker(cell: TrackerCollectionViewCell) {
+        delegate?.editTracker(cell)
+    }
+    
     private func setupViews() {
         addSubview(cellView)
         cellView.addSubview(emojiImageView)
@@ -159,5 +168,31 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             make.width.height.equalTo(34)
             make.bottom.equalToSuperview().offset(-16)
         }
+    }
+}
+
+extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
+    func addContextMenuInteraction() {
+        let interaction = UIContextMenuInteraction(delegate: self)
+        cellView.addInteraction(interaction)
+    }
+    
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+
+        let deleteImage = UIImage(systemName: "trash")
+        let editImage = UIImage(systemName: "square.and.pencil")
+        
+        return UIContextMenuConfiguration(actionProvider: { actions in
+            return UIMenu(children: [
+                UIAction(title: "Редактировать", image: editImage) { [weak self] _ in
+                    guard let self = self else { return }
+                    self.editTracker(cell: self)
+                },
+                UIAction(title: "Удалить", image: deleteImage, attributes: .destructive) { [weak self] _ in
+                    guard let self = self else { return }
+                    self.deleteTracker(cell: self)
+                }
+            ])
+        })
     }
 }

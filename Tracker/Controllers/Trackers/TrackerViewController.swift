@@ -11,10 +11,9 @@ import SnapKit
 final class TrackerViewController: UIViewController, TrackerViewControllerProtocol {
     
     private let trackerView = TrackerView()
-    //private let storage = TrackerStorage.shared
     private let dataProvider = DataProvider.shared
     var presenter: TrackerViewPresenterProtocol?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addViews()
@@ -22,8 +21,13 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
         setupNavigationController()
         addTarget()
         checkCellsCount(image: Resourses.Images.trackerEmptyImage!, text: "Что будем отслеживать?")
+        setupDataProvider()
         setupTrackersFromDatePicker()
+    }
+    
+    private func setupDataProvider() {
         dataProvider.trackerStore = TrackerStore()
+        dataProvider.trackerCategoryStore = TrackerCategoryStore()
     }
 
     private func setupViews() {
@@ -156,21 +160,20 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
 extension TrackerViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return dataProvider.visibleCategories?.count ?? 0
+        return presenter?.getVisibleCategories().count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let presenter = dataProvider.visibleCategories?[section] else { return 0 }
-        
-        return presenter.trackerArray.count
+        let visibleCategories = presenter?.getVisibleCategories() ?? []
+        return visibleCategories[section].trackerArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCollectionViewCell", for: indexPath) as? TrackerCollectionViewCell,
-              let category = dataProvider.visibleCategories?[indexPath.section],
+              let visibleCategories = presenter?.getVisibleCategories(),
               let days = dataProvider.completedTrackers else { return UICollectionViewCell() }
-        
-        let tracker = category.trackerArray[indexPath.row]
+
+        let tracker = visibleCategories[indexPath.section].trackerArray[indexPath.row]
         
         cell.delegate = self
         
@@ -195,6 +198,8 @@ extension TrackerViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let visibleCategories = presenter?.getVisibleCategories() ?? []
+        
         var id: String
         switch kind {
         case UICollectionView.elementKindSectionHeader:
@@ -206,7 +211,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                          withReuseIdentifier: id,
                                                                          for: indexPath) as? TrackerSupplementaryView else { return UICollectionReusableView() }
-        view.headerLabel.text = dataProvider.visibleCategories?[indexPath.section].name
+        view.headerLabel.text = visibleCategories[indexPath.section].name
     
         return view
     }
@@ -258,12 +263,36 @@ extension TrackerViewController: TrackerCollectionViewCellDelegate {
         
         trackerView.trackersCollectionView.reloadItems(at: [indexPath])
     }
+    
+    func editTracker(_ cell: TrackerCollectionViewCell) {
+        
+    }
+    
+    func deleteTracker(_ cell: TrackerCollectionViewCell) {
+        guard let indexPath = trackerView.trackersCollectionView.indexPath(for: cell) else { return }
+        
+        let visibleCategories = presenter?.getVisibleCategories() ?? []
+        let tracker = visibleCategories[indexPath.section].trackerArray[indexPath.row]
+        
+        presenter?.deleteTracker(id: tracker.id)
+    }
 }
 
 //MARK: UITextFieldDelegate
 extension TrackerViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+    }
+}
+
+extension TrackerViewController: TrackersDelegate {
+    func didUpdate(_ update: CollectionStoreUpdate, section: Int) {
+        trackerView.trackersCollectionView.performBatchUpdates {
+            let insertedIndexPaths = update.insertedIndexes.map { IndexPath(item: $0, section: section) }
+            let deletedIndexPaths = update.deletedIndexes.map { IndexPath(item: $0, section: section) }
+            trackerView.trackersCollectionView.insertItems(at: insertedIndexPaths)
+            trackerView.trackersCollectionView.deleteItems(at: deletedIndexPaths)
+        }
     }
 }
 

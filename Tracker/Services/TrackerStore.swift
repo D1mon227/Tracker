@@ -13,9 +13,12 @@ final class TrackerStore: NSObject, TrackerStoreProtocol {
     private let context: NSManagedObjectContext
     private var insertedIndexes: IndexSet?
     private var deletedIndexes: IndexSet?
+    private var section: Int?
     
     private let uiColorMarshalling = UIColorMarshalling()
     private let dataProvider = DataProvider()
+    
+    weak var delegate: TrackersDelegate?
     
     private lazy var appDelegate = {
         (UIApplication.shared.delegate as! AppDelegate)
@@ -28,7 +31,7 @@ final class TrackerStore: NSObject, TrackerStoreProtocol {
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                                   managedObjectContext: context,
-                                                                  sectionNameKeyPath: "category.name",
+                                                                  sectionNameKeyPath: nil,
                                                                   cacheName: nil)
         fetchedResultsController.delegate = self
         try? fetchedResultsController.performFetch()
@@ -58,7 +61,7 @@ final class TrackerStore: NSObject, TrackerStoreProtocol {
         appDelegate.saveContext()
     }
     
-    func fetchTracker(category: String, index: Int) -> Tracker {
+    func getTracker(category: String, index: Int) -> Tracker {
         let section = fetchedResultsController.sections?.first(where: { section in
             section.name == category
         })
@@ -70,6 +73,37 @@ final class TrackerStore: NSObject, TrackerStoreProtocol {
                        emoji: tracker?.emoji ?? "",
                        schedule: tracker?.schedule ?? [])
     }
+    
+    func fetchTrackers() -> [TrackerCategory] {
+        guard let sections = fetchedResultsController.sections else { return [] }
+        
+        var currentCategory: [TrackerCategory] = []
+        
+        for section in sections {
+            guard let object = section.objects as? [TrackerCoreData] else { return [] }
+            var category = TrackerCategory(name: section.name, trackerArray: [] )
+            
+            for tracker in object {
+                category.trackerArray.append(Tracker(id: tracker.id ?? UUID(),
+                                                     name: tracker.name ?? "",
+                                                     color: uiColorMarshalling.color(from: tracker.color ?? ""),
+                                                     emoji: tracker.emoji ?? "",
+                                                     schedule: tracker.schedule))
+            }
+            currentCategory.append(category)
+        }
+        
+        return currentCategory
+    }
+    
+    func deleteTracker(id: UUID) {
+        guard let object = fetchedResultsController.fetchedObjects?.first(where: { trackerCoreData in
+            trackerCoreData.id == id
+        }) else { return }
+        
+        context.delete(object)
+        appDelegate.saveContext()
+    }
 }
 
 extension TrackerStore: NSFetchedResultsControllerDelegate {
@@ -79,7 +113,15 @@ extension TrackerStore: NSFetchedResultsControllerDelegate {
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        guard let insertedIndexes = insertedIndexes,
+              let deletedIndexes = deletedIndexes,
+              let section = section else { return }
         
+        dataProvider.fetchVisibleCategoriesFromStore()
+        
+        delegate?.didUpdate(CollectionStoreUpdate(insertedIndexes: insertedIndexes,
+                                                  deletedIndexes: deletedIndexes),
+                            section: section)
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {

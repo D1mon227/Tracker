@@ -21,6 +21,7 @@ final class ScheduleView {
         element.layer.cornerRadius = 16
         element.separatorStyle = .singleLine
         element.allowsSelection = false
+        element.isScrollEnabled = false
         return element
     }()
     
