@@ -62,6 +62,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private var isCompleted: Bool = false
     private var trackerID: UUID?
     private var indexPath: IndexPath?
+    private let dataProvider = DataProvider.shared
     
     override init(frame: CGRect) {
         super.init(frame: frame)

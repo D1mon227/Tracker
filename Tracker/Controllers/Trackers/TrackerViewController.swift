@@ -269,12 +269,15 @@ extension TrackerViewController: TrackerCollectionViewCellDelegate {
     }
     
     func deleteTracker(_ cell: TrackerCollectionViewCell) {
-        guard let indexPath = trackerView.trackersCollectionView.indexPath(for: cell) else { return }
+        guard let indexPath = trackerView.trackersCollectionView.indexPath(for: cell),
+              let image = Resourses.Images.trackerEmptyImage else { return }
         
         let visibleCategories = presenter?.getVisibleCategories() ?? []
         let tracker = visibleCategories[indexPath.section].trackerArray[indexPath.row]
         
         presenter?.deleteTracker(id: tracker.id)
+        trackerView.trackersCollectionView.reloadData()
+        checkCellsCount(image: image, text: "Что будем отслеживать?")
     }
 }
 
@@ -286,10 +289,11 @@ extension TrackerViewController: UITextFieldDelegate {
 }
 
 extension TrackerViewController: TrackersDelegate {
-    func didUpdate(_ update: CollectionStoreUpdate, section: Int) {
+    func didUpdate(_ store: TrackerStore, didUpdate update: CollectionStoreUpdate) {
+        dataProvider.visibleCategories = TrackerStore().fetchTrackers()
         trackerView.trackersCollectionView.performBatchUpdates {
-            let insertedIndexPaths = update.insertedIndexes.map { IndexPath(item: $0, section: section) }
-            let deletedIndexPaths = update.deletedIndexes.map { IndexPath(item: $0, section: section) }
+            let insertedIndexPaths = update.insertedIndexes.map { IndexPath(item: $0, section: 0) }
+            let deletedIndexPaths = update.deletedIndexes.map { IndexPath(item: $0, section: 0) }
             trackerView.trackersCollectionView.insertItems(at: insertedIndexPaths)
             trackerView.trackersCollectionView.deleteItems(at: deletedIndexPaths)
         }

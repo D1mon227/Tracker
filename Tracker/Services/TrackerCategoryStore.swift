@@ -22,7 +22,7 @@ final class TrackerCategoryStore: NSObject, TrackerCategoryStoreProtocol {
         (UIApplication.shared.delegate as! AppDelegate)
     }()
     
-    lazy var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData> = {
+    private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData> = {
         let fetchRequest = NSFetchRequest<TrackerCategoryCoreData>(entityName: "TrackerCategoryCoreData")
         
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "name", ascending: true)]

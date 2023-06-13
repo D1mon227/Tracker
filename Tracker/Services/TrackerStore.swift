@@ -16,7 +16,7 @@ final class TrackerStore: NSObject, TrackerStoreProtocol {
     private var section: Int?
     
     private let uiColorMarshalling = UIColorMarshalling()
-    private let dataProvider = DataProvider()
+    private let dataProvider = DataProvider.shared
     
     weak var delegate: TrackersDelegate?
     
@@ -24,14 +24,14 @@ final class TrackerStore: NSObject, TrackerStoreProtocol {
         (UIApplication.shared.delegate as! AppDelegate)
     }()
     
-    lazy var fetchedResultsController: NSFetchedResultsController<TrackerCoreData> = {
+    private lazy var fetchedResultsController: NSFetchedResultsController<TrackerCoreData> = {
         let fetchRequest = NSFetchRequest<TrackerCoreData>(entityName: "TrackerCoreData")
         
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "category.name", ascending: true)]
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
                                                                   managedObjectContext: context,
-                                                                  sectionNameKeyPath: nil,
+                                                                  sectionNameKeyPath: "category.name",
                                                                   cacheName: nil)
         fetchedResultsController.delegate = self
         try? fetchedResultsController.performFetch()
@@ -113,15 +113,16 @@ extension TrackerStore: NSFetchedResultsControllerDelegate {
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        guard let insertedIndexes = insertedIndexes,
-              let deletedIndexes = deletedIndexes,
-              let section = section else { return }
+//        guard let insertedIndexes = insertedIndexes,
+//              let deletedIndexes = deletedIndexes,
+//              let section = section else { return }
         
-        dataProvider.fetchVisibleCategoriesFromStore()
+        //dataProvider.fetchVisibleCategoriesFromStore()
         
-        delegate?.didUpdate(CollectionStoreUpdate(insertedIndexes: insertedIndexes,
-                                                  deletedIndexes: deletedIndexes),
-                            section: section)
+        delegate?.didUpdate(self, didUpdate: CollectionStoreUpdate(insertedIndexes: insertedIndexes!,
+                                                  deletedIndexes: deletedIndexes!))
+        insertedIndexes = nil
+        deletedIndexes = nil
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {

@@ -17,6 +17,7 @@ final class DataProvider {
     
     var trackerStore: TrackerStoreProtocol?
     var trackerCategoryStore: TrackerCategoryStoreProtocol?
+    var trackerRecordStore: TrackerRecordStoreProtocol?
     
     var selectedCategory: String?
     var selectedSchedule: String?
@@ -26,29 +27,7 @@ final class DataProvider {
     var trackerColor: UIColor?
     var schedule: [Int]?
     
-    var categories: [TrackerCategory]? = [
-//        TrackerCategory(name: "Важное", trackerArray: [Tracker(id: UUID(),
-//                                                               name: "Учиться делать iOS-приложения",
-//                                                               color: .colorSelection1,
-//                                                               emoji: "🐶",
-//                                                               schedule: [ 2, 4, 6]),
-//                                                       Tracker(id: UUID(),
-//                                                               name: "Получить права",
-//                                                               color: .colorSelection2,
-//                                                               emoji: "😻",
-//                                                               schedule: [ 3, 5, 6, 7])]),
-//        TrackerCategory(name: "Уборка", trackerArray: [Tracker(id: UUID(),
-//                                                               name: "Полить цветы",
-//                                                               color: .colorSelection3,
-//                                                               emoji: "🍔",
-//                                                               schedule: [3, 4, 5, 6, 7]),
-//                                                       Tracker(id: UUID(),
-//                                                               name: "Влажная уборка",
-//                                                               color: .colorSelection4,
-//                                                               emoji: "😇",
-//                                                               schedule: [ 4, 6])])
-    ]
-    
+    var categories: [TrackerCategory]? = []
     var visibleCategories: [TrackerCategory]? = []
     var completedTrackers: [TrackerRecord]? = []
     
@@ -79,6 +58,10 @@ final class DataProvider {
     
     func fetchVisibleCategoriesFromStore() {
         visibleCategories = trackerStore?.fetchTrackers()
+    }
+    
+    func getCompletedTrackers() -> [TrackerRecord] {
+        completedTrackers ?? []
     }
     
     //MARK: TrackerStore:
@@ -122,7 +105,17 @@ final class DataProvider {
     }
     
     //MARK: TrackerRecordStore:
+    func addRecord(record: TrackerRecord) {
+        trackerRecordStore?.addTrackerRecord(tracker: record)
+    }
     
+    func deleteRecord(record: TrackerRecord) {
+        trackerRecordStore?.deleteTrackerRecord(tracker: record)
+    }
+    
+    func fetchRecordFromStore() {
+        completedTrackers = trackerRecordStore?.fetchTrackerRecords()
+    }
     
 }
 

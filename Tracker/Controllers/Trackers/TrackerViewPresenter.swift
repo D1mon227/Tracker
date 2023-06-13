@@ -21,6 +21,10 @@ final class TrackerViewPresenter: TrackerViewPresenterProtocol {
         dataProvider.getVisibleCategories()
     }
     
+    func addRecord(tracker: TrackerRecord) {
+        dataProvider.addRecord(record: tracker)
+    }
+    
     func filterTrackers(text: String?) {
         dataProvider.fetchVisibleCategoriesFromStore()
         guard let date = currentDate,

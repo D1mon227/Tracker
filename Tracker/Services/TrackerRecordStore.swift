@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-final class TrackerRecordStore: NSObject {
+final class TrackerRecordStore: NSObject, TrackerRecordStoreProtocol {
     
     private let context: NSManagedObjectContext
     private var insertedIndexes: IndexSet?
@@ -20,7 +20,7 @@ final class TrackerRecordStore: NSObject {
         (UIApplication.shared.delegate as! AppDelegate)
     }()
     
-    lazy var fetchedResultsController: NSFetchedResultsController<TrackerRecordCoreData> = {
+    private lazy var fetchedResultsController: NSFetchedResultsController<TrackerRecordCoreData> = {
         let fetchRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
         
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
@@ -49,6 +49,25 @@ final class TrackerRecordStore: NSObject {
             record.id = tracker.id
             record.date = tracker.date
             
+            appDelegate.saveContext()
+        }
+    }
+    
+    func deleteTrackerRecord(tracker: TrackerRecord) {
+        guard let objects = fetchedResultsController.fetchedObjects else { return }
+        
+        var deletingRecord: TrackerRecordCoreData?
+        
+        if isRecordExist(tracker: tracker) {
+            objects.forEach { record in
+                if record.id == tracker.id && record.date == tracker.date {
+                    deletingRecord = record
+                }
+            }
+            
+            guard let object = try? context.existingObject(with: deletingRecord?.objectID ?? NSManagedObjectID()) else { return }
+            
+            context.delete(object)
             appDelegate.saveContext()
         }
     }

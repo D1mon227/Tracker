@@ -12,4 +12,5 @@ protocol TrackerViewPresenterProtocol: AnyObject {
     func getVisibleCategories() -> [TrackerCategory]
     func filterTrackers(text: String?)
     func deleteTracker(id: UUID)
+    func addRecord(tracker: TrackerRecord)
 }
