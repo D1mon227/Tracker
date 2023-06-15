@@ -109,8 +109,8 @@ final class DataProvider {
         trackerRecordStore?.addTrackerRecord(tracker: record)
     }
     
-    func deleteRecord(record: TrackerRecord) {
-        trackerRecordStore?.deleteTrackerRecord(tracker: record)
+    func deleteRecord(tracker: TrackerRecord) {
+        trackerRecordStore?.deleteTrackerRecord(tracker: tracker)
     }
     
     func fetchRecordFromStore() {

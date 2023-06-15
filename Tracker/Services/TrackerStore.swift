@@ -113,16 +113,13 @@ extension TrackerStore: NSFetchedResultsControllerDelegate {
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-//        guard let insertedIndexes = insertedIndexes,
-//              let deletedIndexes = deletedIndexes,
-//              let section = section else { return }
+        guard let insertedIndexes = insertedIndexes,
+              let deletedIndexes = deletedIndexes else { return }
+        delegate?.didUpdate(self, didUpdate: CollectionStoreUpdate(insertedIndexes: insertedIndexes,
+                                                  deletedIndexes: deletedIndexes))
         
-        //dataProvider.fetchVisibleCategoriesFromStore()
-        
-        delegate?.didUpdate(self, didUpdate: CollectionStoreUpdate(insertedIndexes: insertedIndexes!,
-                                                  deletedIndexes: deletedIndexes!))
-        insertedIndexes = nil
-        deletedIndexes = nil
+        self.insertedIndexes = nil
+        self.deletedIndexes = nil
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {

@@ -101,6 +101,6 @@ final class TrackerRecordStore: NSObject, TrackerRecordStoreProtocol {
 
 extension TrackerRecordStore: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        
+        dataProvider.fetchRecordFromStore()
     }
 }

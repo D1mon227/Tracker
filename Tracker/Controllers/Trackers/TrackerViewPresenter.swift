@@ -21,8 +21,20 @@ final class TrackerViewPresenter: TrackerViewPresenterProtocol {
         dataProvider.getVisibleCategories()
     }
     
+    func getCompletedCategories() -> [TrackerRecord] {
+        dataProvider.getCompletedTrackers()
+    }
+    
+    func fetchCompletedCategoriesFromStore() {
+        dataProvider.fetchRecordFromStore()
+    }
+    
     func addRecord(tracker: TrackerRecord) {
         dataProvider.addRecord(record: tracker)
+    }
+    
+    func deleteRecord(tracker: TrackerRecord) {
+        dataProvider.deleteRecord(tracker: tracker)
     }
     
     func filterTrackers(text: String?) {
