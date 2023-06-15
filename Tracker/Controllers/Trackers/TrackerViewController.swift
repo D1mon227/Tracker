@@ -29,6 +29,7 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
         dataProvider.trackerStore = TrackerStore()
         dataProvider.trackerCategoryStore = TrackerCategoryStore()
         dataProvider.trackerRecordStore = TrackerRecordStore()
+        dataProvider.setTrackerStoreDelegate(view: self)
     }
 
     private func setupViews() {
@@ -173,7 +174,8 @@ extension TrackerViewController: UICollectionViewDataSource {
         presenter?.fetchCompletedCategoriesFromStore()
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCollectionViewCell", for: indexPath) as? TrackerCollectionViewCell,
               let visibleCategories = presenter?.getVisibleCategories(),
-              let days = presenter?.getCompletedCategories() else { return UICollectionViewCell() }
+              let days = presenter?.getCompletedCategories(),
+              let presenter = presenter else { return UICollectionViewCell() }
         let tracker = visibleCategories[indexPath.section].trackerArray[indexPath.row]
         
         cell.delegate = self
@@ -186,6 +188,12 @@ extension TrackerViewController: UICollectionViewDataSource {
                            isCompleted: isCompletedToday,
                            completedDays: completedDays,
                            indexPath: indexPath)
+        
+        if presenter.checkDate() {
+            cell.unlockDoneButton()
+        } else {
+            cell.lockDoneButton()
+        }
         
         return cell
     }
@@ -286,14 +294,8 @@ extension TrackerViewController: UITextFieldDelegate {
 }
 
 extension TrackerViewController: TrackersDelegate {
-    func didUpdate(_ store: TrackerStore, didUpdate update: CollectionStoreUpdate) {
-        dataProvider.visibleCategories = TrackerStore().fetchTrackers()
-        trackerView.trackersCollectionView.performBatchUpdates {
-            let insertedIndexPaths = update.insertedIndexes.map { IndexPath(item: $0, section: 0) }
-            let deletedIndexPaths = update.deletedIndexes.map { IndexPath(item: $0, section: 0) }
-            trackerView.trackersCollectionView.insertItems(at: insertedIndexPaths)
-            trackerView.trackersCollectionView.deleteItems(at: deletedIndexPaths)
-        }
+    func didUpdate() {
+        reloadCollectionView()
     }
 }
 

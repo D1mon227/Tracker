@@ -60,7 +60,8 @@ final class TrackerRecordStore: NSObject, TrackerRecordStoreProtocol {
         
         if isRecordExist(tracker: tracker) {
             objects.forEach { record in
-                if record.id == tracker.id && record.date == tracker.date {
+                let isSameDay = Calendar.current.isDate(tracker.date, inSameDayAs: record.date ?? Date())
+                if record.id == tracker.id && isSameDay {
                     deletingRecord = record
                 }
             }
@@ -90,8 +91,8 @@ final class TrackerRecordStore: NSObject, TrackerRecordStoreProtocol {
         var result = false
         
         objects.forEach { object in
-            if object.id == tracker.id &&
-                object.date == tracker.date {
+            let isSameDay = Calendar.current.isDate(tracker.date, inSameDayAs: object.date ?? Date())
+            if object.id == tracker.id && isSameDay {
                 result = true
             }
         }

@@ -52,6 +52,10 @@ final class DataProvider {
         schedule = nil
     }
     
+    func setTrackerStoreDelegate(view: TrackersDelegate) {
+        trackerStore?.delegate = view
+    }
+    
     func getVisibleCategories() -> [TrackerCategory] {
         visibleCategories ?? []
     }

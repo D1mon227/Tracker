@@ -37,6 +37,13 @@ final class TrackerViewPresenter: TrackerViewPresenterProtocol {
         dataProvider.deleteRecord(tracker: tracker)
     }
     
+    func checkDate() -> Bool {
+        guard let currentDate = currentDate else { return false }
+        let date = Date()
+        
+        return date > currentDate
+    }
+    
     func filterTrackers(text: String?) {
         dataProvider.fetchVisibleCategoriesFromStore()
         guard let date = currentDate,

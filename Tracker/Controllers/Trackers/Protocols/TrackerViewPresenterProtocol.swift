@@ -9,6 +9,7 @@ import Foundation
 
 protocol TrackerViewPresenterProtocol: AnyObject {
     var currentDate: Date? { get set }
+    func checkDate() -> Bool
     func getVisibleCategories() -> [TrackerCategory]
     func getCompletedCategories() -> [TrackerRecord]
     func fetchCompletedCategoriesFromStore()

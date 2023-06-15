@@ -107,6 +107,18 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         doneButton.alpha = isCompleted ? 0.5 : 1
     }
     
+    func lockDoneButton() {
+        doneButton.isEnabled = false
+        doneButton.setTitle("x", for: .normal)
+        doneButton.titleLabel?.font = .systemFont(ofSize: 20)
+        doneButton.titleLabel?.textAlignment = .center
+        doneButton.alpha = 0.5
+    }
+    
+    func unlockDoneButton() {
+        doneButton.isEnabled = true
+    }
+    
     private func setupTarget() {
         doneButton.addTarget(self, action: #selector(doneTracker), for: .touchUpInside)
     }
