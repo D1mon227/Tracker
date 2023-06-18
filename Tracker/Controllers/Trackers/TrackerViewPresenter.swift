@@ -10,14 +10,46 @@ import Foundation
 final class TrackerViewPresenter: TrackerViewPresenterProtocol {
     
     let dateService = DateService()
-    private let storage = TrackerStorage.shared
+    private let dataProvider = DataProvider.shared
     var currentDate: Date?
     
+    func deleteTracker(id: UUID) {
+        dataProvider.deleteTrackerFromStore(id: id)
+    }
+    
+    func getVisibleCategories() -> [TrackerCategory] {
+        dataProvider.getVisibleCategories()
+    }
+    
+    func getCompletedCategories() -> [TrackerRecord] {
+        dataProvider.getCompletedTrackers()
+    }
+    
+    func fetchCompletedCategoriesFromStore() {
+        dataProvider.fetchRecordFromStore()
+    }
+    
+    func addRecord(tracker: TrackerRecord) {
+        dataProvider.addRecord(record: tracker)
+    }
+    
+    func deleteRecord(tracker: TrackerRecord) {
+        dataProvider.deleteRecord(tracker: tracker)
+    }
+    
+    func checkDate() -> Bool {
+        guard let currentDate = currentDate else { return false }
+        let date = Date()
+        
+        return date > currentDate
+    }
+    
     func filterTrackers(text: String?) {
+        dataProvider.fetchVisibleCategoriesFromStore()
         guard let date = currentDate,
               let text = text?.lowercased() else { return }
         
-        storage.visibleCategories = storage.categories?.compactMap { category in
+        dataProvider.visibleCategories = dataProvider.visibleCategories?.compactMap { category in
             let filterTrackers = category.trackerArray.filter { tracker in
                 guard let schedule = tracker.schedule else { return false }
                 let filterText = text.isEmpty || tracker.name.lowercased().contains(text)

@@ -62,12 +62,14 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private var isCompleted: Bool = false
     private var trackerID: UUID?
     private var indexPath: IndexPath?
+    private let dataProvider = DataProvider.shared
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
         addConstraints()
         setupTarget()
+        addContextMenuInteraction()
     }
     
     required init?(coder: NSCoder) {
@@ -105,6 +107,18 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         doneButton.alpha = isCompleted ? 0.5 : 1
     }
     
+    func lockDoneButton() {
+        doneButton.isEnabled = false
+        doneButton.setTitle("x", for: .normal)
+        doneButton.titleLabel?.font = .systemFont(ofSize: 20)
+        doneButton.titleLabel?.textAlignment = .center
+        doneButton.alpha = 0.5
+    }
+    
+    func unlockDoneButton() {
+        doneButton.isEnabled = true
+    }
+    
     private func setupTarget() {
         doneButton.addTarget(self, action: #selector(doneTracker), for: .touchUpInside)
     }
@@ -117,6 +131,14 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         } else {
             delegate?.completeTracker(id: trackerID, at: indexPath)
         }
+    }
+    
+    func deleteTracker(cell: TrackerCollectionViewCell) {
+        delegate?.deleteTracker(cell)
+    }
+    
+    func editTracker(cell: TrackerCollectionViewCell) {
+        delegate?.editTracker(cell)
     }
     
     private func setupViews() {
@@ -159,5 +181,31 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             make.width.height.equalTo(34)
             make.bottom.equalToSuperview().offset(-16)
         }
+    }
+}
+
+extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
+    func addContextMenuInteraction() {
+        let interaction = UIContextMenuInteraction(delegate: self)
+        cellView.addInteraction(interaction)
+    }
+    
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+
+        let deleteImage = UIImage(systemName: "trash")
+        let editImage = UIImage(systemName: "square.and.pencil")
+        
+        return UIContextMenuConfiguration(actionProvider: { actions in
+            return UIMenu(children: [
+                UIAction(title: "Редактировать", image: editImage) { [weak self] _ in
+                    guard let self = self else { return }
+                    self.editTracker(cell: self)
+                },
+                UIAction(title: "Удалить", image: deleteImage, attributes: .destructive) { [weak self] _ in
+                    guard let self = self else { return }
+                    self.deleteTracker(cell: self)
+                }
+            ])
+        })
     }
 }

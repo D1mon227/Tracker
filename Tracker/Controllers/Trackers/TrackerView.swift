@@ -11,7 +11,6 @@ final class TrackerView {
     
     lazy var emptyLabel: UILabel = {
         let element = UILabel()
-        //element.text = "Что будем отслеживать?"
         element.textColor = .ypBlack
         element.textAlignment = .center
         element.font = .systemFont(ofSize: 12, weight: .medium)

@@ -9,8 +9,6 @@ import UIKit
 
 final class TabBarController: UITabBarController {
     
-    var presenter: TrackerViewPresenterProtocol?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()

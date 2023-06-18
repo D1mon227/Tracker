@@ -23,10 +23,6 @@ final class CategoryTableViewCell: UITableViewCell {
         addConstraints()
     }
     
-    func configureCell(text: String) {
-        label.text = text
-    }
-    
     private func setupView() {
         addSubview(label)
     }
