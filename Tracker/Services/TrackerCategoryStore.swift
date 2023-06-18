@@ -74,7 +74,7 @@ final class TrackerCategoryStore: NSObject, TrackerCategoryStoreProtocol {
             }
         }
         
-        return categoryString == "" ? false : true
+        return categoryString.isEmpty ? false : true
     }
     
     func fetchCategoryName(index: Int) -> String {
