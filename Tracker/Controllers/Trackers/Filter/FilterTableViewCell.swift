@@ -27,6 +27,7 @@ final class FilterTableViewCell: UITableViewCell {
     }
     
     private func setupView() {
+        backgroundColor = .ypBackground
         addSubview(label)
     }
     
