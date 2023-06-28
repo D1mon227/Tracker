@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class TrackerCollectionViewCell: UICollectionViewCell {
+final class TrackersCollectionViewCell: UICollectionViewCell {
     
     private lazy var cellView: UIView = {
         let element = UIView()
@@ -133,11 +133,11 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func deleteTracker(cell: TrackerCollectionViewCell) {
+    func deleteTracker(cell: TrackersCollectionViewCell) {
         delegate?.deleteTracker(cell)
     }
     
-    func editTracker(cell: TrackerCollectionViewCell) {
+    func editTracker(cell: TrackersCollectionViewCell) {
         delegate?.editTracker(cell)
     }
     
@@ -184,7 +184,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     }
 }
 
-extension TrackerCollectionViewCell: UIContextMenuInteractionDelegate {
+extension TrackersCollectionViewCell: UIContextMenuInteractionDelegate {
     func addContextMenuInteraction() {
         let interaction = UIContextMenuInteraction(delegate: self)
         cellView.addInteraction(interaction)

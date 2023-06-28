@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class TrackerSupplementaryView: UICollectionReusableView {
+final class TrackersSupplementaryView: UICollectionReusableView {
     
     lazy var headerLabel: UILabel = {
         let element = UILabel()

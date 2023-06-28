@@ -21,7 +21,7 @@ final class TabBarController: UITabBarController {
         self.tabBar.standardAppearance = appearance
         
         let trackerViewPresenter = TrackerViewPresenter()
-        let trackerViewController = TrackerViewController()
+        let trackerViewController = TrackersViewController()
         trackerViewController.presenter = trackerViewPresenter
         
         let trackerNavigationController = UINavigationController(rootViewController: trackerViewController)

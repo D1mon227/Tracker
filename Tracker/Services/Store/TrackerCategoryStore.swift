@@ -49,6 +49,12 @@ final class TrackerCategoryStore: NSObject, TrackerCategoryStoreProtocol {
         fetchedResultsController.fetchedObjects?.count ?? 0
     }
     
+    func getCategoriesNames() -> [String] {
+        guard let allCategoriesNames = fetchedResultsController.fetchedObjects else { return [] }
+        
+        return allCategoriesNames.map { $0.name ?? "" }
+    }
+    
     func numberOfRowsInSection(section: Int) -> Int {
         guard let trackers = fetchedResultsController.fetchedObjects?[section].trackers else { return 0 }
         return trackers.count
@@ -105,12 +111,7 @@ extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
     }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        guard let insertedIndexes = insertedIndexes,
-              let deletedIndexes = deletedIndexes else { return }
-        dataProvider.fetchVisibleCategoriesFromStore()
-        delegate?.didUpdate(update: CollectionStoreUpdate(insertedIndexes: insertedIndexes,
-                                                          deletedIndexes: deletedIndexes))
-        self.insertedIndexes = nil
+        dataProvider.getCategoryName()
     }
     
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {

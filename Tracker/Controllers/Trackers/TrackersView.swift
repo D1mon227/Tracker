@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class TrackerView {
+final class TrackersView {
     
     lazy var emptyLabel: UILabel = {
         let element = UILabel()

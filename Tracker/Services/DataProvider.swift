@@ -19,6 +19,8 @@ final class DataProvider {
     var trackerCategoryStore: TrackerCategoryStoreProtocol?
     var trackerRecordStore: TrackerRecordStoreProtocol?
     
+    var categoryViewModel: CategoryViewModelProtocol?
+    
     var selectedCategory: String?
     var selectedSchedule: String?
     
@@ -30,6 +32,12 @@ final class DataProvider {
     var categories: [TrackerCategory]? = []
     var visibleCategories: [TrackerCategory]? = []
     var completedTrackers: [TrackerRecord]? = []
+    
+    private var categoryName: [String]? {
+        didSet {
+            categoryViewModel?.getVisibleCategories()
+        }
+    }
     
     var emojies = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
@@ -68,6 +76,11 @@ final class DataProvider {
         completedTrackers ?? []
     }
     
+    //MARK: ViewModel
+    func updateCategoryViewModel() -> [String] {
+        categoryName ?? []
+    }
+    
     //MARK: TrackerStore:
     func addTrackerToStore(_ tracker: Tracker) {
         trackerStore?.addTracker(tracker)
@@ -104,6 +117,10 @@ final class DataProvider {
         trackerCategoryStore?.fetchCategoryName(index: index) ?? ""
     }
     
+    func getCategoryName() {
+        categoryName = trackerCategoryStore?.getCategoriesNames()
+    }
+    
     func fetchNewCategoryName(category: String) -> TrackerCategoryCoreData? {
         trackerCategoryStore?.fetchNewCategoryName(name: category)
     }
@@ -121,5 +138,10 @@ final class DataProvider {
         completedTrackers = trackerRecordStore?.fetchTrackerRecords()
     }
     
+    //MARK: SetupViewModelProtocols
+    
+    func bindCategoryViewModel(controller: CategoryViewModelProtocol) {
+        categoryViewModel = controller
+    }
 }
 

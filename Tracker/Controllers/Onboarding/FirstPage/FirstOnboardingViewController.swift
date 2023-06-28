@@ -23,10 +23,13 @@ final class FirstOnboardingViewController: UIViewController {
     
     @objc private func switchToTabBarVC() {
         let scene = UIApplication.shared.connectedScenes.first
-        if let sceneDelegate = scene?.delegate as? SceneDelegate {
+        if let sceneDelegate = scene?.delegate as? SceneDelegate,
+           let window = sceneDelegate.window {
             let vc = TabBarController()
             sceneDelegate.window?.rootViewController = vc
             OnboardingManager.hasCompletedOnboarding = true
+
+            UIView.transition(with: window, duration: 0.5, options: .transitionFlipFromRight, animations: nil, completion: nil)
         }
     }
 }

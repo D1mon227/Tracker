@@ -9,7 +9,7 @@ import Foundation
 
 final class TrackerViewPresenter: TrackerViewPresenterProtocol {
     
-    let dateService = DateService()
+    private let dateService = DateService()
     private let dataProvider = DataProvider.shared
     var currentDate: Date?
     

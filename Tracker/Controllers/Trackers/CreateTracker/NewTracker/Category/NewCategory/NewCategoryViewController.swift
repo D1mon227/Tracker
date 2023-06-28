@@ -33,8 +33,6 @@ final class NewCategoryViewController: UIViewController, NewCategoryViewControll
         guard let categoryName = newCategoryView.newCategoryTextField.text else { return }
         dataProvider.addCategory(category: categoryName)
         dismiss(animated: true)
-        viewController?.checkCellsCount()
-        viewController?.reloadTableView()
     }
 }
 

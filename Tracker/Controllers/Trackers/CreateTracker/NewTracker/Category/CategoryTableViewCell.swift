@@ -16,6 +16,12 @@ final class CategoryTableViewCell: UITableViewCell {
         return element
     }()
     
+    var viewModel: String? {
+        didSet {
+            label.text = viewModel
+        }
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         backgroundColor = .ypBackground

@@ -8,9 +8,10 @@
 import UIKit
 import SnapKit
 
-final class TrackerViewController: UIViewController, TrackerViewControllerProtocol {
+final class TrackersViewController: UIViewController, TrackerViewControllerProtocol {
     
-    private let trackerView = TrackerView()
+    private let trackersView = TrackersView()
+    var trackersViewModel = TrackersViewModel()
     private let dataProvider = DataProvider.shared
     var presenter: TrackerViewPresenterProtocol?
     
@@ -33,12 +34,12 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
     }
 
     private func setupViews() {
-        trackerView.trackersCollectionView.register(TrackerCollectionViewCell.self, forCellWithReuseIdentifier: "TrackerCollectionViewCell")
-        trackerView.trackersCollectionView.register(TrackerSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
-        trackerView.trackersCollectionView.dataSource = self
-        trackerView.trackersCollectionView.delegate = self
+        trackersView.trackersCollectionView.register(TrackersCollectionViewCell.self, forCellWithReuseIdentifier: "TrackerCollectionViewCell")
+        trackersView.trackersCollectionView.register(TrackersSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        trackersView.trackersCollectionView.dataSource = self
+        trackersView.trackersCollectionView.delegate = self
         
-        trackerView.searchTextField.delegate = self
+        trackersView.searchTextField.delegate = self
     }
     
     private func setupNavigationController() {
@@ -51,32 +52,32 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
     }
     
     func reloadCollectionView() {
-        trackerView.trackersCollectionView.reloadData()
+        trackersView.trackersCollectionView.reloadData()
     }
     
     func checkCellsCount(image: UIImage, text: String) {
         if dataProvider.visibleCategories?.count == 0 {
-            view.addSubview(trackerView.emptyImage)
-            view.addSubview(trackerView.emptyLabel)
-            trackerView.emptyImage.image = image
-            trackerView.emptyLabel.text = text
-            trackerView.filterButton.removeFromSuperview()
+            view.addSubview(trackersView.emptyImage)
+            view.addSubview(trackersView.emptyLabel)
+            trackersView.emptyImage.image = image
+            trackersView.emptyLabel.text = text
+            trackersView.filterButton.removeFromSuperview()
             
-            trackerView.emptyImage.snp.makeConstraints { make in
+            trackersView.emptyImage.snp.makeConstraints { make in
                 make.center.equalToSuperview()
             }
             
-            trackerView.emptyLabel.snp.makeConstraints { make in
+            trackersView.emptyLabel.snp.makeConstraints { make in
                 make.centerX.equalToSuperview()
                 make.leading.trailing.equalToSuperview().inset(16)
-                make.top.equalTo(trackerView.emptyImage.snp.bottom).offset(8)
+                make.top.equalTo(trackersView.emptyImage.snp.bottom).offset(8)
             }
         } else {
-            trackerView.emptyImage.removeFromSuperview()
-            trackerView.emptyLabel.removeFromSuperview()
-            view.addSubview(trackerView.filterButton)
+            trackersView.emptyImage.removeFromSuperview()
+            trackersView.emptyLabel.removeFromSuperview()
+            view.addSubview(trackersView.filterButton)
             
-            trackerView.filterButton.snp.makeConstraints { make in
+            trackersView.filterButton.snp.makeConstraints { make in
                 make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-17)
                 make.centerX.equalToSuperview()
                 make.height.equalTo(50)
@@ -93,11 +94,11 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
     }
     
     private func addTarget() {
-        trackerView.filterButton.addTarget(self, action: #selector(switchToFilterViewController), for: .touchUpInside)
-        trackerView.searchTextField.addTarget(self, action: #selector(addCancelButton), for: .editingDidBegin)
-        trackerView.searchTextField.addTarget(self, action: #selector(setupTrackersFromTextField), for: [.editingChanged, .editingDidEnd])
-        trackerView.cancelButton.addTarget(self, action: #selector(removeCancelButton), for: .touchUpInside)
-        trackerView.datePicker.addTarget(self, action: #selector(setupTrackersFromDatePicker), for: .valueChanged)
+        trackersView.filterButton.addTarget(self, action: #selector(switchToFilterViewController), for: .touchUpInside)
+        trackersView.searchTextField.addTarget(self, action: #selector(addCancelButton), for: .editingDidBegin)
+        trackersView.searchTextField.addTarget(self, action: #selector(setupTrackersFromTextField), for: [.editingChanged, .editingDidEnd])
+        trackersView.cancelButton.addTarget(self, action: #selector(removeCancelButton), for: .touchUpInside)
+        trackersView.datePicker.addTarget(self, action: #selector(setupTrackersFromDatePicker), for: .valueChanged)
     }
     
     @objc private func switchToFilterViewController() {
@@ -106,32 +107,32 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
     }
     
     @objc private func addCancelButton() {
-        view.addSubview(trackerView.cancelButton)
-        trackerView.searchTextField.snp.removeConstraints()
+        view.addSubview(trackersView.cancelButton)
+        trackersView.searchTextField.snp.removeConstraints()
         
-        trackerView.cancelButton.snp.makeConstraints { make in
+        trackersView.cancelButton.snp.makeConstraints { make in
             make.height.equalTo(22)
             make.trailing.equalToSuperview().offset(-16)
-            make.centerY.equalTo(trackerView.searchTextField)
+            make.centerY.equalTo(trackersView.searchTextField)
             make.width.equalTo(83)
         }
         
-        trackerView.searchTextField.snp.makeConstraints { make in
+        trackersView.searchTextField.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.height.equalTo(36)
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.trailing.equalTo(trackerView.cancelButton.snp.leading).offset(-5)
+            make.trailing.equalTo(trackersView.cancelButton.snp.leading).offset(-5)
         }
     }
 
     @objc private func removeCancelButton() {
         guard let image = Resourses.Images.trackerEmptyImage else { return }
-        trackerView.searchTextField.text = .none
-        trackerView.searchTextField.endEditing(true)
-        trackerView.cancelButton.removeFromSuperview()
-        trackerView.searchTextField.snp.removeConstraints()
+        trackersView.searchTextField.text = .none
+        trackersView.searchTextField.endEditing(true)
+        trackersView.cancelButton.removeFromSuperview()
+        trackersView.searchTextField.snp.removeConstraints()
         
-        trackerView.searchTextField.snp.makeConstraints { make in
+        trackersView.searchTextField.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(36)
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
@@ -141,25 +142,25 @@ final class TrackerViewController: UIViewController, TrackerViewControllerProtoc
     
     @objc func setupTrackersFromDatePicker() {
         guard let image = Resourses.Images.trackerEmptyImage else { return }
-        presenter?.currentDate = trackerView.datePicker.date
+        presenter?.currentDate = trackersView.datePicker.date
         
         presenter?.filterTrackers(text: "")
-        trackerView.trackersCollectionView.reloadData()
+        trackersView.trackersCollectionView.reloadData()
         checkCellsCount(image: image, text: "Что будем отслеживать?")
     }
     
     @objc private func setupTrackersFromTextField() {
-        guard let text = trackerView.searchTextField.text,
+        guard let text = trackersView.searchTextField.text,
               let image = Resourses.Images.searchEmptyImage else { return }
         
         presenter?.filterTrackers(text: text)
-        trackerView.trackersCollectionView.reloadData()
+        trackersView.trackersCollectionView.reloadData()
         checkCellsCount(image: image, text: "Ничего не найдено")
     }
 }
 
 //MARK: UICollectionViewDataSource
-extension TrackerViewController: UICollectionViewDataSource {
+extension TrackersViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return presenter?.getVisibleCategories().count ?? 0
@@ -172,7 +173,7 @@ extension TrackerViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         presenter?.fetchCompletedCategoriesFromStore()
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCollectionViewCell", for: indexPath) as? TrackerCollectionViewCell,
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCollectionViewCell", for: indexPath) as? TrackersCollectionViewCell,
               let visibleCategories = presenter?.getVisibleCategories(),
               let days = presenter?.getCompletedCategories(),
               let presenter = presenter else { return UICollectionViewCell() }
@@ -202,7 +203,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         guard let completedTrackers = presenter?.getCompletedCategories() else { return false }
         
         return completedTrackers.contains { trackerRecord in
-            let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: trackerView.datePicker.date)
+            let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: trackersView.datePicker.date)
             return trackerRecord.id == id && isSameDay
         }
     }
@@ -220,7 +221,7 @@ extension TrackerViewController: UICollectionViewDataSource {
         
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                          withReuseIdentifier: id,
-                                                                         for: indexPath) as? TrackerSupplementaryView else { return UICollectionReusableView() }
+                                                                         for: indexPath) as? TrackersSupplementaryView else { return UICollectionReusableView() }
         view.headerLabel.text = visibleCategories[indexPath.section].name
     
         return view
@@ -228,7 +229,7 @@ extension TrackerViewController: UICollectionViewDataSource {
 }
 
 //MARK: UICollectionViewDelegateFlowLayout
-extension TrackerViewController: UICollectionViewDelegateFlowLayout {
+extension TrackersViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (collectionView.bounds.width - 41) / 2, height: 148)
@@ -257,25 +258,25 @@ extension TrackerViewController: UICollectionViewDelegateFlowLayout {
 }
 
 //MARK: TrackerCollectionViewCellDelegate
-extension TrackerViewController: TrackerCollectionViewCellDelegate {
+extension TrackersViewController: TrackerCollectionViewCellDelegate {
     func completeTracker(id: UUID, at indexPath: IndexPath) {
-        let trackerRecord = TrackerRecord(id: id, date: trackerView.datePicker.date)
+        let trackerRecord = TrackerRecord(id: id, date: trackersView.datePicker.date)
         presenter?.addRecord(tracker: trackerRecord)
         
-        trackerView.trackersCollectionView.reloadItems(at: [indexPath])
+        trackersView.trackersCollectionView.reloadItems(at: [indexPath])
     }
     
     func uncompleteTracker(id: UUID, at indexPath: IndexPath) {
-        let trackerRecord = TrackerRecord(id: id, date: trackerView.datePicker.date)
+        let trackerRecord = TrackerRecord(id: id, date: trackersView.datePicker.date)
         presenter?.deleteRecord(tracker: trackerRecord)
         
-        trackerView.trackersCollectionView.reloadItems(at: [indexPath])
+        trackersView.trackersCollectionView.reloadItems(at: [indexPath])
     }
     
-    func editTracker(_ cell: TrackerCollectionViewCell) {}
+    func editTracker(_ cell: TrackersCollectionViewCell) {}
     
-    func deleteTracker(_ cell: TrackerCollectionViewCell) {
-        guard let indexPath = trackerView.trackersCollectionView.indexPath(for: cell),
+    func deleteTracker(_ cell: TrackersCollectionViewCell) {
+        guard let indexPath = trackersView.trackersCollectionView.indexPath(for: cell),
               let image = Resourses.Images.trackerEmptyImage else { return }
         
         let visibleCategories = presenter?.getVisibleCategories() ?? []
@@ -287,50 +288,50 @@ extension TrackerViewController: TrackerCollectionViewCellDelegate {
 }
 
 //MARK: UITextFieldDelegate
-extension TrackerViewController: UITextFieldDelegate {
+extension TrackersViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
     }
 }
 
-extension TrackerViewController: TrackersDelegate {
+extension TrackersViewController: TrackersDelegate {
     func didUpdate() {
         reloadCollectionView()
     }
 }
 
 //MARK: SetupViews
-extension TrackerViewController {
+extension TrackersViewController {
     private func addViews() {
         guard let navBar = navigationController?.navigationBar else { return }
         view.backgroundColor = .ypWhite
-        view.addSubview(trackerView.searchTextField)
-        view.addSubview(trackerView.trackersCollectionView)
-        view.addSubview(trackerView.datePicker)
-        navBar.addSubview(trackerView.datePicker)
+        view.addSubview(trackersView.searchTextField)
+        view.addSubview(trackersView.trackersCollectionView)
+        view.addSubview(trackersView.datePicker)
+        navBar.addSubview(trackersView.datePicker)
         addConstraints()
     }
     
     private func addConstraints() {
         guard let navBar = navigationController?.navigationBar else { return }
         
-        trackerView.datePicker.snp.makeConstraints { make in
+        trackersView.datePicker.snp.makeConstraints { make in
             make.height.equalTo(34)
             make.width.equalTo(100)
             make.trailing.equalTo(navBar.snp.trailing).offset(-16)
             make.bottom.equalTo(navBar.snp.bottom).offset(-11)
         }
         
-        trackerView.searchTextField.snp.makeConstraints { make in
+        trackersView.searchTextField.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(36)
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
         
-        trackerView.trackersCollectionView.snp.makeConstraints { make in
+        trackersView.trackersCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.top.equalTo(trackerView.searchTextField.snp.bottom).offset(10)
+            make.top.equalTo(trackersView.searchTextField.snp.bottom).offset(10)
         }
     }
 }
