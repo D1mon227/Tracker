@@ -30,6 +30,7 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
         dataProvider.trackerStore = TrackerStore()
         dataProvider.trackerCategoryStore = TrackerCategoryStore()
         dataProvider.trackerRecordStore = TrackerRecordStore()
+        dataProvider.getCategoryName()
         dataProvider.setTrackerStoreDelegate(view: self)
     }
 

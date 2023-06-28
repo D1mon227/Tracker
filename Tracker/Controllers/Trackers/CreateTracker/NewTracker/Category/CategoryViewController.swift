@@ -12,17 +12,17 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
     
     private let categoryView = CategoryView()
     private let dataProvider = DataProvider.shared
-    private var categoryViewModel = CategoryViewModel()
+    private let categoryViewModel = CategoryViewModel()
     var viewController: NewTrackerViewControllerProtocol?
     var selectedIndexPath: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bindViewModel()
         addView()
         addTarget()
         setupTableView()
         checkCellsCount()
+        bindViewModel()
     }
     
     private func bindViewModel() {
@@ -77,10 +77,6 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
 
         }
     }
-    
-//    func reloadTableView() {
-//        categoryView.categoryTableView.reloadData()
-//    }
 }
 
 //MARK: UITableViewDataSource

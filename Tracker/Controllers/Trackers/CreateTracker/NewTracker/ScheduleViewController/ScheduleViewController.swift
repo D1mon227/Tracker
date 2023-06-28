@@ -10,20 +10,26 @@ import SnapKit
 
 final class ScheduleViewController: UIViewController, ScheduleViewControllerProtocol {
     
-    var presenter: ScheduleViewPresenterProtocol?
     var viewController: NewTrackerViewControllerProtocol?
 
     private let scheduleView = ScheduleView()
+    private let scheduleViewModel = ScheduleViewModel()
     private let scheduleService = ScheduleService()
     private let dataProvider = DataProvider.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter = SchedulePresenter()
-        
         addView()
         setupTableView()
         addTarget()
+        bindViewModel()
+    }
+    
+    func bindViewModel() {
+        scheduleViewModel.$schedule.bind { [weak self] _ in
+            guard let self = self else { return }
+            viewController?.reloadTableView()
+        }
     }
     
     private func setupTableView() {
@@ -37,11 +43,7 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
     }
     
     @objc private func returnToNewTrackerVC() {
-        let schedule = presenter?.daysInInt ?? []
-        let scheduleDay = presenter?.daysInInt.count == 7 ? "Каждый день" : scheduleService.arrayToString(array: schedule)
-        dataProvider.selectedSchedule = scheduleDay
-        dataProvider.schedule = schedule
-        viewController?.reloadTableView()
+        scheduleViewModel.setSchedule()
         dismiss(animated: true)
     }
 }
@@ -57,20 +59,17 @@ extension ScheduleViewController: UITableViewDataSource {
         
         cell.delegate = self
         cell.configureCell(text: Resourses.WeekDay.allCases[indexPath.row].rawValue)
-        
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
     }
 }
 
 //MARK: UITableViewDelegate
 extension ScheduleViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
     }
+    
 }
 
 extension ScheduleViewController: ScheduleViewControllerDelegate {
@@ -79,10 +78,10 @@ extension ScheduleViewController: ScheduleViewControllerDelegate {
         
         let shortNameOfDay = scheduleService.addDayToSchedule(day: fullNameofDay)
         if cell.switcher.isOn {
-            presenter?.daysInInt.append(shortNameOfDay)
+            scheduleViewModel.addDaysToSchedule(day: shortNameOfDay)
         } else {
-            if let index = presenter?.daysInInt.firstIndex(of: shortNameOfDay) {
-                presenter?.daysInInt.remove(at: index)
+            if let index = scheduleViewModel.schedule.firstIndex(of: shortNameOfDay) {
+                scheduleViewModel.removeDayFromSchedule(index: index)
             }
         }
     }

@@ -26,7 +26,7 @@ final class NewTrackerViewPresenter: NewTrackerViewPresenterProtocol {
                                  name: trackerName,
                                  color: trackerColor,
                                  emoji: trackerEmoji,
-                                 schedule: dataProvider.schedule ?? Array(1...7))
+                                 schedule: dataProvider.trackerSchedule ?? Array(1...7))
         dataProvider.addTrackerToStore(newTracker)
     }
 }

@@ -20,6 +20,7 @@ final class DataProvider {
     var trackerRecordStore: TrackerRecordStoreProtocol?
     
     var categoryViewModel: CategoryViewModelProtocol?
+    var scheduleViewModel: ScheduleViewModelProtocol?
     
     var selectedCategory: String?
     var selectedSchedule: String?
@@ -27,7 +28,7 @@ final class DataProvider {
     var trackerName: String?
     var trackerEmoji: String?
     var trackerColor: UIColor?
-    var schedule: [Int]?
+    var trackerSchedule: [Int]?
     
     var categories: [TrackerCategory]? = []
     var visibleCategories: [TrackerCategory]? = []
@@ -57,7 +58,7 @@ final class DataProvider {
         selectedSchedule = nil
         trackerEmoji = nil
         trackerColor = nil
-        schedule = nil
+        trackerSchedule = nil
     }
     
     func setTrackerStoreDelegate(view: TrackersDelegate) {
@@ -139,9 +140,12 @@ final class DataProvider {
     }
     
     //MARK: SetupViewModelProtocols
-    
     func bindCategoryViewModel(controller: CategoryViewModelProtocol) {
         categoryViewModel = controller
+    }
+    
+    func bindScheduleViewModel(controller: ScheduleViewModelProtocol) {
+        scheduleViewModel = controller
     }
 }
 
