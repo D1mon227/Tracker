@@ -15,7 +15,6 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
     private let scheduleView = ScheduleView()
     private let scheduleViewModel = ScheduleViewModel()
     private let scheduleService = ScheduleService()
-    private let dataProvider = DataProvider.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()

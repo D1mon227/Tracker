@@ -9,4 +9,8 @@ import Foundation
 
 final class TrackersViewModel: TrackersViewModelProtocol {
   
+    private let dataProvider = DataProvider.shared
+    
+    var currentDate: Date?
+    
 }

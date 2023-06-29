@@ -21,13 +21,8 @@ final class DataProvider {
     
     var categoryViewModel: CategoryViewModelProtocol?
     var scheduleViewModel: ScheduleViewModelProtocol?
+    var newTrackerViewModel: NewTrackerViewModelProtocol?
     
-    var selectedCategory: String?
-    var selectedSchedule: String?
-    
-    var trackerName: String?
-    var trackerEmoji: String?
-    var trackerColor: UIColor?
     var trackerSchedule: [Int]?
     
     var categories: [TrackerCategory]? = []
@@ -40,17 +35,35 @@ final class DataProvider {
         }
     }
     
-    var emojies = [
-        "🙂", "😻", "🌺", "🐶", "❤️", "😱",
-        "😇", "😡", "🥶", "🤔", "🙌", "🍔",
-        "🥦", "🏓", "🥇", "🎸", "🏝", "😪"
-    ]
+    var trackerName: String? {
+        didSet {
+            newTrackerViewModel?.isNewTrackerReady()
+        }
+    }
     
-    var colors: [UIColor] = [
-        .colorSelection1, .colorSelection2, .colorSelection3, .colorSelection4, .colorSelection5, .colorSelection6,
-        .colorSelection7, .colorSelection8, .colorSelection9, .colorSelection10, .colorSelection11, .colorSelection12,
-        .colorSelection13, .colorSelection14, .colorSelection15, .colorSelection16, .colorSelection17, .colorSelection18,
-    ]
+    var selectedCategory: String? {
+        didSet {
+            newTrackerViewModel?.isNewTrackerReady()
+        }
+    }
+    
+    var selectedSchedule: String? {
+        didSet {
+            newTrackerViewModel?.isNewTrackerReady()
+        }
+    }
+    
+    var trackerEmoji: String? {
+        didSet {
+            newTrackerViewModel?.isNewTrackerReady()
+        }
+    }
+    
+    var trackerColor: UIColor? {
+        didSet {
+            newTrackerViewModel?.isNewTrackerReady()
+        }
+    }
     
     func resetNewTrackerInfo() {
         trackerName = nil
@@ -75,6 +88,17 @@ final class DataProvider {
     
     func getCompletedTrackers() -> [TrackerRecord] {
         completedTrackers ?? []
+    }
+    
+    func didAllFieldsFill() -> Bool {
+        trackerName != nil &&
+        selectedCategory != nil &&
+        trackerEmoji != nil &&
+        trackerColor != nil ? true : false
+    }
+    
+    func didScheduleChoosen() -> Bool {
+        trackerSchedule != nil ? true : false
     }
     
     //MARK: ViewModel
@@ -146,6 +170,10 @@ final class DataProvider {
     
     func bindScheduleViewModel(controller: ScheduleViewModelProtocol) {
         scheduleViewModel = controller
+    }
+    
+    func bindNewTrackerViewModel(controller: NewTrackerViewModelProtocol) {
+        newTrackerViewModel = controller
     }
 }
 

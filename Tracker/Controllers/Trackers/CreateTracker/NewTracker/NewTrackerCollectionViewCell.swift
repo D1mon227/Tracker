@@ -16,7 +16,7 @@ final class NewTrackerCollectionViewCell: UICollectionViewCell {
         return element
     }()
     
-    private lazy var colorImage: UIImageView = {
+    lazy var colorImage: UIImageView = {
         let element = UIImageView()
         element.layer.cornerRadius = 8
         return element
