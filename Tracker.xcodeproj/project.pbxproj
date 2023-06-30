@@ -57,9 +57,7 @@
 		73AEED722A4A3730009EFD9D /* SecondOnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AEED712A4A3730009EFD9D /* SecondOnboardingViewController.swift */; };
 		73AEED762A4A375C009EFD9D /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AEED752A4A375C009EFD9D /* OnboardingViewController.swift */; };
 		73CA04F52A213E62008536D4 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CA04F42A213E62008536D4 /* CategoryTableViewCell.swift */; };
-		73CA04F82A24B0DE008536D4 /* TrackerViewPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CA04F72A24B0DE008536D4 /* TrackerViewPresenterProtocol.swift */; };
 		73CA04FA2A24B15E008536D4 /* TrackerViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CA04F92A24B15E008536D4 /* TrackerViewControllerProtocol.swift */; };
-		73CA04FC2A24C9CB008536D4 /* TrackerViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CA04FB2A24C9CB008536D4 /* TrackerViewPresenter.swift */; };
 		73CA04FE2A24DC43008536D4 /* CreateTrackerViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CA04FD2A24DC42008536D4 /* CreateTrackerViewControllerProtocol.swift */; };
 		73CA05002A24DC66008536D4 /* NewTrackerViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CA04FF2A24DC66008536D4 /* NewTrackerViewControllerProtocol.swift */; };
 		73CA05022A24DC84008536D4 /* CategoryViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CA05012A24DC84008536D4 /* CategoryViewControllerProtocol.swift */; };
@@ -134,9 +132,7 @@
 		73AEED712A4A3730009EFD9D /* SecondOnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondOnboardingViewController.swift; sourceTree = "<group>"; };
 		73AEED752A4A375C009EFD9D /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		73CA04F42A213E62008536D4 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
-		73CA04F72A24B0DE008536D4 /* TrackerViewPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewPresenterProtocol.swift; sourceTree = "<group>"; };
 		73CA04F92A24B15E008536D4 /* TrackerViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewControllerProtocol.swift; sourceTree = "<group>"; };
-		73CA04FB2A24C9CB008536D4 /* TrackerViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewPresenter.swift; sourceTree = "<group>"; };
 		73CA04FD2A24DC42008536D4 /* CreateTrackerViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewControllerProtocol.swift; sourceTree = "<group>"; };
 		73CA04FF2A24DC66008536D4 /* NewTrackerViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerViewControllerProtocol.swift; sourceTree = "<group>"; };
 		73CA05012A24DC84008536D4 /* CategoryViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewControllerProtocol.swift; sourceTree = "<group>"; };
@@ -244,7 +240,6 @@
 				73FB36C22A28C30E00411A25 /* Delegates */,
 				73FB36BE2A28C25A00411A25 /* Protocols */,
 				7319D29F2A1F5BF90075EE1F /* TrackersView.swift */,
-				73CA04FB2A24C9CB008536D4 /* TrackerViewPresenter.swift */,
 				73DBA16A2A1652CD003FB173 /* TrackersViewController.swift */,
 				7387D4442A4C95F800AC556D /* TrackersViewModel.swift */,
 				7387D4422A4C953400AC556D /* TrackersObservable.swift */,
@@ -445,7 +440,6 @@
 			isa = PBXGroup;
 			children = (
 				73CA04F92A24B15E008536D4 /* TrackerViewControllerProtocol.swift */,
-				73CA04F72A24B0DE008536D4 /* TrackerViewPresenterProtocol.swift */,
 				7387D4462A4C962E00AC556D /* TrackersViewModelProtocol.swift */,
 			);
 			path = Protocols;
@@ -574,7 +568,6 @@
 				7319D2882A1E84790075EE1F /* NewTrackerTableViewCell.swift in Sources */,
 				73AEED722A4A3730009EFD9D /* SecondOnboardingViewController.swift in Sources */,
 				73CA05042A24DFAD008536D4 /* NewCategoryViewControllerProtocol.swift in Sources */,
-				73CA04FC2A24C9CB008536D4 /* TrackerViewPresenter.swift in Sources */,
 				7319D2942A1EDC860075EE1F /* ScheduleViewController.swift in Sources */,
 				7319D2B02A1FCA7F0075EE1F /* TrackerRecord.swift in Sources */,
 				7319D28C2A1EB4080075EE1F /* NewTrackerSupplementaryView.swift in Sources */,
@@ -598,7 +591,6 @@
 				73AEED702A4A3723009EFD9D /* SecondOnboardingPageView.swift in Sources */,
 				73FB36C42A28C33000411A25 /* TrackerCollectionViewCellDelegate.swift in Sources */,
 				7319D29E2A1EEA3F0075EE1F /* NewCategoryView.swift in Sources */,
-				73CA04F82A24B0DE008536D4 /* TrackerViewPresenterProtocol.swift in Sources */,
 				73DBA1672A1652CD003FB173 /* AppDelegate.swift in Sources */,
 				7387D4432A4C953400AC556D /* TrackersObservable.swift in Sources */,
 				7319D2962A1EDD830075EE1F /* CategoryView.swift in Sources */,

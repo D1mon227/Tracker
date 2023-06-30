@@ -22,11 +22,16 @@ final class DataProvider {
     var categoryViewModel: CategoryViewModelProtocol?
     var scheduleViewModel: ScheduleViewModelProtocol?
     var newTrackerViewModel: NewTrackerViewModelProtocol?
+    var trackersViewModel: TrackersViewModelProtocol?
     
     var trackerSchedule: [Int]?
     
-    var categories: [TrackerCategory]? = []
-    var visibleCategories: [TrackerCategory]? = []
+    var visibleCategories: [TrackerCategory]? {
+        didSet {
+            trackersViewModel?.setupVisibleTrackers()
+        }
+    }
+    
     var completedTrackers: [TrackerRecord]? = []
     
     private var categoryName: [String]? {
@@ -72,10 +77,6 @@ final class DataProvider {
         trackerEmoji = nil
         trackerColor = nil
         trackerSchedule = nil
-    }
-    
-    func setTrackerStoreDelegate(view: TrackersDelegate) {
-        trackerStore?.delegate = view
     }
     
     func getVisibleCategories() -> [TrackerCategory] {
@@ -174,6 +175,10 @@ final class DataProvider {
     
     func bindNewTrackerViewModel(controller: NewTrackerViewModelProtocol) {
         newTrackerViewModel = controller
+    }
+    
+    func bindTrackersViewModel(controller: TrackersViewModelProtocol) {
+        trackersViewModel = controller
     }
 }
 

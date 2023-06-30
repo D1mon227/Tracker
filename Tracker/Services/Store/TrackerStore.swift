@@ -18,8 +18,6 @@ final class TrackerStore: NSObject, TrackerStoreProtocol {
     private let uiColorMarshalling = UIColorMarshalling()
     private let dataProvider = DataProvider.shared
     
-    weak var delegate: TrackersDelegate?
-    
     private lazy var appDelegate = {
         (UIApplication.shared.delegate as! AppDelegate)
     }()
@@ -110,6 +108,5 @@ extension TrackerStore: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         dataProvider.fetchVisibleCategoriesFromStore()
-        delegate?.didUpdate()
     }
 }

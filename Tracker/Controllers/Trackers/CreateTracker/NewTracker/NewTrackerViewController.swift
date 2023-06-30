@@ -310,8 +310,6 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
         default:
             cell.backgroundColor = .gray
         }
-        
-        //checkCreateButton()
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -319,7 +317,6 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
 
         cell.backgroundColor = .none
         cell.layer.borderWidth = 0
-        //checkCreateButton()
     }
     
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
