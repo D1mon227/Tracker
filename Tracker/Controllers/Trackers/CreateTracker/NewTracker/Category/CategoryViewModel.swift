@@ -19,19 +19,36 @@ final class CategoryViewModel: CategoryViewModelProtocol {
         getVisibleCategories()
     }
     
-    var numberOfCategories: Int? {
+    var numberOfCategories: Int {
         visibleCategories.count
+    }
+    
+    var selectedCategory: String {
+        get {
+            dataProvider.selectedCategory ?? ""
+        }
+        set {
+            dataProvider.selectedCategory = newValue
+        }
+    }
+    
+    func areVisibleCategoriesEmpty() -> Bool {
+        if numberOfCategories == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func isLastCategory(at indexPath: IndexPath) -> Bool {
+        if numberOfCategories == indexPath.row + 1 {
+            return true
+        } else {
+            return false
+        }
     }
     
     func getVisibleCategories() {
         visibleCategories = dataProvider.updateCategoryViewModel()
-    }
-    
-    func getSelectedCategory() -> String {
-        dataProvider.selectedCategory ?? ""
-    }
-    
-    func setSelectedCategory(name: String) {
-        dataProvider.selectedCategory = name
     }
 }

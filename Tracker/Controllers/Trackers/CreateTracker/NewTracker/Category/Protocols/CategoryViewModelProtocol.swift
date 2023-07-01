@@ -8,7 +8,6 @@
 import Foundation
 
 protocol CategoryViewModelProtocol: AnyObject {
+    var selectedCategory: String { get set }
     func getVisibleCategories()
-    func getSelectedCategory() -> String
-    func setSelectedCategory(name: String)
 }

@@ -5,17 +5,37 @@
 //  Created by Dmitry Medvedev on 28.06.2023.
 //
 
-import Foundation
+import UIKit
 
 final class TrackersViewModel: TrackersViewModelProtocol {
   
     private let dataProvider = DataProvider.shared
     private let dateService = DateService()
     
-    var currentDate: Date?
+    var currentDate: Date? {
+        didSet {
+            filterTrackers(text: "")
+            emptyImage = Resourses.Images.trackerEmptyImage
+            emptyLabel = "Что будем отслеживать?"
+        }
+    }
+    
+    var numberOfVisibleCategories: Int {
+        visibleCategories.count
+    }
+    
+    var emptyImage: UIImage?
+    var emptyLabel: String?
+    var searchText: String? {
+        didSet {
+            filterTrackers(text: searchText)
+            emptyImage = Resourses.Images.searchEmptyImage
+            emptyLabel = "Ничего не найдено"
+        }
+    }
     
     @TrackersObservable
-    private(set) var visibleTrackers: [TrackerCategory] = []
+    private(set) var visibleCategories: [TrackerCategory] = []
     
     init() {
         dataProvider.trackerStore = TrackerStore()
@@ -25,6 +45,14 @@ final class TrackersViewModel: TrackersViewModelProtocol {
         dataProvider.getCategoryName()
         dataProvider.fetchRecordFromStore()
         dataProvider.bindTrackersViewModel(controller: self)
+    }
+    
+    func areVisibleCategoriesEmpty() -> Bool {
+        if visibleCategories.isEmpty {
+            return true
+        } else {
+            return false
+        }
     }
     
     func fetchCompletedCategoriesFromStore() {
@@ -40,7 +68,7 @@ final class TrackersViewModel: TrackersViewModelProtocol {
     }
     
     func setupVisibleTrackers() {
-        visibleTrackers = dataProvider.getVisibleCategories()
+        visibleCategories = dataProvider.getVisibleCategories()
     }
     
     func addRecord(tracker: TrackerRecord) {
@@ -63,7 +91,7 @@ final class TrackersViewModel: TrackersViewModelProtocol {
               let text = text?.lowercased() else { return }
         
         setupVisibleTrackers()
-        visibleTrackers = visibleTrackers.compactMap { category in
+        visibleCategories = visibleCategories.compactMap { category in
             let filterTrackers = category.trackerArray.filter { tracker in
                 guard let schedule = tracker.schedule else { return false }
                 let filterText = text.isEmpty || tracker.name.lowercased().contains(text)

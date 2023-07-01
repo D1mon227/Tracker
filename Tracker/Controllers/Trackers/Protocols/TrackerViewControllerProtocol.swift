@@ -8,6 +8,6 @@
 import Foundation
 
 protocol TrackerViewControllerProtocol: AnyObject {
-    func reloadCollectionView()
+//    func reloadCollectionView()
     func setupTrackersFromDatePicker()
 }

@@ -21,15 +21,14 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
         addView()
         addTarget()
         setupTableView()
-        checkCellsCount()
+        reloadViews()
         bindViewModel()
     }
     
     private func bindViewModel() {
         categoryViewModel.$visibleCategories.bind { [weak self] _ in
             guard let self = self else { return }
-            self.checkCellsCount()
-            self.categoryView.categoryTableView.reloadData()
+            self.reloadViews()
         }
     }
     
@@ -49,40 +48,48 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
         categoryView.categoryTableView.delegate = self
     }
     
-    func checkCellsCount() {
-        if categoryViewModel.numberOfCategories == 0 {
-            view.addSubview(categoryView.emptyImage)
-            view.addSubview(categoryView.emptyLabel)
-            categoryView.categoryTableView.removeFromSuperview()
-
-            categoryView.emptyImage.snp.makeConstraints { make in
-                make.center.equalToSuperview()
-            }
-
-            categoryView.emptyLabel.snp.makeConstraints { make in
-                make.centerX.equalToSuperview()
-                make.leading.trailing.equalToSuperview().inset(16)
-                make.top.equalTo(categoryView.emptyImage.snp.bottom).offset(8)
-            }
+    func reloadViews() {
+        if categoryViewModel.areVisibleCategoriesEmpty() {
+            reloadEmptyViews()
         } else {
-            categoryView.emptyImage.removeFromSuperview()
-            categoryView.emptyLabel.removeFromSuperview()
-            view.addSubview(categoryView.categoryTableView)
-
-            categoryView.categoryTableView.snp.makeConstraints { make in
-                make.top.equalTo(categoryView.categoryLabel.snp.bottom).offset(38)
-                make.leading.trailing.equalToSuperview().inset(16)
-                make.bottom.equalTo(categoryView.addCategoryButton.snp.top).offset(-16)
-            }
-
+            reloadTableView()
         }
+    }
+    
+    private func reloadEmptyViews() {
+        view.addSubview(categoryView.emptyImage)
+        view.addSubview(categoryView.emptyLabel)
+        categoryView.categoryTableView.removeFromSuperview()
+
+        categoryView.emptyImage.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+
+        categoryView.emptyLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.top.equalTo(categoryView.emptyImage.snp.bottom).offset(8)
+        }
+    }
+    
+    private func reloadTableView() {
+        categoryView.emptyImage.removeFromSuperview()
+        categoryView.emptyLabel.removeFromSuperview()
+        view.addSubview(categoryView.categoryTableView)
+
+        categoryView.categoryTableView.snp.makeConstraints { make in
+            make.top.equalTo(categoryView.categoryLabel.snp.bottom).offset(38)
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.bottom.equalTo(categoryView.addCategoryButton.snp.top).offset(-16)
+        }
+        categoryView.categoryTableView.reloadData()
     }
 }
 
 //MARK: UITableViewDataSource
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        categoryViewModel.numberOfCategories ?? 0
+        categoryViewModel.numberOfCategories
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -90,9 +97,9 @@ extension CategoryViewController: UITableViewDataSource {
         
         cell.viewModel = categoryViewModel.visibleCategories[indexPath.row]
         
-        cell.accessoryType = cell.label.text == categoryViewModel.getSelectedCategory() ? .checkmark : .none
+        cell.accessoryType = cell.label.text == categoryViewModel.selectedCategory ? .checkmark : .none
         
-        if indexPath.row + 1 == categoryViewModel.numberOfCategories {
+        if categoryViewModel.isLastCategory(at: indexPath) {
             cell.layer.masksToBounds = true
             cell.layer.cornerRadius = 16
             cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -129,7 +136,7 @@ extension CategoryViewController: UITableViewDelegate {
             cell.accessoryType = .checkmark
             selectedIndexPath = indexPath
 
-            categoryViewModel.setSelectedCategory(name: cell.label.text ?? "")
+            categoryViewModel.selectedCategory = cell.label.text ?? ""
             viewController?.reloadTableView()
             dismiss(animated: true)
         }
