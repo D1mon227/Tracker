@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: scene)
         
         let tabBarVC = TabBarController()
-        let onboardingVC = OnboardingViewController()
+        let onboardingVC = OnboardingPageViewController()
         
         var rootViewController: UIViewController
     

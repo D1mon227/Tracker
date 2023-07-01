@@ -1,5 +1,5 @@
 //
-//  OnboardingViewController.swift
+//  FirstOnboardingViewController.swift
 //  Tracker
 //
 //  Created by Dmitry Medvedev on 27.06.2023.
@@ -8,78 +8,75 @@
 import UIKit
 import SnapKit
 
-final class OnboardingViewController: UIPageViewController {
-    private let firstVC = FirstOnboardingViewController()
-    private let secondVC = SecondOnboardingViewController()
+final class OnboardingViewController: UIViewController {
     
-    private lazy var controllers = [firstVC, secondVC]
+    var backgrounView = UIImageView()
     
-    lazy var pageControl: UIPageControl = {
-        let element = UIPageControl()
-        element.numberOfPages = 2
-        element.currentPage = 0
-        element.currentPageIndicatorTintColor = .black
-        element.pageIndicatorTintColor = .black.withAlphaComponent(0.3)
+    lazy var firstLabel: UILabel = {
+        let element = UILabel()
+        element.textColor = .black
+        element.font = .boldSystemFont(ofSize: 32)
+        element.textAlignment = .center
+        element.numberOfLines = 0
         return element
     }()
     
-    override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
-        super.init(transitionStyle: .scroll,
-                   navigationOrientation: .horizontal)
+    private lazy var switchButton: UIButton = {
+        let element = UIButton(type: .system)
+        element.backgroundColor = .black
+        element.layer.cornerRadius = 16
+        element.setTitle("Вот это технологии!", for: .normal)
+        element.setTitleColor(.white, for: .normal)
+        element.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        element.titleLabel?.textAlignment = .center
+        return element
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         setupView()
-        dataSource = self
-        delegate = self
-        if let first = controllers.first {setViewControllers([first],
-                                                             direction: .forward,
-                                                             animated: true,
-                                                             completion: nil)
-        }
+        setTarget()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-extension OnboardingViewController: UIPageViewControllerDataSource {
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let viewControllerIndex = controllers.firstIndex(of: viewController) else { return nil }
-        
-        let previousIndex = viewControllerIndex - 1
-        
-        guard previousIndex >= 0 else { return nil }
-        
-        return controllers[previousIndex]
+    private func setTarget() {
+        switchButton.addTarget(self, action: #selector(switchToTabBarVC), for: .touchUpInside)
     }
     
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let viewControllerIndex = controllers.firstIndex(of: viewController) else { return nil }
-        
-        let nextIndex = viewControllerIndex + 1
-        
-        guard nextIndex < controllers.count else { return nil }
-        
-        return controllers[nextIndex]
-    }
-}
+    @objc private func switchToTabBarVC() {
+        let scene = UIApplication.shared.connectedScenes.first
+        if let sceneDelegate = scene?.delegate as? SceneDelegate,
+           let window = sceneDelegate.window {
+            let vc = TabBarController()
+            sceneDelegate.window?.rootViewController = vc
+            OnboardingManager.hasCompletedOnboarding = true
 
-extension OnboardingViewController: UIPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        if let currentViewController = pageViewController.viewControllers?.first,
-           let currentIndex = controllers.firstIndex(of: currentViewController) {
-            pageControl.currentPage = currentIndex
+            UIView.transition(with: window, duration: 0.5, options: .transitionFlipFromRight, animations: nil, completion: nil)
         }
     }
 }
 
 extension OnboardingViewController {
     private func setupView() {
-        view.addSubview(pageControl)
-        pageControl.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-134)
+        view.addSubview(backgrounView)
+        view.addSubview(firstLabel)
+        view.addSubview(switchButton)
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        backgrounView.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        switchButton.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-50)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(60)
+        }
+        
+        firstLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.bottom.equalTo(switchButton.snp.top).offset(-160)
         }
     }
 }
-
-

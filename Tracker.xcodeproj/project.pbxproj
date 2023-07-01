@@ -51,11 +51,8 @@
 		7387D4492A4CD6B300AC556D /* ScheduleObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7387D4482A4CD6B300AC556D /* ScheduleObservable.swift */; };
 		7387D44B2A4CD6EA00AC556D /* ScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7387D44A2A4CD6EA00AC556D /* ScheduleViewModel.swift */; };
 		7387D44D2A4CD72700AC556D /* ScheduleViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7387D44C2A4CD72700AC556D /* ScheduleViewModelProtocol.swift */; };
-		73AEED6C2A4A36A3009EFD9D /* FirstOnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AEED6B2A4A36A3009EFD9D /* FirstOnboardingPageView.swift */; };
-		73AEED6E2A4A36E6009EFD9D /* FirstOnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AEED6D2A4A36E6009EFD9D /* FirstOnboardingViewController.swift */; };
-		73AEED702A4A3723009EFD9D /* SecondOnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AEED6F2A4A3722009EFD9D /* SecondOnboardingPageView.swift */; };
-		73AEED722A4A3730009EFD9D /* SecondOnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AEED712A4A3730009EFD9D /* SecondOnboardingViewController.swift */; };
-		73AEED762A4A375C009EFD9D /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AEED752A4A375C009EFD9D /* OnboardingViewController.swift */; };
+		73AEED6E2A4A36E6009EFD9D /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AEED6D2A4A36E6009EFD9D /* OnboardingViewController.swift */; };
+		73AEED762A4A375C009EFD9D /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AEED752A4A375C009EFD9D /* OnboardingPageViewController.swift */; };
 		73CA04F52A213E62008536D4 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CA04F42A213E62008536D4 /* CategoryTableViewCell.swift */; };
 		73CA04FA2A24B15E008536D4 /* TrackerViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CA04F92A24B15E008536D4 /* TrackerViewControllerProtocol.swift */; };
 		73CA04FE2A24DC43008536D4 /* CreateTrackerViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CA04FD2A24DC42008536D4 /* CreateTrackerViewControllerProtocol.swift */; };
@@ -126,11 +123,8 @@
 		7387D4482A4CD6B300AC556D /* ScheduleObservable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleObservable.swift; sourceTree = "<group>"; };
 		7387D44A2A4CD6EA00AC556D /* ScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewModel.swift; sourceTree = "<group>"; };
 		7387D44C2A4CD72700AC556D /* ScheduleViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewModelProtocol.swift; sourceTree = "<group>"; };
-		73AEED6B2A4A36A3009EFD9D /* FirstOnboardingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstOnboardingPageView.swift; sourceTree = "<group>"; };
-		73AEED6D2A4A36E6009EFD9D /* FirstOnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstOnboardingViewController.swift; sourceTree = "<group>"; };
-		73AEED6F2A4A3722009EFD9D /* SecondOnboardingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondOnboardingPageView.swift; sourceTree = "<group>"; };
-		73AEED712A4A3730009EFD9D /* SecondOnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondOnboardingViewController.swift; sourceTree = "<group>"; };
-		73AEED752A4A375C009EFD9D /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		73AEED6D2A4A36E6009EFD9D /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		73AEED752A4A375C009EFD9D /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
 		73CA04F42A213E62008536D4 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		73CA04F92A24B15E008536D4 /* TrackerViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewControllerProtocol.swift; sourceTree = "<group>"; };
 		73CA04FD2A24DC42008536D4 /* CreateTrackerViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewControllerProtocol.swift; sourceTree = "<group>"; };
@@ -317,29 +311,10 @@
 		73AEED6A2A4A367F009EFD9D /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				73AEED732A4A3736009EFD9D /* FirstPage */,
-				73AEED742A4A3744009EFD9D /* SecondPage */,
-				73AEED752A4A375C009EFD9D /* OnboardingViewController.swift */,
+				73AEED6D2A4A36E6009EFD9D /* OnboardingViewController.swift */,
+				73AEED752A4A375C009EFD9D /* OnboardingPageViewController.swift */,
 			);
 			path = Onboarding;
-			sourceTree = "<group>";
-		};
-		73AEED732A4A3736009EFD9D /* FirstPage */ = {
-			isa = PBXGroup;
-			children = (
-				73AEED6B2A4A36A3009EFD9D /* FirstOnboardingPageView.swift */,
-				73AEED6D2A4A36E6009EFD9D /* FirstOnboardingViewController.swift */,
-			);
-			path = FirstPage;
-			sourceTree = "<group>";
-		};
-		73AEED742A4A3744009EFD9D /* SecondPage */ = {
-			isa = PBXGroup;
-			children = (
-				73AEED6F2A4A3722009EFD9D /* SecondOnboardingPageView.swift */,
-				73AEED712A4A3730009EFD9D /* SecondOnboardingViewController.swift */,
-			);
-			path = SecondPage;
 			sourceTree = "<group>";
 		};
 		73CA05052A25136C008536D4 /* Services */ = {
@@ -556,8 +531,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				73AEED6E2A4A36E6009EFD9D /* FirstOnboardingViewController.swift in Sources */,
-				73AEED6C2A4A36A3009EFD9D /* FirstOnboardingPageView.swift in Sources */,
+				73AEED6E2A4A36E6009EFD9D /* OnboardingViewController.swift in Sources */,
 				73EF41E22A3283BF003F25FA /* TrackerStore.swift in Sources */,
 				7387D4492A4CD6B300AC556D /* ScheduleObservable.swift in Sources */,
 				7319D2A02A1F5BF90075EE1F /* TrackersView.swift in Sources */,
@@ -566,7 +540,6 @@
 				73CA05002A24DC66008536D4 /* NewTrackerViewControllerProtocol.swift in Sources */,
 				733F763A2A353AAD0071EA1C /* TrackerStoreProtocol.swift in Sources */,
 				7319D2882A1E84790075EE1F /* NewTrackerTableViewCell.swift in Sources */,
-				73AEED722A4A3730009EFD9D /* SecondOnboardingViewController.swift in Sources */,
 				73CA05042A24DFAD008536D4 /* NewCategoryViewControllerProtocol.swift in Sources */,
 				7319D2942A1EDC860075EE1F /* ScheduleViewController.swift in Sources */,
 				7319D2B02A1FCA7F0075EE1F /* TrackerRecord.swift in Sources */,
@@ -581,14 +554,13 @@
 				73EF41E42A3283D4003F25FA /* TrackerCategoryStore.swift in Sources */,
 				7387D44D2A4CD72700AC556D /* ScheduleViewModelProtocol.swift in Sources */,
 				733F763C2A3543BA0071EA1C /* TrackerCategoryStoreProtocol.swift in Sources */,
-				73AEED762A4A375C009EFD9D /* OnboardingViewController.swift in Sources */,
+				73AEED762A4A375C009EFD9D /* OnboardingPageViewController.swift in Sources */,
 				7387D43A2A4C637F00AC556D /* CategoryViewModelProtocol.swift in Sources */,
 				7340A4362A1E460900F5A9E3 /* TabBarController.swift in Sources */,
 				7319D2A42A1F8A390075EE1F /* TrackersSupplementaryView.swift in Sources */,
 				73CA05072A251383008536D4 /* ScheduleService.swift in Sources */,
 				73CA05092A251777008536D4 /* ScheduleViewControllerProtocol.swift in Sources */,
 				73EF41E62A3283E3003F25FA /* TrackerRecordStore.swift in Sources */,
-				73AEED702A4A3723009EFD9D /* SecondOnboardingPageView.swift in Sources */,
 				73FB36C42A28C33000411A25 /* TrackerCollectionViewCellDelegate.swift in Sources */,
 				7319D29E2A1EEA3F0075EE1F /* NewCategoryView.swift in Sources */,
 				73DBA1672A1652CD003FB173 /* AppDelegate.swift in Sources */,
