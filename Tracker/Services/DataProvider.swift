@@ -19,29 +19,56 @@ final class DataProvider {
     var trackerCategoryStore: TrackerCategoryStoreProtocol?
     var trackerRecordStore: TrackerRecordStoreProtocol?
     
-    var selectedCategory: String?
-    var selectedSchedule: String?
+    var categoryViewModel: CategoryViewModelProtocol?
+    var scheduleViewModel: ScheduleViewModelProtocol?
+    var newTrackerViewModel: NewTrackerViewModelProtocol?
+    var trackersViewModel: TrackersViewModelProtocol?
     
-    var trackerName: String?
-    var trackerEmoji: String?
-    var trackerColor: UIColor?
-    var schedule: [Int]?
+    var trackerSchedule: [Int]?
     
-    var categories: [TrackerCategory]? = []
-    var visibleCategories: [TrackerCategory]? = []
+    var visibleCategories: [TrackerCategory]? {
+        didSet {
+            trackersViewModel?.setupVisibleTrackers()
+        }
+    }
+    
     var completedTrackers: [TrackerRecord]? = []
     
-    var emojies = [
-        "🙂", "😻", "🌺", "🐶", "❤️", "😱",
-        "😇", "😡", "🥶", "🤔", "🙌", "🍔",
-        "🥦", "🏓", "🥇", "🎸", "🏝", "😪"
-    ]
+    private var categoryName: [String]? {
+        didSet {
+            categoryViewModel?.getVisibleCategories()
+        }
+    }
     
-    var colors: [UIColor] = [
-        .colorSelection1, .colorSelection2, .colorSelection3, .colorSelection4, .colorSelection5, .colorSelection6,
-        .colorSelection7, .colorSelection8, .colorSelection9, .colorSelection10, .colorSelection11, .colorSelection12,
-        .colorSelection13, .colorSelection14, .colorSelection15, .colorSelection16, .colorSelection17, .colorSelection18,
-    ]
+    var trackerName: String? {
+        didSet {
+            newTrackerViewModel?.isNewTrackerReady()
+        }
+    }
+    
+    var selectedCategory: String? {
+        didSet {
+            newTrackerViewModel?.isNewTrackerReady()
+        }
+    }
+    
+    var selectedSchedule: String? {
+        didSet {
+            newTrackerViewModel?.isNewTrackerReady()
+        }
+    }
+    
+    var trackerEmoji: String? {
+        didSet {
+            newTrackerViewModel?.isNewTrackerReady()
+        }
+    }
+    
+    var trackerColor: UIColor? {
+        didSet {
+            newTrackerViewModel?.isNewTrackerReady()
+        }
+    }
     
     func resetNewTrackerInfo() {
         trackerName = nil
@@ -49,11 +76,7 @@ final class DataProvider {
         selectedSchedule = nil
         trackerEmoji = nil
         trackerColor = nil
-        schedule = nil
-    }
-    
-    func setTrackerStoreDelegate(view: TrackersDelegate) {
-        trackerStore?.delegate = view
+        trackerSchedule = nil
     }
     
     func getVisibleCategories() -> [TrackerCategory] {
@@ -66,6 +89,22 @@ final class DataProvider {
     
     func getCompletedTrackers() -> [TrackerRecord] {
         completedTrackers ?? []
+    }
+    
+    func didAllFieldsFill() -> Bool {
+        trackerName != nil &&
+        selectedCategory != nil &&
+        trackerEmoji != nil &&
+        trackerColor != nil ? true : false
+    }
+    
+    func didScheduleChoosen() -> Bool {
+        trackerSchedule != nil ? true : false
+    }
+    
+    //MARK: ViewModel
+    func updateCategoryViewModel() -> [String] {
+        categoryName ?? []
     }
     
     //MARK: TrackerStore:
@@ -104,6 +143,10 @@ final class DataProvider {
         trackerCategoryStore?.fetchCategoryName(index: index) ?? ""
     }
     
+    func getCategoryName() {
+        categoryName = trackerCategoryStore?.getCategoriesNames()
+    }
+    
     func fetchNewCategoryName(category: String) -> TrackerCategoryCoreData? {
         trackerCategoryStore?.fetchNewCategoryName(name: category)
     }
@@ -121,5 +164,21 @@ final class DataProvider {
         completedTrackers = trackerRecordStore?.fetchTrackerRecords()
     }
     
+    //MARK: SetupViewModelProtocols
+    func bindCategoryViewModel(controller: CategoryViewModelProtocol) {
+        categoryViewModel = controller
+    }
+    
+    func bindScheduleViewModel(controller: ScheduleViewModelProtocol) {
+        scheduleViewModel = controller
+    }
+    
+    func bindNewTrackerViewModel(controller: NewTrackerViewModelProtocol) {
+        newTrackerViewModel = controller
+    }
+    
+    func bindTrackersViewModel(controller: TrackersViewModelProtocol) {
+        trackersViewModel = controller
+    }
 }
 

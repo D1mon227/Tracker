@@ -20,9 +20,7 @@ final class TabBarController: UITabBarController {
         appearance.backgroundColor = .ypWhite
         self.tabBar.standardAppearance = appearance
         
-        let trackerViewPresenter = TrackerViewPresenter()
-        let trackerViewController = TrackerViewController()
-        trackerViewController.presenter = trackerViewPresenter
+        let trackerViewController = TrackersViewController()
         
         let trackerNavigationController = UINavigationController(rootViewController: trackerViewController)
         let statisticNavigationController = UINavigationController(rootViewController: StatisticViewController())

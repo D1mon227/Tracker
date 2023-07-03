@@ -1,33 +1,35 @@
 //
-//  FilterTableViewCell.swift
+//  CategoryTableViewCell.swift
 //  Tracker
 //
-//  Created by Dmitry Medvedev on 25.05.2023.
+//  Created by Dmitry Medvedev on 26.05.2023.
 //
 
 import UIKit
 
-final class FilterTableViewCell: UITableViewCell {
+final class CategoryTableViewCell: UITableViewCell {
     
-    private lazy var label: UILabel = {
+    lazy var label: UILabel = {
         let element = UILabel()
         element.font = .systemFont(ofSize: 17, weight: .regular)
         element.textColor = .ypBlack
         return element
     }()
     
+    var viewModel: String? {
+        didSet {
+            label.text = viewModel
+        }
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
+        backgroundColor = .ypBackground
         setupView()
         addConstraints()
     }
     
-    func configureCell(text: String) {
-        label.text = text
-    }
-    
     private func setupView() {
-        backgroundColor = .ypBackground
         addSubview(label)
     }
     

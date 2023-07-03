@@ -10,8 +10,16 @@ import Foundation
 final class ScheduleService {
     
     func arrayToString(array: [Int]) -> String {
-        let sortedDays = array.sorted()
-        let shortNames = sortedDays.map { changeDayToShortName(day: $0) }
+        var result = array
+        
+        if result.contains(1) {
+            let sorted = result.filter { $0 != 1 }.sorted()
+            result = sorted + [1]
+        } else {
+            result = array.sorted()
+        }
+        
+        let shortNames = result.map { changeDayToShortName(day: $0) }
         let finalString = shortNames.joined(separator: ", ")
 
         return finalString

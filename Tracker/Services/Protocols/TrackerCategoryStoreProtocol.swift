@@ -14,4 +14,5 @@ protocol TrackerCategoryStoreProtocol: AnyObject {
     func isCategoryExist(category: String) -> Bool
     func fetchCategoryName(index: Int) -> String
     func fetchNewCategoryName(name: String) -> TrackerCategoryCoreData?
+    func getCategoriesNames() -> [String]
 }

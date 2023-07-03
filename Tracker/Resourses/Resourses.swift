@@ -12,6 +12,8 @@ enum Resourses {
         static let statisticEmptyImage = UIImage(named: "statisticEmptyImage")
         static let trackerEmptyImage = UIImage(named: "trackerEmptyImage")
         static let searchEmptyImage = UIImage(named: "searchEmptyImage")
+        static let firstPageOfOnboarding = UIImage(named: "firstPageOfOnboarding")
+        static let secondPageOfOnboarding = UIImage(named: "secondPageOfOnboarding")
     }
     
     enum WeekDay: String, CaseIterable {
@@ -22,13 +24,5 @@ enum Resourses {
         case Пятница
         case Суббота
         case Воскресенье
-    }
-    
-    enum TrackerStoreError: Error {
-        case decodingErrorInvalidColorHex
-        case decodingErrorInvalidEmojies
-        case decodingErrorInvalidName
-        case decodingErrorInvalidId
-        case decodingErrorInvalidSchedule
     }
 }
