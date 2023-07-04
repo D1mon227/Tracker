@@ -61,6 +61,7 @@
 		73CA050B2A2522A4008536D4 /* ScheduleViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CA050A2A2522A4008536D4 /* ScheduleViewControllerDelegate.swift */; };
 		73CFD1232A5309420090BF24 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73CFD1252A5309420090BF24 /* Localizable.strings */; };
 		73CFD1272A530A2F0090BF24 /* LocalizableConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CFD1262A530A2F0090BF24 /* LocalizableConstants.swift */; };
+		73CFD12C2A541CE30090BF24 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 73CFD12E2A541CE40090BF24 /* Localizable.stringsdict */; };
 		73D91E7A2A39199300588F8E /* TrackerRecordStoreProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D91E792A39199300588F8E /* TrackerRecordStoreProtocol.swift */; };
 		73DBA1672A1652CD003FB173 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBA1662A1652CD003FB173 /* AppDelegate.swift */; };
 		73DBA1692A1652CD003FB173 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBA1682A1652CD003FB173 /* SceneDelegate.swift */; };
@@ -134,6 +135,9 @@
 		73CFD1262A530A2F0090BF24 /* LocalizableConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizableConstants.swift; sourceTree = "<group>"; };
 		73CFD1282A530ACE0090BF24 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73CFD1292A5335D70090BF24 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
+		73CFD12D2A541CE40090BF24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		73CFD12F2A541CE70090BF24 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = he; path = he.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		73CFD1302A541CE80090BF24 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		73D91E792A39199300588F8E /* TrackerRecordStoreProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStoreProtocol.swift; sourceTree = "<group>"; };
 		73DBA1632A1652CD003FB173 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73DBA1662A1652CD003FB173 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -253,9 +257,10 @@
 		7340A43E2A1E546200F5A9E3 /* Resourses */ = {
 			isa = PBXGroup;
 			children = (
+				7340A43F2A1E547900F5A9E3 /* Resourses.swift */,
 				73CFD1262A530A2F0090BF24 /* LocalizableConstants.swift */,
 				73CFD1252A5309420090BF24 /* Localizable.strings */,
-				7340A43F2A1E547900F5A9E3 /* Resourses.swift */,
+				73CFD12E2A541CE40090BF24 /* Localizable.stringsdict */,
 			);
 			path = Resourses;
 			sourceTree = "<group>";
@@ -521,6 +526,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73DBA1732A1652CF003FB173 /* LaunchScreen.storyboard in Resources */,
+				73CFD12C2A541CE30090BF24 /* Localizable.stringsdict in Resources */,
 				73CFD1232A5309420090BF24 /* Localizable.strings in Resources */,
 				73DBA1702A1652CF003FB173 /* Assets.xcassets in Resources */,
 			);
@@ -611,6 +617,16 @@
 				73CFD1292A5335D70090BF24 /* he */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		73CFD12E2A541CE40090BF24 /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				73CFD12D2A541CE40090BF24 /* en */,
+				73CFD12F2A541CE70090BF24 /* he */,
+				73CFD1302A541CE80090BF24 /* ru */,
+			);
+			name = Localizable.stringsdict;
 			sourceTree = "<group>";
 		};
 		73DBA1712A1652CF003FB173 /* LaunchScreen.storyboard */ = {

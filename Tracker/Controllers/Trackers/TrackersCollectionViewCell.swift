@@ -76,27 +76,12 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func formatDaysString(_ days: Int) -> String {
-        let lastDigit = days % 10
-        let twoLastDigits = days % 100
-        
-        if twoLastDigits >= 11 && twoLastDigits <= 20 {
-            return "\(days) дней"
-        } else if lastDigit == 1 {
-            return "\(days) день"
-        } else if lastDigit >= 2 && lastDigit <= 4 {
-            return "\(days) дня"
-        } else {
-            return "\(days) дней"
-        }
-    }
-    
     func configureCell(tracker: Tracker, isCompleted: Bool, completedDays: Int, indexPath: IndexPath) {
         cellView.backgroundColor = tracker.color
         cellLabel.text = tracker.name
         doneButton.backgroundColor = tracker.color
         emojiLabel.text = tracker.emoji
-        dateLabel.text = formatDaysString(completedDays)
+        dateLabel.text = LocalizableConstants.TrackersVC.formatDaysString(completedDays)
         self.isCompleted = isCompleted
         self.trackerID = tracker.id
         self.indexPath = indexPath

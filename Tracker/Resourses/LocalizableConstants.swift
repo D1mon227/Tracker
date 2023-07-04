@@ -31,6 +31,10 @@ enum LocalizableConstants {
         static let filterButton = NSLocalizedString("trackersVC.filterButton", comment: "")
         static let nothingFoundLabel = NSLocalizedString("trackersVC.nothingFoundLabel", comment: "")
         static let emptyStateLabel = NSLocalizedString("trackersVC.emptyStateLabel", comment: "")
+        static func formatDaysString(_ days: Int) -> String {
+            String.localizedStringWithFormat(NSLocalizedString("numberOfDays", comment: ""), days)
+        }
+        
     }
     
     enum CreateTrackerVC {
