@@ -10,11 +10,11 @@ import SnapKit
 
 final class CategoryViewController: UIViewController, CategoryViewControllerProtocol {
     
+    var viewController: NewTrackerViewControllerProtocol?
     private let categoryView = CategoryView()
     private let dataProvider = DataProvider.shared
     private let categoryViewModel = CategoryViewModel()
-    var viewController: NewTrackerViewControllerProtocol?
-    var selectedIndexPath: IndexPath?
+    private var selectedIndexPath: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()

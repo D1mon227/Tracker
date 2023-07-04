@@ -36,6 +36,7 @@
 "newTrackerVC.newHabitLabel" = "הרגל חדש";
 "newTrackerVC.newUnregularEventLabel" = "אירוע לא סדיר חדש";
 "newTrackerVC.textFieldPlaceholder" = "הזן את שם הגשש";
+"newTrackerVC.textFieldWarning" = "מגבלה של 38 תווים";
 "newTrackerVC.tableViewCategoryLabel" = "קטגוריה";
 "newTrackerVC.tableViewScheduleLabel" = "לוח זמנים";
 "newTrackerVC.cancelButton" = "ביטול";
@@ -43,6 +44,12 @@
 "newTrackerVC.emojiLabel" = "אימוג ' י";
 "newTrackerVC.colorLabel" = "צבע";
 
+//MARK: FiltersVC
+"filtersVC.filtersTitle" = "מסננים";
+"filtersVC.allTrackers" = "כל הגששים";
+"filtersVC.todayTrackers" = "עוקבים להיום";
+"filtersVC.completed" = "הושלם";
+"filtersVC.uncompleted" = "לא הושלם";
 
 //MARK: CategoryVC
 "categoryVC.categoryTitle" = "קטגוריה";
@@ -75,6 +82,11 @@
 "scheduleVC.saturdayShort" = "ש";
 "scheduleVC.sundayShort" = "א";
 
-
+//MARK: ContextMenu
 "contextMenu.editButton" = "עריכה";
 "contextMenu.deleteButton" = "מחק";
+
+//MARK: Alert
+"alert.title" = "האם אתה בטוח שאתה רוצה למחוק את הגשש?";
+"alert.cancel" = "ביטול";
+"alert.delete" = "מחק";

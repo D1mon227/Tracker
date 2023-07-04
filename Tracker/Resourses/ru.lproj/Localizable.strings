@@ -27,6 +27,13 @@
 "trackersVC.nothingFoundLabel" = "Ничего не найдено";
 "trackersVC.emptyStateLabel" = "Что будем отслеживать?";
 
+//MARK: FiltersVC
+"filtersVC.filtersTitle" = "Фильтры";
+"filtersVC.allTrackers" = "Все трекеры";
+"filtersVC.todayTrackers" = "Трекеры на сегодня";
+"filtersVC.completed" = "Завершенные";
+"filtersVC.uncompleted" = "Не завершенные";
+
 //MARK: CreateTrackerVC
 "createTrackerVC.createTrackerLabel" = "Создание трекера";
 "createTrackerVC.habitLabel" = "Привычка";
@@ -36,6 +43,7 @@
 "newTrackerVC.newHabitLabel" = "Новая привычка";
 "newTrackerVC.newUnregularEventLabel" = "Новое нерегулярное событие";
 "newTrackerVC.textFieldPlaceholder" = "Введите название трекера";
+"newTrackerVC.textFieldWarning" = "Ограничение 38 символов";
 "newTrackerVC.tableViewCategoryLabel" = "Категория";
 "newTrackerVC.tableViewScheduleLabel" = "Расписание";
 "newTrackerVC.cancelButton" = "Отменить";
@@ -74,6 +82,11 @@
 "scheduleVC.saturdayShort" = "Сб";
 "scheduleVC.sundayShort" = "Вс";
 
-
+//MARK: ContextMenu
 "contextMenu.editButton" = "Редактировать";
 "contextMenu.deleteButton" = "Удалить";
+
+//MARK: Alert
+"alert.title" = "Уверены что хотите удалить трекер?";
+"alert.cancel" = "Отменить";
+"alert.delete" = "Удалить";

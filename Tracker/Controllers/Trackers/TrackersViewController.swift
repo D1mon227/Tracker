@@ -11,7 +11,8 @@ import SnapKit
 final class TrackersViewController: UIViewController, TrackerViewControllerProtocol {
     
     private let trackersView = TrackersView()
-    var trackersViewModel = TrackersViewModel()
+    private let trackersViewModel = TrackersViewModel()
+    private let alertService = AlertService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -277,13 +278,16 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
     func editTracker(_ cell: TrackersCollectionViewCell) {}
     
     func deleteTracker(_ cell: TrackersCollectionViewCell) {
-        guard let indexPath = trackersView.trackersCollectionView.indexPath(for: cell) else { return }
-        
-        let visibleCategories = trackersViewModel.visibleCategories
-        let tracker = visibleCategories[indexPath.section].trackerArray[indexPath.row]
-        
-        trackersViewModel.deleteTracker(id: tracker.id)
-        setupTrackersFromDatePicker()
+        alertService.showAlert(controller: self) { [weak self] in
+            guard let self = self,
+                  let indexPath = trackersView.trackersCollectionView.indexPath(for: cell) else { return }
+            
+            let visibleCategories = trackersViewModel.visibleCategories
+            let tracker = visibleCategories[indexPath.section].trackerArray[indexPath.row]
+            
+            self.trackersViewModel.deleteTracker(id: tracker.id)
+            self.setupTrackersFromDatePicker()
+        }
     }
 }
 

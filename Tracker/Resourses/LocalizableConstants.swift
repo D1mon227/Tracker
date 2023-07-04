@@ -34,7 +34,10 @@ enum LocalizableConstants {
         static func formatDaysString(_ days: Int) -> String {
             String.localizedStringWithFormat(NSLocalizedString("numberOfDays", comment: ""), days)
         }
-        
+    }
+    
+    enum FiltersVC {
+        static let filtersTitle = NSLocalizedString("filtersVC.filtersTitle", comment: "")
     }
     
     enum CreateTrackerVC {
@@ -47,6 +50,7 @@ enum LocalizableConstants {
         static let newHabitLabel = NSLocalizedString("newTrackerVC.newHabitLabel", comment: "")
         static let newUnregularEventLabel = NSLocalizedString("newTrackerVC.newUnregularEventLabel", comment: "")
         static let textFieldPlaceholder = NSLocalizedString("newTrackerVC.textFieldPlaceholder", comment: "")
+        static let textFieldWarning = NSLocalizedString("newTrackerVC.textFieldWarning", comment: "")
         static let tableViewCategoryLabel = NSLocalizedString("newTrackerVC.tableViewCategoryLabel", comment: "")
         static let tableViewScheduleLabel = NSLocalizedString("newTrackerVC.tableViewScheduleLabel", comment: "")
         static let cancelButton = NSLocalizedString("newTrackerVC.cancelButton", comment: "")
@@ -92,5 +96,11 @@ enum LocalizableConstants {
     enum ContextMenu {
         static let editButton = NSLocalizedString("contextMenu.editButton", comment: "")
         static let deleteButton = NSLocalizedString("contextMenu.deleteButton", comment: "")
+    }
+    
+    enum Alert {
+        static let title = NSLocalizedString("alert.title", comment: "")
+        static let cancel = NSLocalizedString("alert.cancel", comment: "")
+        static let delete = NSLocalizedString("alert.delete", comment: "")
     }
 }

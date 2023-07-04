@@ -26,6 +26,7 @@
 		7319D2AC2A1FCA620075EE1F /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7319D2AB2A1FCA620075EE1F /* Tracker.swift */; };
 		7319D2AE2A1FCA730075EE1F /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7319D2AD2A1FCA730075EE1F /* TrackerCategory.swift */; };
 		7319D2B02A1FCA7F0075EE1F /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7319D2AF2A1FCA7F0075EE1F /* TrackerRecord.swift */; };
+		7339075C2A548B93003C2224 /* AlertService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7339075B2A548B93003C2224 /* AlertService.swift */; };
 		733F763A2A353AAD0071EA1C /* TrackerStoreProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733F76392A353AAD0071EA1C /* TrackerStoreProtocol.swift */; };
 		733F763C2A3543BA0071EA1C /* TrackerCategoryStoreProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733F763B2A3543BA0071EA1C /* TrackerCategoryStoreProtocol.swift */; };
 		733F763E2A367A630071EA1C /* TrackersCategoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733F763D2A367A630071EA1C /* TrackersCategoryDelegate.swift */; };
@@ -98,6 +99,7 @@
 		7319D2AB2A1FCA620075EE1F /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		7319D2AD2A1FCA730075EE1F /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		7319D2AF2A1FCA7F0075EE1F /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
+		7339075B2A548B93003C2224 /* AlertService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertService.swift; sourceTree = "<group>"; };
 		733F76392A353AAD0071EA1C /* TrackerStoreProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStoreProtocol.swift; sourceTree = "<group>"; };
 		733F763B2A3543BA0071EA1C /* TrackerCategoryStoreProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryStoreProtocol.swift; sourceTree = "<group>"; };
 		733F763D2A367A630071EA1C /* TrackersCategoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersCategoryDelegate.swift; sourceTree = "<group>"; };
@@ -326,6 +328,7 @@
 				73EF41EB2A328EEF003F25FA /* Protocols */,
 				73EF41F62A33BB4E003F25FA /* Delegates */,
 				7387D43B2A4C900200AC556D /* Store */,
+				7339075B2A548B93003C2224 /* AlertService.swift */,
 				73EF41EE2A333173003F25FA /* DataProvider.swift */,
 				730F6CDC2A26446000B752CD /* DateService.swift */,
 				7387D4312A4B8AE900AC556D /* OnboardingManager.swift */,
@@ -553,6 +556,7 @@
 				7319D2B02A1FCA7F0075EE1F /* TrackerRecord.swift in Sources */,
 				7319D28C2A1EB4080075EE1F /* NewTrackerSupplementaryView.swift in Sources */,
 				7319D29C2A1EEA030075EE1F /* NewCategoryViewController.swift in Sources */,
+				7339075C2A548B93003C2224 /* AlertService.swift in Sources */,
 				7387D4452A4C95F800AC556D /* TrackersViewModel.swift in Sources */,
 				73DBA16B2A1652CD003FB173 /* TrackersViewController.swift in Sources */,
 				7387D43F2A4C92B700AC556D /* NewTrackerViewModel.swift in Sources */,

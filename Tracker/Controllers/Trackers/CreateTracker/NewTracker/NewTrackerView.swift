@@ -33,7 +33,7 @@ final class NewTrackerView {
     
     lazy var warningLabel: UILabel = {
         let element = UILabel()
-        element.text = "Ограничение 38 символов"
+        element.text = LocalizableConstants.NewTrackerVC.textFieldWarning
         element.font = .systemFont(ofSize: 17, weight: .regular)
         element.textColor = .ypRed
         element.textAlignment = .center

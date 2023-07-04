@@ -29,4 +29,15 @@ enum Resourses {
             return NSLocalizedString("scheduleVC." + self.rawValue, comment: "")
         }
     }
+    
+    enum Filters: String, CaseIterable {
+        case allTrackers
+        case todayTrackers
+        case completed
+        case uncompleted
+        
+        var localizedString: String {
+            return NSLocalizedString("filtersVC." + self.rawValue, comment: "")
+        }
+    }
 }

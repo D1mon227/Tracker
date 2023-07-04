@@ -36,6 +36,7 @@
 "newTrackerVC.newHabitLabel" = "A new habit";
 "newTrackerVC.newUnregularEventLabel" = "New unregular event";
 "newTrackerVC.textFieldPlaceholder" = "Enter the name of the tracker";
+"newTrackerVC.textFieldWarning" = "Limit of 38 characters";
 "newTrackerVC.tableViewCategoryLabel" = "Category";
 "newTrackerVC.tableViewScheduleLabel" = "Schedule";
 "newTrackerVC.cancelButton" = "Cancel";
@@ -43,6 +44,12 @@
 "newTrackerVC.emojiLabel" = "Emoji";
 "newTrackerVC.colorLabel" = "Color";
 
+//MARK: FiltersVC
+"filtersVC.filtersTitle" = "Filters";
+"filtersVC.allTrackers" = "All trackers";
+"filtersVC.todayTrackers" = "Trackers for today";
+"filtersVC.completed" = "Completed";
+"filtersVC.uncompleted" = "Uncompleted";
 
 //MARK: CategoryVC
 "categoryVC.categoryTitle" = "Category";
@@ -75,6 +82,11 @@
 "scheduleVC.saturdayShort" = "Sat";
 "scheduleVC.sundayShort" = "Sun";
 
-
+//MARK: ContextMenu
 "contextMenu.editButton" = "Edit";
 "contextMenu.deleteButton" = "Delete";
+
+//MARK: Alert
+"alert.title" = "Are you sure you want to delete the tracker?";
+"alert.cancel" = "Cancel";
+"alert.delete" = "Delete";

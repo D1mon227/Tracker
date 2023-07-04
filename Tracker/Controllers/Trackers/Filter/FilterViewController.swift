@@ -10,11 +10,9 @@ import SnapKit
 
 final class FilterViewController: UIViewController {
     
-    let titles: [String] = ["Все трекеры", "Трекеры на сегодня", "Завершенные", "Не завершенные"]
-    
     private lazy var filterLabel: UILabel = {
         let element = UILabel()
-        element.text = "Фильтры"
+        element.text = LocalizableConstants.FiltersVC.filtersTitle
         element.font = .systemFont(ofSize: 16, weight: .medium)
         element.textColor = .ypBlack
         return element
@@ -50,7 +48,7 @@ extension FilterViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FilterTableViewCell", for: indexPath) as? FilterTableViewCell else { return UITableViewCell() }
         
-        cell.configureCell(text: titles[indexPath.row])
+        cell.configureCell(text: Resourses.Filters.allCases[indexPath.row].localizedString)
         
         return cell
     }
