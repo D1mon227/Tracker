@@ -51,8 +51,8 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
         newTrackerView.collectionView.delegate = self
     }
     
-    private func setupWarningLabel(countOfTextFieldSymbols: Int?) {
-        guard let countOfTextFieldSymbols = countOfTextFieldSymbols else { return }
+    @objc private func setupWarningLabel() {
+        guard let countOfTextFieldSymbols = newTrackerView.habitNameTextField.text?.count else { return }
         if countOfTextFieldSymbols > 38 {
             view.addSubview(newTrackerView.warningLabel)
             
@@ -66,9 +66,6 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
             }
         } else {
             newTrackerView.warningLabel.removeFromSuperview()
-            newTrackerView.categoryAndScheduleTableView.snp.makeConstraints { make in
-                make.top.equalTo(newTrackerView.habitNameTextField.snp.bottom).offset(24)
-            }
         }
     }
     
@@ -90,6 +87,7 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     private func setupTarget() {
         newTrackerView.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
         newTrackerView.createButton.addTarget(self, action: #selector(createTracker), for: .touchUpInside)
+        newTrackerView.habitNameTextField.addTarget(self, action: #selector(setupWarningLabel), for: [.editingChanged, .editingDidEnd])
     }
     
     @objc private func dismissVC() {
@@ -126,12 +124,12 @@ extension NewTrackerViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        setupWarningLabel(countOfTextFieldSymbols: textField.text?.count)
-        
-        guard let countOfTextFieldSymbols = textField.text?.count else { return }
-        if countOfTextFieldSymbols <= 38 {
-            newTrackerViewModel.setTrackerName(name: textField.text ?? "")
+        guard let trackerName = textField.text == "" ? nil : textField.text else { return }
+
+        if trackerName.count <= 38 && trackerName.count > 0 {
+            newTrackerViewModel.setTrackerName(name: trackerName)
         }
+        
     }
 }
 
