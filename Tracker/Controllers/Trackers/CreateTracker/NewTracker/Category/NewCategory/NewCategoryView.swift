@@ -25,6 +25,7 @@ final class NewCategoryView {
         element.clearButtonMode = .whileEditing
         element.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         element.leftViewMode = .always
+        element.textAlignment = .natural
         element.returnKeyType = .done
         element.font = .systemFont(ofSize: 17, weight: .regular)
         element.textColor = .ypBlack

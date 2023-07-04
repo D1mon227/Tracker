@@ -51,6 +51,27 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
         newTrackerView.collectionView.delegate = self
     }
     
+    private func setupWarningLabel(countOfTextFieldSymbols: Int?) {
+        guard let countOfTextFieldSymbols = countOfTextFieldSymbols else { return }
+        if countOfTextFieldSymbols > 38 {
+            view.addSubview(newTrackerView.warningLabel)
+            
+            newTrackerView.warningLabel.snp.makeConstraints { make in
+                make.top.equalTo(newTrackerView.habitNameTextField.snp.bottom).offset(8)
+                make.centerX.equalToSuperview()
+            }
+            
+            newTrackerView.categoryAndScheduleTableView.snp.makeConstraints { make in
+                make.top.equalTo(newTrackerView.warningLabel.snp.bottom).offset(32)
+            }
+        } else {
+            newTrackerView.warningLabel.removeFromSuperview()
+            newTrackerView.categoryAndScheduleTableView.snp.makeConstraints { make in
+                make.top.equalTo(newTrackerView.habitNameTextField.snp.bottom).offset(24)
+            }
+        }
+    }
+    
     func enableCreateButton() {
         newTrackerView.createButton.isEnabled = true
         newTrackerView.createButton.backgroundColor = .ypBlack
@@ -105,8 +126,12 @@ extension NewTrackerViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        newTrackerViewModel.setTrackerName(name: textField.text ?? "")
-        //checkCreateButton()
+        setupWarningLabel(countOfTextFieldSymbols: textField.text?.count)
+        
+        guard let countOfTextFieldSymbols = textField.text?.count else { return }
+        if countOfTextFieldSymbols <= 38 {
+            newTrackerViewModel.setTrackerName(name: textField.text ?? "")
+        }
     }
 }
 
@@ -373,7 +398,7 @@ extension NewTrackerViewController {
                 newTrackerView.categoryAndScheduleTableView.separatorStyle = .none
             }
 
-            make.top.equalTo(newTrackerView.habitNameTextField.snp.bottom).offset(24)
+            make.top.greaterThanOrEqualTo(newTrackerView.habitNameTextField.snp.bottom).offset(24)
             make.leading.trailing.equalToSuperview().inset(16)
         }
         

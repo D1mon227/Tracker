@@ -125,7 +125,6 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
             make.height.equalTo(22)
             make.trailing.equalToSuperview().offset(-16)
             make.centerY.equalTo(trackersView.searchTextField)
-            make.width.equalTo(83)
         }
         
         trackersView.searchTextField.snp.makeConstraints { make in
@@ -301,7 +300,6 @@ extension TrackersViewController {
         guard let navBar = navigationController?.navigationBar else { return }
         view.backgroundColor = .ypWhite
         view.addSubview(trackersView.searchTextField)
-//        view.addSubview(trackersView.trackersCollectionView)
         navBar.addSubview(trackersView.datePicker)
         addConstraints()
     }
@@ -313,7 +311,7 @@ extension TrackersViewController {
             make.height.equalTo(34)
             make.width.equalTo(100)
             make.trailing.equalTo(navBar.snp.trailing).offset(-16)
-            make.bottom.equalTo(navBar.snp.bottom).offset(-11)
+            make.top.equalTo(navBar.snp.top).offset(5)
         }
         
         trackersView.searchTextField.snp.makeConstraints { make in
@@ -321,11 +319,5 @@ extension TrackersViewController {
             make.height.equalTo(36)
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
-        
-//        trackersView.trackersCollectionView.snp.makeConstraints { make in
-//            make.leading.trailing.equalToSuperview()
-//            make.bottom.equalTo(view.safeAreaLayoutGuide)
-//            make.top.equalTo(trackersView.searchTextField.snp.bottom).offset(10)
-//        }
     }
 }

@@ -36,6 +36,8 @@ final class NewTrackerView {
         element.text = "Ограничение 38 символов"
         element.font = .systemFont(ofSize: 17, weight: .regular)
         element.textColor = .ypRed
+        element.textAlignment = .center
+        element.sizeToFit()
         return element
     }()
     

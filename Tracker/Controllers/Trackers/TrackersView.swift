@@ -55,6 +55,7 @@ final class TrackersView {
         let element = UIButton(type: .system)
         element.tintColor = .ypBlue
         element.setTitle(LocalizableConstants.TrackersVC.cancelButton, for: .normal)
+        element.sizeToFit()
         element.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         return element
     }()
