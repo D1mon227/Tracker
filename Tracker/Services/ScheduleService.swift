@@ -27,19 +27,19 @@ final class ScheduleService {
     
     func addDayToSchedule(day: String) -> Int {
         switch day {
-        case "Понедельник":
+        case LocalizableConstants.ScheduleVC.monday:
             return 2
-        case "Вторник":
+        case LocalizableConstants.ScheduleVC.tuesday:
             return 3
-        case "Среда":
+        case LocalizableConstants.ScheduleVC.wednesday:
             return 4
-        case "Четверг":
+        case LocalizableConstants.ScheduleVC.thursday:
             return 5
-        case "Пятница":
+        case LocalizableConstants.ScheduleVC.friday:
             return 6
-        case "Суббота":
+        case LocalizableConstants.ScheduleVC.saturday:
             return 7
-        case "Воскресенье":
+        case LocalizableConstants.ScheduleVC.sunday:
             return 1
         default:
             return 0
@@ -49,19 +49,19 @@ final class ScheduleService {
     func changeDayToShortName(day: Int) -> String {
         switch day {
         case 1:
-            return "Вс"
+            return LocalizableConstants.ScheduleVC.sundayShort
         case 2:
-            return "Пн"
+            return LocalizableConstants.ScheduleVC.mondayShort
         case 3:
-            return "Вт"
+            return LocalizableConstants.ScheduleVC.tuesdayShort
         case 4:
-            return "Ср"
+            return LocalizableConstants.ScheduleVC.wednesdayShort
         case 5:
-            return "Чт"
+            return LocalizableConstants.ScheduleVC.thursdayShort
         case 6:
-            return "Пт"
+            return LocalizableConstants.ScheduleVC.fridayShort
         case 7:
-            return "Сб"
+            return LocalizableConstants.ScheduleVC.saturdayShort
         default:
             return ""
         }

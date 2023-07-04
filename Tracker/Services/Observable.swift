@@ -1,5 +1,5 @@
 //
-//  CategoryObservable.swift
+//  TrackersObservable.swift
 //  Tracker
 //
 //  Created by Dmitry Medvedev on 28.06.2023.
@@ -8,7 +8,7 @@
 import Foundation
 
 @propertyWrapper
-final class CategoryObservable<Value> {
+final class Observable<Value> {
     private var onChange: ((Value) -> Void)? = nil
     
     var wrappedValue: Value {
@@ -17,7 +17,7 @@ final class CategoryObservable<Value> {
         }
     }
     
-    var projectedValue: CategoryObservable<Value> {
+    var projectedValue: Observable<Value> {
         return self
     }
     

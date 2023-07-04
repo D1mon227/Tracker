@@ -11,7 +11,7 @@ final class NewCategoryView {
     
     lazy var categoryLabel: UILabel = {
         let element = UILabel()
-        element.text = "Новая категория"
+        element.text = LocalizableConstants.NewCategoryVC.newCategoryTitle
         element.font = .systemFont(ofSize: 16, weight: .medium)
         element.textColor = .ypBlack
         return element
@@ -19,7 +19,7 @@ final class NewCategoryView {
     
     lazy var newCategoryTextField: UITextField = {
         let element = UITextField()
-        element.placeholder = "Введите название категории"
+        element.placeholder = LocalizableConstants.NewCategoryVC.textFieldPlaceholder
         element.backgroundColor = .ypBackground
         element.layer.cornerRadius = 16
         element.clearButtonMode = .whileEditing
@@ -34,7 +34,7 @@ final class NewCategoryView {
     lazy var addCategoryButton: UIButton = {
         let element = UIButton(type: .system)
         element.layer.cornerRadius = 16
-        element.setTitle("Готово", for: .normal)
+        element.setTitle(LocalizableConstants.NewCategoryVC.doneButton, for: .normal)
         element.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         element.titleLabel?.textAlignment = .center
         element.setTitleColor(.white, for: .normal)

@@ -36,15 +36,15 @@ final class TrackersView {
         element.preferredDatePickerStyle = .compact
         element.datePickerMode = .date
         element.layer.cornerRadius = 8
-        element.locale = Locale(identifier: "ru_RU")
-        element.calendar.firstWeekday = 2
+        element.locale = .current
         return element
     }()
     
     lazy var searchTextField: UISearchTextField = {
         let element = UISearchTextField()
-        element.placeholder = "Поиск"
+        element.placeholder = LocalizableConstants.TrackersVC.textFieldPlaceholder
         element.font = .systemFont(ofSize: 17, weight: .regular)
+        element.textAlignment = .natural
         element.returnKeyType = .search
         element.textColor = .ypBlack
         element.clearButtonMode = .never
@@ -54,7 +54,7 @@ final class TrackersView {
     lazy var cancelButton: UIButton = {
         let element = UIButton(type: .system)
         element.tintColor = .ypBlue
-        element.setTitle("Отменить", for: .normal)
+        element.setTitle(LocalizableConstants.TrackersVC.cancelButton, for: .normal)
         element.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         return element
     }()
@@ -64,7 +64,7 @@ final class TrackersView {
         element.backgroundColor = .ypBlue
         element.tintColor = .white
         element.layer.cornerRadius = 16
-        element.setTitle("Фильтры", for: .normal)
+        element.setTitle(LocalizableConstants.TrackersVC.filterButton, for: .normal)
         element.titleLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         return element
     }()

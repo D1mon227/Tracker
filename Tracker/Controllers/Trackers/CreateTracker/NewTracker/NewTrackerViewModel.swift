@@ -12,7 +12,7 @@ final class NewTrackerViewModel: NewTrackerViewModelProtocol {
     
     private let dataProvider = DataProvider.shared
     
-    let tableViewTitle = ["Категория", "Расписание"]
+    let tableViewTitle = [LocalizableConstants.NewTrackerVC.tableViewCategoryLabel, LocalizableConstants.NewTrackerVC.tableViewScheduleLabel]
     
     var emojies: [String] = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
@@ -26,7 +26,7 @@ final class NewTrackerViewModel: NewTrackerViewModelProtocol {
         .colorSelection13, .colorSelection14, .colorSelection15, .colorSelection16, .colorSelection17, .colorSelection18,
     ]
     
-    @NewTrackerObservable
+    @Observable
     private(set) var checkTrackerForCreate = false
     
     init() {

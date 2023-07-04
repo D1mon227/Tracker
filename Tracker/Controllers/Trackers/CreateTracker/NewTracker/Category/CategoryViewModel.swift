@@ -11,7 +11,7 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     
     private let dataProvider = DataProvider.shared
     
-    @CategoryObservable
+    @Observable
     private(set) var visibleCategories: [String] = []
     
     init() {

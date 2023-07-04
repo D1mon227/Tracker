@@ -17,12 +17,16 @@ enum Resourses {
     }
     
     enum WeekDay: String, CaseIterable {
-        case Понедельник
-        case Вторник
-        case Среда
-        case Четверг
-        case Пятница
-        case Суббота
-        case Воскресенье
+        case monday
+        case tuesday
+        case wednesday
+        case thursday
+        case friday
+        case saturday
+        case sunday
+        
+        var localizedString: String {
+            return NSLocalizedString("scheduleVC." + self.rawValue, comment: "")
+        }
     }
 }

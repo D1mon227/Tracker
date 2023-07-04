@@ -16,7 +16,7 @@ final class TrackersViewModel: TrackersViewModelProtocol {
         didSet {
             filterTrackers(text: "")
             emptyImage = Resourses.Images.trackerEmptyImage
-            emptyLabel = "Что будем отслеживать?"
+            emptyLabel = LocalizableConstants.TrackersVC.emptyStateLabel
         }
     }
     
@@ -30,11 +30,11 @@ final class TrackersViewModel: TrackersViewModelProtocol {
         didSet {
             filterTrackers(text: searchText)
             emptyImage = Resourses.Images.searchEmptyImage
-            emptyLabel = "Ничего не найдено"
+            emptyLabel = LocalizableConstants.TrackersVC.nothingFoundLabel
         }
     }
     
-    @TrackersObservable
+    @Observable
     private(set) var visibleCategories: [TrackerCategory] = []
     
     init() {

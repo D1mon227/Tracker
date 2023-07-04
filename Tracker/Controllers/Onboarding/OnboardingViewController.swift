@@ -25,7 +25,7 @@ final class OnboardingViewController: UIViewController {
         let element = UIButton(type: .system)
         element.backgroundColor = .black
         element.layer.cornerRadius = 16
-        element.setTitle("Вот это технологии!", for: .normal)
+        element.setTitle(LocalizableConstants.Onboarding.onboardingContinueButton, for: .normal)
         element.setTitleColor(.white, for: .normal)
         element.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         element.titleLabel?.textAlignment = .center

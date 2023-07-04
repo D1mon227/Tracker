@@ -12,7 +12,7 @@ final class StatisticViewController: UIViewController {
     
     private lazy var emptyLabel: UILabel = {
         let element = UILabel()
-        element.text = "Анализировать пока нечего"
+        element.text = LocalizableConstants.StatisticsVC.emptyStateLabel
         element.textColor = .ypBlack
         element.textAlignment = .center
         element.font = .systemFont(ofSize: 12, weight: .medium)

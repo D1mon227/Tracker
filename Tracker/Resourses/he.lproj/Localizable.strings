@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Dmitry Medvedev on 03.07.2023.
+  
+*/
+
+//MARK: Onboarding
+"onboarding.firstPageTitle" = "עקוב רק אחר מה שאתה רוצה";
+"onboarding.secondPageTitle" = "גם אם זה לא ליטר מים ויוגה";
+"onboarding.continueButton" = "אלה טכנולוגיות!";
+
+//MARK: TabBar
+"tabBar.trackersTabBarTitle" = "עוקבים";
+"tabBar.statisticTabBarTitle" = "סטטיסטיקה";
+
+//MARK: StatisticsVC
+"statisticsVC.navigationTitle" = "סטטיסטיקה";
+"statisticsVC.emptyStateLabel" = "עדיין אין מה לנתח";
+
+//MARK: TrackersVC
+"trackersVC.navigationTitle" = "עוקבים";
+"trackersVC.textFieldPlaceholder" = "חיפוש";
+"trackersVC.cancelButton" = "ביטול";
+"trackersVC.filterButton" = "מסננים";
+"trackersVC.nothingFoundLabel" = "שום דבר לא נמצא";
+"trackersVC.emptyStateLabel" = "מה נעקוב?";
+
+//MARK: CreateTrackerVC
+"createTrackerVC.createTrackerLabel" = "יצירת גשש";
+"createTrackerVC.habitLabel" = "הרגל";
+"createTrackerVC.unregularEventLabel" = "אירוע לא סדיר";
+
+//MARK: NewTrackerVC
+"newTrackerVC.newHabitLabel" = "הרגל חדש";
+"newTrackerVC.newUnregularEventLabel" = "אירוע לא סדיר חדש";
+"newTrackerVC.textFieldPlaceholder" = "הזן את שם הגשש";
+"newTrackerVC.tableViewCategoryLabel" = "קטגוריה";
+"newTrackerVC.tableViewScheduleLabel" = "לוח זמנים";
+"newTrackerVC.cancelButton" = "ביטול";
+"newTrackerVC.createButton" = "צור";
+"newTrackerVC.emojiLabel" = "אימוג ' י";
+"newTrackerVC.colorLabel" = "צבע";
+
+
+//MARK: CategoryVC
+"categoryVC.categoryTitle" = "קטגוריה";
+"categoryVC.emptyStateLabel" = "הרגלים ואירועים יכולים להיות משולבים במשמעות";
+"categoryVC.addCategoryButton" = "הוסף קטגוריה";
+
+//MARK: NewCategoryVC
+"newCategoryVC.newCategoryTitle" = "קטגוריה חדשה";
+"newCategoryVC.textFieldPlaceholder" = "הזן את שם הקטגוריה";
+"newCategoryVC.doneButton" = "בוצע";
+
+//MARK: ScheduleVC
+"scheduleVC.scheduleTitle" = "לוח זמנים";
+"scheduleVC.doneButton" = "בוצע";
+
+"scheduleVC.monday" = "יום שני";
+"scheduleVC.tuesday" = "יום שלישי";
+"scheduleVC.wednesday" = "יום רביעי";
+"scheduleVC.thursday" = "יום חמישי";
+"scheduleVC.friday" = "יום שישי";
+"scheduleVC.saturday" = "יום שבת";
+"scheduleVC.sunday" = "יום ראשון";
+"scheduleVC.everyDay" = "כל יום";
+
+"scheduleVC.mondayShort" = "ב";
+"scheduleVC.tuesdayShort" = "ג";
+"scheduleVC.wednesdayShort" = "ד";
+"scheduleVC.thursdayShort" = "ה";
+"scheduleVC.fridayShort" = "ו";
+"scheduleVC.saturdayShort" = "ש";
+"scheduleVC.sundayShort" = "א";
+
+
+"contextMenu.editButton" = "עריכה";
+"contextMenu.deleteButton" = "מחק";

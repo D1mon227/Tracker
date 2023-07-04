@@ -197,11 +197,11 @@ extension TrackersCollectionViewCell: UIContextMenuInteractionDelegate {
         
         return UIContextMenuConfiguration(actionProvider: { actions in
             return UIMenu(children: [
-                UIAction(title: "Редактировать", image: editImage) { [weak self] _ in
+                UIAction(title: LocalizableConstants.ContextMenu.editButton, image: editImage) { [weak self] _ in
                     guard let self = self else { return }
                     self.editTracker(cell: self)
                 },
-                UIAction(title: "Удалить", image: deleteImage, attributes: .destructive) { [weak self] _ in
+                UIAction(title: LocalizableConstants.ContextMenu.deleteButton, image: deleteImage, attributes: .destructive) { [weak self] _ in
                     guard let self = self else { return }
                     self.deleteTracker(cell: self)
                 }

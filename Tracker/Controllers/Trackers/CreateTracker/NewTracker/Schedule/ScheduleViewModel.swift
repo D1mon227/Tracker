@@ -11,7 +11,7 @@ final class ScheduleViewModel: ScheduleViewModelProtocol {
     private let dataProvider = DataProvider.shared
     private let scheduleService = ScheduleService()
     
-    @ScheduleObservable
+    @Observable
     private(set) var schedule: [Int] = []
     
     init() {
@@ -27,7 +27,7 @@ final class ScheduleViewModel: ScheduleViewModelProtocol {
     }
     
     func setSchedule() {
-        let scheduleDay = schedule.count == 7 ? "Каждый день" : scheduleService.arrayToString(array: schedule)
+        let scheduleDay = schedule.count == 7 ? LocalizableConstants.ScheduleVC.everyDay : scheduleService.arrayToString(array: schedule)
         dataProvider.selectedSchedule = scheduleDay
         dataProvider.trackerSchedule = schedule
         

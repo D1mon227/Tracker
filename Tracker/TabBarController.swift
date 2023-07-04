@@ -27,16 +27,16 @@ final class TabBarController: UITabBarController {
         
         trackerNavigationController.navigationBar.prefersLargeTitles = true
         trackerNavigationController.navigationItem.largeTitleDisplayMode = .automatic
-        trackerNavigationController.navigationBar.topItem?.title = "Трекеры"
+        trackerNavigationController.navigationBar.topItem?.title = LocalizableConstants.TrackersVC.trackersNavigationTitle
         
         statisticNavigationController.navigationBar.prefersLargeTitles = true
         statisticNavigationController.navigationItem.largeTitleDisplayMode = .automatic
-        statisticNavigationController.navigationBar.topItem?.title = "Статистика"
+        statisticNavigationController.navigationBar.topItem?.title = LocalizableConstants.StatisticsVC.statisticsNavigationTitle
         
-        trackerNavigationController.tabBarItem = UITabBarItem(title: "Трекеры",
+        trackerNavigationController.tabBarItem = UITabBarItem(title: LocalizableConstants.TabBar.trackersTabBarTitle,
                                                         image: UIImage(systemName: "record.circle.fill"),
                                                         selectedImage: nil)
-        statisticNavigationController.tabBarItem = UITabBarItem(title: "Статистика",
+        statisticNavigationController.tabBarItem = UITabBarItem(title: LocalizableConstants.TabBar.statisticTabBarTitle,
                                                           image: UIImage(systemName: "hare.fill"),
                                                           selectedImage: nil)
         

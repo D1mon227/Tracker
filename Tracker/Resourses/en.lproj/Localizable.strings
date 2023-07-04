@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Dmitry Medvedev on 03.07.2023.
+  
+*/
+
+//MARK: Onboarding
+"onboarding.firstPageTitle" = "Track only what you want";
+"onboarding.secondPageTitle" = "Even if it's not liters of water and yoga";
+"onboarding.continueButton" = "These are technologies!";
+
+//MARK: TabBar
+"tabBar.trackersTabBarTitle" = "Trackers";
+"tabBar.statisticTabBarTitle" = "Statistics";
+
+//MARK: StatisticsVC
+"statisticsVC.navigationTitle" = "Statistics";
+"statisticsVC.emptyStateLabel" = "There is nothing to analyze yet";
+
+//MARK: TrackersVC
+"trackersVC.navigationTitle" = "Trackers";
+"trackersVC.textFieldPlaceholder" = "Search";
+"trackersVC.cancelButton" = "Cancel";
+"trackersVC.filterButton" = "Filters";
+"trackersVC.nothingFoundLabel" = "Nothing found";
+"trackersVC.emptyStateLabel" = "What will we track?";
+
+//MARK: CreateTrackerVC
+"createTrackerVC.createTrackerLabel" = "Creating a tracker";
+"createTrackerVC.habitLabel" = "Habit";
+"createTrackerVC.unregularEventLabel" = "Unregular event";
+
+//MARK: NewTrackerVC
+"newTrackerVC.newHabitLabel" = "A new habit";
+"newTrackerVC.newUnregularEventLabel" = "New unregular event";
+"newTrackerVC.textFieldPlaceholder" = "Enter the name of the tracker";
+"newTrackerVC.tableViewCategoryLabel" = "Category";
+"newTrackerVC.tableViewScheduleLabel" = "Schedule";
+"newTrackerVC.cancelButton" = "Cancel";
+"newTrackerVC.createButton" = "Create";
+"newTrackerVC.emojiLabel" = "Emoji";
+"newTrackerVC.colorLabel" = "Color";
+
+
+//MARK: CategoryVC
+"categoryVC.categoryTitle" = "Category";
+"categoryVC.emptyStateLabel" = "Habits and events can be combined in meaning";
+"categoryVC.addCategoryButton" = "Add a category";
+
+//MARK: NewCategoryVC
+"newCategoryVC.newCategoryTitle" = "New category";
+"newCategoryVC.textFieldPlaceholder" = "Enter the category name";
+"newCategoryVC.doneButton" = "Done";
+
+//MARK: ScheduleVC
+"scheduleVC.scheduleTitle" = "Schedule";
+"scheduleVC.doneButton" = "Done";
+
+"scheduleVC.monday" = "Monday";
+"scheduleVC.tuesday" = "Tuesday";
+"scheduleVC.wednesday" = "Wednesday";
+"scheduleVC.thursday" = "Thursday";
+"scheduleVC.friday" = "Friday";
+"scheduleVC.saturday" = "Saturday";
+"scheduleVC.sunday" = "Sunday";
+"scheduleVC.everyDay" = "Every day";
+
+"scheduleVC.mondayShort" = "Mon";
+"scheduleVC.tuesdayShort" = "Tue";
+"scheduleVC.wednesdayShort" = "Wed";
+"scheduleVC.thursdayShort" = "Thur";
+"scheduleVC.fridayShort" = "Fri";
+"scheduleVC.saturdayShort" = "Sat";
+"scheduleVC.sundayShort" = "Sun";
+
+
+"contextMenu.editButton" = "Edit";
+"contextMenu.deleteButton" = "Delete";

@@ -12,11 +12,11 @@ final class OnboardingPageViewController: UIPageViewController {
     
     private lazy var controllers: [OnboardingViewController] = {
         let firstOnboardingVC = OnboardingViewController()
-        firstOnboardingVC.firstLabel.text = "Отслеживайте только то, что хотите"
+        firstOnboardingVC.firstLabel.text = LocalizableConstants.Onboarding.firstOnboardingTitle
         firstOnboardingVC.backgrounView.image = Resourses.Images.firstPageOfOnboarding
         
         let secondOnboardingVC = OnboardingViewController()
-        secondOnboardingVC.firstLabel.text = "Даже если это\nне литры воды и йога"
+        secondOnboardingVC.firstLabel.text = LocalizableConstants.Onboarding.secondOnboardingTitle
         secondOnboardingVC.backgrounView.image = Resourses.Images.secondPageOfOnboarding
         return [firstOnboardingVC, secondOnboardingVC]
     }()

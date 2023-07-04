@@ -227,9 +227,9 @@ extension NewTrackerViewController: UICollectionViewDataSource {
                                                                          for: indexPath) as? NewTrackerSupplementaryView else { return UICollectionReusableView() }
         switch indexPath.section {
         case 0:
-            view.headerLabel.text = "Emoji"
+            view.headerLabel.text = LocalizableConstants.NewTrackerVC.emojiLabel
         case 1:
-            view.headerLabel.text = "Цвет"
+            view.headerLabel.text = LocalizableConstants.NewTrackerVC.colorLabel
         default:
             view.headerLabel.text = ""
         }
@@ -344,7 +344,7 @@ extension NewTrackerViewController {
     }
     
     private func setupTitle() {
-        newTrackerView.newHabitLabel.text = typeOfTracker == .habit ? "Новая привычка" : "Новое нерегулярное событие"
+        newTrackerView.newHabitLabel.text = typeOfTracker == .habit ? LocalizableConstants.NewTrackerVC.newHabitLabel : LocalizableConstants.NewTrackerVC.newUnregularEventLabel
     }
     
     private func addConstraints() {

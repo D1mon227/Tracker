@@ -57,7 +57,8 @@ extension ScheduleViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as? ScheduleTableViewCell else { return UITableViewCell() }
         
         cell.delegate = self
-        cell.configureCell(text: Resourses.WeekDay.allCases[indexPath.row].rawValue)
+        
+        cell.configureCell(text: Resourses.WeekDay.allCases[indexPath.row].localizedString)
         cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         return cell
     }
