@@ -59,6 +59,25 @@ final class TrackerStore: NSObject, TrackerStoreProtocol {
         appDelegate.saveContext()
     }
     
+    func pinTracker(id: UUID) {
+        guard let tracker = fetchedResultsController.fetchedObjects?.first(where: { $0.id == id }) else { return }
+        let pinnedCategory = LocalizableConstants.TrackersVC.pinnedTrackers
+        let category = dataProvider.fetchNewCategoryName(category: pinnedCategory)
+        
+        tracker.previousCategory = tracker.category
+        tracker.category = category
+        
+        appDelegate.saveContext()
+    }
+    
+    func unpinTracker(id: UUID) {
+        guard let tracker = fetchedResultsController.fetchedObjects?.first(where: { $0.id == id }) else { return }
+        
+        tracker.category = tracker.previousCategory
+        
+        appDelegate.saveContext()
+    }
+    
     func getTracker(category: String, index: Int) -> Tracker {
         let section = fetchedResultsController.sections?.first(where: { section in
             section.name == category

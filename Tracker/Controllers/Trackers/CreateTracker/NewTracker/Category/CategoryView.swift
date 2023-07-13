@@ -37,6 +37,7 @@ final class CategoryView {
         let element = UITableView()
         element.layer.cornerRadius = 16
         element.separatorStyle = .singleLine
+        element.separatorColor = .ypGray
         return element
     }()
     

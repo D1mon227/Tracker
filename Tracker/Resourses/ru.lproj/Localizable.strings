@@ -21,6 +21,7 @@
 
 //MARK: TrackersVC
 "trackersVC.navigationTitle" = "Трекеры";
+"trackersVC.pinnedTrackers" = "Закрепленные";
 "trackersVC.textFieldPlaceholder" = "Поиск";
 "trackersVC.cancelButton" = "Отменить";
 "trackersVC.filterButton" = "Фильтры";
@@ -83,6 +84,8 @@
 "scheduleVC.sundayShort" = "Вс";
 
 //MARK: ContextMenu
+"contextMenu.pinButton" = "Закрепить";
+"contextMenu.unpinButton" = "Открепить";
 "contextMenu.editButton" = "Редактировать";
 "contextMenu.deleteButton" = "Удалить";
 

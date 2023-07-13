@@ -21,11 +21,19 @@
 
 //MARK: TrackersVC
 "trackersVC.navigationTitle" = "עוקבים";
+"trackersVC.pinnedTrackers" = "מוצמד";
 "trackersVC.textFieldPlaceholder" = "חיפוש";
 "trackersVC.cancelButton" = "ביטול";
 "trackersVC.filterButton" = "מסננים";
 "trackersVC.nothingFoundLabel" = "שום דבר לא נמצא";
 "trackersVC.emptyStateLabel" = "מה נעקוב?";
+
+//MARK: FiltersVC
+"filtersVC.filtersTitle" = "מסננים";
+"filtersVC.allTrackers" = "כל הגששים";
+"filtersVC.todayTrackers" = "עוקבים להיום";
+"filtersVC.completed" = "הושלם";
+"filtersVC.uncompleted" = "לא הושלם";
 
 //MARK: CreateTrackerVC
 "createTrackerVC.createTrackerLabel" = "יצירת גשש";
@@ -43,13 +51,6 @@
 "newTrackerVC.createButton" = "צור";
 "newTrackerVC.emojiLabel" = "אימוג ' י";
 "newTrackerVC.colorLabel" = "צבע";
-
-//MARK: FiltersVC
-"filtersVC.filtersTitle" = "מסננים";
-"filtersVC.allTrackers" = "כל הגששים";
-"filtersVC.todayTrackers" = "עוקבים להיום";
-"filtersVC.completed" = "הושלם";
-"filtersVC.uncompleted" = "לא הושלם";
 
 //MARK: CategoryVC
 "categoryVC.categoryTitle" = "קטגוריה";
@@ -83,6 +84,8 @@
 "scheduleVC.sundayShort" = "א";
 
 //MARK: ContextMenu
+"contextMenu.pinButton" = "פין";
+"contextMenu.unpinButton" = "ביטול הצמדה";
 "contextMenu.editButton" = "עריכה";
 "contextMenu.deleteButton" = "מחק";
 

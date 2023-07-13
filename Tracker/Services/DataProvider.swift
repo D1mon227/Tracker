@@ -112,6 +112,14 @@ final class DataProvider {
         trackerStore?.addTracker(tracker)
     }
     
+    func pinTracker(id: UUID) {
+        trackerStore?.pinTracker(id: id)
+    }
+    
+    func unpinTracker(id: UUID) {
+        trackerStore?.unpinTracker(id: id)
+    }
+    
     func deleteTrackerFromStore(id: UUID) {
         trackerStore?.deleteTracker(id: id)
     }

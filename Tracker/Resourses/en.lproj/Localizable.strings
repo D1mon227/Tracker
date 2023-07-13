@@ -21,11 +21,19 @@
 
 //MARK: TrackersVC
 "trackersVC.navigationTitle" = "Trackers";
+"trackersVC.pinnedTrackers" = "Pinned";
 "trackersVC.textFieldPlaceholder" = "Search";
 "trackersVC.cancelButton" = "Cancel";
 "trackersVC.filterButton" = "Filters";
 "trackersVC.nothingFoundLabel" = "Nothing found";
 "trackersVC.emptyStateLabel" = "What will we track?";
+
+//MARK: FiltersVC
+"filtersVC.filtersTitle" = "Filters";
+"filtersVC.allTrackers" = "All trackers";
+"filtersVC.todayTrackers" = "Trackers for today";
+"filtersVC.completed" = "Completed";
+"filtersVC.uncompleted" = "Uncompleted";
 
 //MARK: CreateTrackerVC
 "createTrackerVC.createTrackerLabel" = "Creating a tracker";
@@ -43,13 +51,6 @@
 "newTrackerVC.createButton" = "Create";
 "newTrackerVC.emojiLabel" = "Emoji";
 "newTrackerVC.colorLabel" = "Color";
-
-//MARK: FiltersVC
-"filtersVC.filtersTitle" = "Filters";
-"filtersVC.allTrackers" = "All trackers";
-"filtersVC.todayTrackers" = "Trackers for today";
-"filtersVC.completed" = "Completed";
-"filtersVC.uncompleted" = "Uncompleted";
 
 //MARK: CategoryVC
 "categoryVC.categoryTitle" = "Category";
@@ -83,6 +84,8 @@
 "scheduleVC.sundayShort" = "Sun";
 
 //MARK: ContextMenu
+"contextMenu.pinButton" = "Pin";
+"contextMenu.unpinButton" = "Unpin";
 "contextMenu.editButton" = "Edit";
 "contextMenu.deleteButton" = "Delete";
 

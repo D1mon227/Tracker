@@ -44,6 +44,7 @@ final class NewTrackerView {
     lazy var categoryAndScheduleTableView: UITableView = {
         let element = UITableView()
         element.separatorStyle = .singleLine
+        element.separatorColor = .ypGray
         element.layer.cornerRadius = 16
         element.isScrollEnabled = false
         return element

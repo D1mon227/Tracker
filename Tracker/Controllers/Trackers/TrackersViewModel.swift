@@ -63,6 +63,20 @@ final class TrackersViewModel: TrackersViewModelProtocol {
         dataProvider.getCompletedTrackers()
     }
     
+    func pinTracker(id: UUID) {
+        let pinnedCategory = LocalizableConstants.TrackersVC.pinnedTrackers
+        if visibleCategories[0].name != pinnedCategory {
+            dataProvider.addCategory(category: pinnedCategory)
+            dataProvider.pinTracker(id: id)
+        } else {
+            dataProvider.pinTracker(id: id)
+        }
+    }
+    
+    func unpinTracker(id: UUID) {
+        dataProvider.unpinTracker(id: id)
+    }
+    
     func deleteTracker(id: UUID) {
         dataProvider.deleteTrackerFromStore(id: id)
     }

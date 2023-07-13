@@ -18,7 +18,6 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     
     private lazy var cellLabel: UILabel = {
         let element = UILabel()
-        element.text = "Кошка заслонила камеру на созвоне"
         element.font = .systemFont(ofSize: 12, weight: .medium)
         element.textColor = .white
         element.numberOfLines = 0
@@ -44,16 +43,21 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         let element = UILabel()
         element.font = .systemFont(ofSize: 12, weight: .medium)
         element.textColor = .ypBlack
-        element.text = "0 дней"
         return element
     }()
     
     private lazy var doneButton: UIButton = {
         let element = UIButton()
         element.layer.cornerRadius = 17
-        element.setTitle("+", for: .normal)
         element.titleLabel?.font = .systemFont(ofSize: 20)
         element.titleLabel?.textAlignment = .center
+        return element
+    }()
+    
+    lazy var pinnedImage: UIImageView = {
+        let element = UIImageView()
+        element.image = UIImage(systemName: "pin.fill")
+        element.tintColor = .white
         return element
     }()
     
@@ -63,6 +67,20 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     private var trackerID: UUID?
     private var indexPath: IndexPath?
     private let dataProvider = DataProvider.shared
+    private var pinUnpinTrackerLabel: String?
+    
+    var isTrackerPined: Bool? {
+        didSet {
+            guard let isTrackerPined = isTrackerPined else { return }
+            
+            switch isTrackerPined {
+            case true:
+                pinUnpinTrackerLabel = LocalizableConstants.ContextMenu.unpinButton
+            case false:
+                pinUnpinTrackerLabel = LocalizableConstants.ContextMenu.pinButton
+            }
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -118,21 +136,30 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func deleteTracker(cell: TrackersCollectionViewCell) {
-        delegate?.deleteTracker(cell)
+    func pinTracker(cell: TrackersCollectionViewCell) {
+        delegate?.pinTracker(cell)
+    }
+    
+    func unpinTracker(cell: TrackersCollectionViewCell) {
+        delegate?.unpinTracker(cell)
     }
     
     func editTracker(cell: TrackersCollectionViewCell) {
         delegate?.editTracker(cell)
     }
     
+    func deleteTracker(cell: TrackersCollectionViewCell) {
+        delegate?.deleteTracker(cell)
+    }
+    
     private func setupViews() {
         addSubview(cellView)
-        cellView.addSubview(emojiImageView)
-        addSubview(emojiLabel)
-        cellView.addSubview(cellLabel)
         addSubview(dateLabel)
         addSubview(doneButton)
+        cellView.addSubview(emojiImageView)
+        cellView.addSubview(emojiLabel)
+        cellView.addSubview(pinnedImage)
+        cellView.addSubview(cellLabel)
     }
     
     private func addConstraints() {
@@ -148,6 +175,12 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         
         emojiLabel.snp.makeConstraints { make in
             make.center.equalTo(emojiImageView)
+        }
+        
+        pinnedImage.snp.makeConstraints { make in
+            make.width.height.equalTo(14)
+            make.trailing.equalToSuperview().offset(-10)
+            make.centerY.equalTo(emojiImageView)
         }
         
         cellLabel.snp.makeConstraints { make in
@@ -176,17 +209,27 @@ extension TrackersCollectionViewCell: UIContextMenuInteractionDelegate {
     }
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        
+        guard let isTrackerPined = isTrackerPined else { return UIContextMenuConfiguration() }
 
-        let deleteImage = UIImage(systemName: "trash")
+        let pinImage = isTrackerPined ? UIImage(systemName: "pin.slash") : UIImage(systemName: "pin")
         let editImage = UIImage(systemName: "square.and.pencil")
+        let deleteImage = UIImage(systemName: "trash")
         
         return UIContextMenuConfiguration(actionProvider: { actions in
             return UIMenu(children: [
-                UIAction(title: LocalizableConstants.ContextMenu.editButton, image: editImage) { [weak self] _ in
+                UIAction(title: self.pinUnpinTrackerLabel ?? "",
+                         image: pinImage) { [weak self] _ in
+                    guard let self = self else { return }
+                    isTrackerPined ? self.unpinTracker(cell: self) : self.pinTracker(cell: self)
+                },
+                UIAction(title: LocalizableConstants.ContextMenu.editButton,
+                         image: editImage) { [weak self] _ in
                     guard let self = self else { return }
                     self.editTracker(cell: self)
                 },
-                UIAction(title: LocalizableConstants.ContextMenu.deleteButton, image: deleteImage, attributes: .destructive) { [weak self] _ in
+                UIAction(title: LocalizableConstants.ContextMenu.deleteButton,
+                         image: deleteImage, attributes: .destructive) { [weak self] _ in
                     guard let self = self else { return }
                     self.deleteTracker(cell: self)
                 }

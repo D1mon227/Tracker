@@ -20,6 +20,7 @@ final class ScheduleView {
         let element = UITableView()
         element.layer.cornerRadius = 16
         element.separatorStyle = .singleLine
+        element.separatorColor = .ypGray
         element.allowsSelection = false
         element.isScrollEnabled = false
         return element

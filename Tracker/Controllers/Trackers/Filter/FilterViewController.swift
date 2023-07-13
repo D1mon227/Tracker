@@ -22,6 +22,7 @@ final class FilterViewController: UIViewController {
         let element = UITableView()
         element.layer.cornerRadius = 16
         element.separatorStyle = .singleLine
+        element.separatorColor = .ypGray
         element.isScrollEnabled = false
         return element
     }()
@@ -49,6 +50,7 @@ extension FilterViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FilterTableViewCell", for: indexPath) as? FilterTableViewCell else { return UITableViewCell() }
         
         cell.configureCell(text: Resourses.Filters.allCases[indexPath.row].localizedString)
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         
         return cell
     }

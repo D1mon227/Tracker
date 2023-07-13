@@ -26,6 +26,7 @@ enum LocalizableConstants {
     
     enum TrackersVC {
         static let trackersNavigationTitle = NSLocalizedString("trackersVC.navigationTitle", comment: "")
+        static let pinnedTrackers = NSLocalizedString("trackersVC.pinnedTrackers", comment: "")
         static let textFieldPlaceholder = NSLocalizedString("trackersVC.textFieldPlaceholder", comment: "")
         static let cancelButton = NSLocalizedString("trackersVC.cancelButton", comment: "")
         static let filterButton = NSLocalizedString("trackersVC.filterButton", comment: "")
@@ -94,6 +95,8 @@ enum LocalizableConstants {
     }
     
     enum ContextMenu {
+        static let pinButton = NSLocalizedString("contextMenu.pinButton", comment: "")
+        static let unpinButton = NSLocalizedString("contextMenu.unpinButton", comment: "")
         static let editButton = NSLocalizedString("contextMenu.editButton", comment: "")
         static let deleteButton = NSLocalizedString("contextMenu.deleteButton", comment: "")
     }

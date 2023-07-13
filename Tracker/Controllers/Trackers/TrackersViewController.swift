@@ -179,6 +179,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCollectionViewCell", for: indexPath) as? TrackersCollectionViewCell else { return UICollectionViewCell() }
         let records = trackersViewModel.getCompletedCategories()
         let visibleCategories = trackersViewModel.visibleCategories
+        let sectionName = visibleCategories[indexPath.section].name
         let tracker = visibleCategories[indexPath.section].trackerArray[indexPath.row]
         
         cell.delegate = self
@@ -191,6 +192,8 @@ extension TrackersViewController: UICollectionViewDataSource {
                            isCompleted: isCompletedToday,
                            completedDays: completedDays,
                            indexPath: indexPath)
+        cell.isTrackerPined = sectionName == LocalizableConstants.TrackersVC.pinnedTrackers ? true : false
+        cell.pinnedImage.isHidden = sectionName == LocalizableConstants.TrackersVC.pinnedTrackers ? false : true
         
         if trackersViewModel.checkDate() {
             cell.unlockDoneButton()
@@ -273,6 +276,22 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         trackersViewModel.deleteRecord(tracker: trackerRecord)
         
         trackersView.trackersCollectionView.reloadItems(at: [indexPath])
+    }
+    
+    func pinTracker(_ cell: TrackersCollectionViewCell) {
+        guard let indexPath = trackersView.trackersCollectionView.indexPath(for: cell) else { return }
+        
+        let trackerID = trackersViewModel.visibleCategories[indexPath.section].trackerArray[indexPath.row].id
+        
+        trackersViewModel.pinTracker(id: trackerID)
+    }
+    
+    func unpinTracker(_ cell: TrackersCollectionViewCell) {
+        guard let indexPath = trackersView.trackersCollectionView.indexPath(for: cell) else { return }
+        
+        let trackerID = trackersViewModel.visibleCategories[indexPath.section].trackerArray[indexPath.row].id
+        
+        trackersViewModel.unpinTracker(id: trackerID)
     }
     
     func editTracker(_ cell: TrackersCollectionViewCell) {}

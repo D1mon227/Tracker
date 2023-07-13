@@ -9,6 +9,8 @@ import Foundation
 
 protocol TrackersViewModelProtocol: AnyObject {
     func deleteTracker(id: UUID)
+    func pinTracker(id: UUID)
+    func unpinTracker(id: UUID)
     func fetchCompletedCategoriesFromStore()
     func getCompletedCategories() -> [TrackerRecord]
     func addRecord(tracker: TrackerRecord)
