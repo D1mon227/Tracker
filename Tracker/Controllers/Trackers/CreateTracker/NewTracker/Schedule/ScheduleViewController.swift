@@ -12,7 +12,7 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
     
     var viewController: NewTrackerViewControllerProtocol?
 
-    private let scheduleView = ScheduleView()
+    private(set) var scheduleView = ScheduleView()
     private let scheduleViewModel = ScheduleViewModel()
     private let scheduleService = ScheduleService()
     

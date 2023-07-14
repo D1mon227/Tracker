@@ -57,6 +57,10 @@
 "categoryVC.emptyStateLabel" = "Habits and events can be combined in meaning";
 "categoryVC.addCategoryButton" = "Add a category";
 
+//MARK: EditingCategoryVC
+"editingCategoryVC.editingCategoryTitle" = "Editing a category";
+"editingCategoryVC.doneButton" = "Done";
+
 //MARK: NewCategoryVC
 "newCategoryVC.newCategoryTitle" = "New category";
 "newCategoryVC.textFieldPlaceholder" = "Enter the category name";

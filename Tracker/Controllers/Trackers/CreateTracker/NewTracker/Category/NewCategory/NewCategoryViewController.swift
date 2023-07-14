@@ -10,7 +10,7 @@ import SnapKit
 
 final class NewCategoryViewController: UIViewController, NewCategoryViewControllerProtocol {
     
-    private let newCategoryView = NewCategoryView()
+    private(set) var newCategoryView = NewCategoryView()
     private let dataProvider = DataProvider.shared
     var viewController: CategoryViewControllerProtocol?
     

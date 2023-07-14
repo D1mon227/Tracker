@@ -10,7 +10,7 @@ import SnapKit
 
 final class TrackersViewController: UIViewController, TrackerViewControllerProtocol {
     
-    private let trackersView = TrackersView()
+    private(set) var trackersView = TrackersView()
     private let trackersViewModel = TrackersViewModel()
     private let alertService = AlertService()
     

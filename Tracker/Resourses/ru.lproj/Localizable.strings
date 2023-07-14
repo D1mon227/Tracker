@@ -57,6 +57,10 @@
 "categoryVC.emptyStateLabel" = "Привычки и события можно\nобъединить по смыслу";
 "categoryVC.addCategoryButton" = "Добавить категорию";
 
+//MARK: EditingCategoryVC
+"editingCategoryVC.editingCategoryTitle" = "Редактирование категории";
+"editingCategoryVC.doneButton" = "Готово";
+
 //MARK: NewCategoryVC
 "newCategoryVC.newCategoryTitle" = "Новая категория";
 "newCategoryVC.textFieldPlaceholder" = "Введите название категории";

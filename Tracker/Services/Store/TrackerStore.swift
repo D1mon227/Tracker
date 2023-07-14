@@ -45,7 +45,7 @@ final class TrackerStore: NSObject, TrackerStoreProtocol {
         self.context = context
     }
     
-    func addTracker(_ model: Tracker) {
+    func addTracker(model: Tracker) {
         let trackerCoreData = TrackerCoreData(context: context)
         let category = dataProvider.fetchNewCategoryName(category: dataProvider.selectedCategory ?? "")
         
@@ -56,6 +56,22 @@ final class TrackerStore: NSObject, TrackerStoreProtocol {
         trackerCoreData.schedule = model.schedule
         trackerCoreData.category = category
         
+        appDelegate.saveContext()
+    }
+    
+    func editTracker(model: Tracker) {
+        guard let tracker = fetchedResultsController.fetchedObjects?.first( where: { $0.id == model.id }),
+              let selectedCategory = dataProvider.selectedCategory else { return }
+        
+        let category = dataProvider.fetchNewCategoryName(category: selectedCategory)
+        
+        tracker.id = model.id
+        tracker.name = model.name
+        tracker.emoji = model.emoji
+        tracker.color = uiColorMarshalling.hexString(from: model.color)
+        tracker.schedule = model.schedule
+        tracker.category = category
+
         appDelegate.saveContext()
     }
     

@@ -57,6 +57,10 @@
 "categoryVC.emptyStateLabel" = "הרגלים ואירועים יכולים להיות משולבים במשמעות";
 "categoryVC.addCategoryButton" = "הוסף קטגוריה";
 
+//MARK: EditingCategoryVC
+"editingCategoryVC.editingCategoryTitle" = "עריכת קטגוריה";
+"editingCategoryVC.doneButton" = "בוצע";
+
 //MARK: NewCategoryVC
 "newCategoryVC.newCategoryTitle" = "קטגוריה חדשה";
 "newCategoryVC.textFieldPlaceholder" = "הזן את שם הקטגוריה";

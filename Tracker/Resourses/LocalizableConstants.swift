@@ -66,6 +66,11 @@ enum LocalizableConstants {
         static let addCategoryButton = NSLocalizedString("categoryVC.addCategoryButton", comment: "")
     }
     
+    enum EditingCategoryVC {
+        static let titleLabel = NSLocalizedString("editingCategoryVC.editingCategoryTitle", comment: "")
+        static let doneButton = NSLocalizedString("editingCategoryVC.doneButton", comment: "")
+    }
+    
     enum NewCategoryVC {
         static let newCategoryTitle = NSLocalizedString("newCategoryVC.newCategoryTitle", comment: "")
         static let textFieldPlaceholder = NSLocalizedString("newCategoryVC.textFieldPlaceholder", comment: "")

@@ -11,7 +11,7 @@ import SnapKit
 final class CategoryViewController: UIViewController, CategoryViewControllerProtocol {
     
     var viewController: NewTrackerViewControllerProtocol?
-    private let categoryView = CategoryView()
+    private(set) var categoryView = CategoryView()
     private let dataProvider = DataProvider.shared
     private let categoryViewModel = CategoryViewModel()
     private var selectedIndexPath: IndexPath?
@@ -84,6 +84,11 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
         }
         categoryView.categoryTableView.reloadData()
     }
+    
+    private func switchToEditingVC(_ category: String) {
+        let editingVC = EditingCategoryViewController(category: category)
+        present(editingVC, animated: true)
+    }
 }
 
 //MARK: UITableViewDataSource
@@ -96,6 +101,7 @@ extension CategoryViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableViewCell", for: indexPath) as? CategoryTableViewCell else { return UITableViewCell() }
         
         cell.viewModel = categoryViewModel.visibleCategories[indexPath.row]
+        cell.delegate = self
         
         cell.accessoryType = cell.label.text == categoryViewModel.selectedCategory ? .checkmark : .none
         
@@ -140,6 +146,17 @@ extension CategoryViewController: UITableViewDelegate {
             viewController?.reloadTableView()
             dismiss(animated: true)
         }
+    }
+}
+
+extension CategoryViewController: CategoryTableViewCellDelegate {
+    func editCategory(_ cell: CategoryTableViewCell) {
+        guard let category = cell.label.text else { return }
+        switchToEditingVC(category)
+    }
+    
+    func deleteCategory(_ cell: CategoryTableViewCell) {
+        
     }
 }
 

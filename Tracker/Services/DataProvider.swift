@@ -109,7 +109,21 @@ final class DataProvider {
     
     //MARK: TrackerStore:
     func addTrackerToStore(_ tracker: Tracker) {
-        trackerStore?.addTracker(tracker)
+        trackerStore?.addTracker(model: tracker)
+    }
+    
+    func editTracker(_ id: UUID) {
+        guard let name = trackerName,
+              let color = trackerColor,
+              let emoji = trackerEmoji,
+              let schedule = trackerSchedule else { return }
+        
+        trackerStore?.editTracker(model: Tracker(id: id,
+                                                 name: name,
+                                                 color: color,
+                                                 emoji: emoji,
+                                                 schedule: schedule))
+        resetNewTrackerInfo()
     }
     
     func pinTracker(id: UUID) {
@@ -145,6 +159,10 @@ final class DataProvider {
     
     func addCategory(category: String) {
         trackerCategoryStore?.addCategory(category: category)
+    }
+    
+    func editCategory(oldCategory: String, newCategory: String) {
+        trackerCategoryStore?.editCategory(oldCategory: oldCategory, newCategory: newCategory)
     }
     
     func fetchCategoryName(index: Int) -> String {

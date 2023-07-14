@@ -16,7 +16,7 @@ enum TypeOfTracker {
 final class NewTrackerViewController: UIViewController, NewTrackerViewControllerProtocol {
     
     var createViewController: CreateTrackerViewControllerProtocol?
-    private let newTrackerView = NewTrackerView()
+    private(set) var newTrackerView = NewTrackerView()
     private let newTrackerViewModel = NewTrackerViewModel()
     var typeOfTracker: TypeOfTracker?
     
