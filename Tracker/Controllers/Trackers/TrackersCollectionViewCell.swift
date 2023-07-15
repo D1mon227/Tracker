@@ -65,9 +65,11 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     
     private var isCompleted: Bool = false
     private var trackerID: UUID?
-    private var indexPath: IndexPath?
     private let dataProvider = DataProvider.shared
     private var pinUnpinTrackerLabel: String?
+    var indexPath: IndexPath?
+    var trackerInfo: Tracker?
+    var completedDays: Int?
     
     var isTrackerPined: Bool? {
         didSet {
@@ -103,6 +105,8 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
         self.isCompleted = isCompleted
         self.trackerID = tracker.id
         self.indexPath = indexPath
+        self.trackerInfo = tracker
+        self.completedDays = completedDays
         
         let doneButtonTitle = isCompleted ? "✓" : "+"
         

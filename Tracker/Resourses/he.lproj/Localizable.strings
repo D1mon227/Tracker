@@ -52,6 +52,10 @@
 "newTrackerVC.emojiLabel" = "אימוג ' י";
 "newTrackerVC.colorLabel" = "צבע";
 
+//MARK: EditingTrackerVC
+"editingTrackerVC.editTitle" = "הרגלי עריכה";
+"editingTrackerVC.saveButton" = "שמור";
+
 //MARK: CategoryVC
 "categoryVC.categoryTitle" = "קטגוריה";
 "categoryVC.emptyStateLabel" = "הרגלים ואירועים יכולים להיות משולבים במשמעות";
@@ -94,6 +98,8 @@
 "contextMenu.deleteButton" = "מחק";
 
 //MARK: Alert
-"alert.title" = "האם אתה בטוח שאתה רוצה למחוק את הגשש?";
+"alert.removeTracker.title" = "האם אתה בטוח שאתה רוצה למחוק את הגשש?";
+"alert.removeCategory.title" = "האם קטגוריה זו בהחלט לא נחוצה?";
+"alert.removeCategory.message" = "מחיקת קטגוריה תגרום לאובדן כל העוקבים שלה";
 "alert.cancel" = "ביטול";
 "alert.delete" = "מחק";

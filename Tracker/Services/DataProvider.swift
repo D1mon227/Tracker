@@ -165,6 +165,10 @@ final class DataProvider {
         trackerCategoryStore?.editCategory(oldCategory: oldCategory, newCategory: newCategory)
     }
     
+    func deleteCategory(category: String) {
+        trackerCategoryStore?.deleteCategory(category: category)
+    }
+    
     func fetchCategoryName(index: Int) -> String {
         trackerCategoryStore?.fetchCategoryName(index: index) ?? ""
     }

@@ -19,6 +19,7 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     private(set) var newTrackerView = NewTrackerView()
     private let newTrackerViewModel = NewTrackerViewModel()
     var typeOfTracker: TypeOfTracker?
+    var trackerID: UUID?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +30,29 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
         setupTextField()
         setupTarget()
         bindViewModel()
+    }
+    
+    init(typeOfTracker: TypeOfTracker) {
+        super.init(nibName: nil, bundle: nil)
+        newTrackerView.scrollView.addSubview(newTrackerView.habitNameTextField)
+        if typeOfTracker == .habit {
+            self.typeOfTracker = .habit
+            newTrackerView.newHabitLabel.text = LocalizableConstants.NewTrackerVC.newHabitLabel
+            newTrackerView.categoryAndScheduleTableView.snp.makeConstraints { make in
+                make.height.equalTo(149)
+            }
+        } else {
+            self.typeOfTracker = .unregularEvent
+            newTrackerView.newHabitLabel.text = LocalizableConstants.NewTrackerVC.newUnregularEventLabel
+            newTrackerView.categoryAndScheduleTableView.snp.makeConstraints { make in
+                make.height.equalTo(75)
+                newTrackerView.categoryAndScheduleTableView.separatorStyle = .none
+            }
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func bindViewModel() {
@@ -99,6 +123,13 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
         newTrackerViewModel.resetNewTrackerInfo()
         dismissVC()
         createViewController?.switchToTrackerVC()
+    }
+    
+    @objc private func editTracker() {
+        guard let trackerID = trackerID else { return }
+        
+        newTrackerViewModel.editTracker(id: trackerID)
+        dismissVC()
     }
     
     @objc private func switchToCategoryViewController() {
@@ -351,23 +382,57 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension NewTrackerViewController {
+    func setupNewTrackerVC() {
+        newTrackerView.habitNameTextField.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(24)
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(75)
+        }
+    }
+    
+    func setupEditingVC() {
+        newTrackerView.scrollView.addSubview(newTrackerView.countOfCompletedDaysLabel)
+        
+        newTrackerView.countOfCompletedDaysLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(24)
+            make.centerX.equalToSuperview()
+        }
+        
+        newTrackerView.habitNameTextField.snp.makeConstraints { make in
+            make.top.equalTo(newTrackerView.countOfCompletedDaysLabel.snp.bottom).offset(40)
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(75)
+        }
+    }
+    
+    func editingTrackerInfo(tracker: Tracker, completedDays: Int, category: String) {
+        newTrackerView.newHabitLabel.text = LocalizableConstants.EditingTrackerVC.editTitle
+        newTrackerView.countOfCompletedDaysLabel.text = LocalizableConstants.TrackersVC.formatDaysString(completedDays)
+        newTrackerView.habitNameTextField.text = tracker.name
+        newTrackerView.createButton.setTitle(LocalizableConstants.EditingTrackerVC.saveButton, for: .normal)
+        trackerID = tracker.id
+        newTrackerViewModel.presetTrackerInfo(tracker: tracker, category: category)
+        changeTargets()
+    }
+    
+    private func changeTargets() {
+        newTrackerView.createButton.removeTarget(self, action: #selector(createTracker), for: .touchUpInside)
+        newTrackerView.createButton.addTarget(self, action: #selector(editTracker), for: .touchUpInside)
+    }
+}
+
 //MARK: SetupViews
 extension NewTrackerViewController {
     private func setupViews() {
         view.backgroundColor = .ypWhite
         view.addSubview(newTrackerView.newHabitLabel)
         view.addSubview(newTrackerView.scrollView)
-        newTrackerView.scrollView.addSubview(newTrackerView.habitNameTextField)
         newTrackerView.scrollView.addSubview(newTrackerView.categoryAndScheduleTableView)
         newTrackerView.scrollView.addSubview(newTrackerView.collectionView)
         view.addSubview(newTrackerView.cancelButton)
         view.addSubview(newTrackerView.createButton)
         addConstraints()
-        setupTitle()
-    }
-    
-    private func setupTitle() {
-        newTrackerView.newHabitLabel.text = typeOfTracker == .habit ? LocalizableConstants.NewTrackerVC.newHabitLabel : LocalizableConstants.NewTrackerVC.newUnregularEventLabel
     }
     
     private func addConstraints() {
@@ -382,20 +447,7 @@ extension NewTrackerViewController {
             make.bottom.equalTo(newTrackerView.cancelButton.snp.top).offset(-16)
         }
         
-        newTrackerView.habitNameTextField.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(24)
-            make.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(75)
-        }
-        
         newTrackerView.categoryAndScheduleTableView.snp.makeConstraints { make in
-            if typeOfTracker == .habit {
-                make.height.equalTo(149)
-            } else {
-                make.height.equalTo(75)
-                newTrackerView.categoryAndScheduleTableView.separatorStyle = .none
-            }
-
             make.top.greaterThanOrEqualTo(newTrackerView.habitNameTextField.snp.bottom).offset(24)
             make.leading.trailing.equalToSuperview().inset(16)
         }

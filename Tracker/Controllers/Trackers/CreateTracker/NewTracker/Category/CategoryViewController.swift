@@ -14,6 +14,7 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
     private(set) var categoryView = CategoryView()
     private let dataProvider = DataProvider.shared
     private let categoryViewModel = CategoryViewModel()
+    private let alertService = AlertService()
     private var selectedIndexPath: IndexPath?
     
     override func viewDidLoad() {
@@ -156,7 +157,11 @@ extension CategoryViewController: CategoryTableViewCellDelegate {
     }
     
     func deleteCategory(_ cell: CategoryTableViewCell) {
-        
+        alertService.showAlert(event: .removeCategory, controller: self) { [weak self] in
+            guard let self = self,
+                  let category = cell.label.text else { return }
+            self.categoryViewModel.deleteCategory(category: category)
+        }
     }
 }
 

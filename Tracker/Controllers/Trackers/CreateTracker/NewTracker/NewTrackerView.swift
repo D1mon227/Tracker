@@ -16,6 +16,14 @@ final class NewTrackerView {
         return element
     }()
     
+    lazy var countOfCompletedDaysLabel: UILabel = {
+        let element = UILabel()
+        element.font = .boldSystemFont(ofSize: 32)
+        element.textColor = .ypBlack
+        element.textAlignment = .center
+        return element
+    }()
+    
     lazy var habitNameTextField: UITextField = {
         let element = UITextField()
         element.placeholder = LocalizableConstants.NewTrackerVC.textFieldPlaceholder

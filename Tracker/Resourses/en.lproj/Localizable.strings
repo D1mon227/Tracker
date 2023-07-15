@@ -52,6 +52,10 @@
 "newTrackerVC.emojiLabel" = "Emoji";
 "newTrackerVC.colorLabel" = "Color";
 
+//MARK: EditingTrackerVC
+"editingTrackerVC.editTitle" = "Editing Habits";
+"editingTrackerVC.saveButton" = "Save";
+
 //MARK: CategoryVC
 "categoryVC.categoryTitle" = "Category";
 "categoryVC.emptyStateLabel" = "Habits and events can be combined in meaning";
@@ -94,6 +98,8 @@
 "contextMenu.deleteButton" = "Delete";
 
 //MARK: Alert
-"alert.title" = "Are you sure you want to delete the tracker?";
+"alert.removeTracker.title" = "Are you sure you want to delete the tracker?";
+"alert.removeCategory.title" = "Is this category definitely not needed?";
+"alert.removeCategory.message" = "Deleting a category will result in the loss of all its trackers";
 "alert.cancel" = "Cancel";
 "alert.delete" = "Delete";

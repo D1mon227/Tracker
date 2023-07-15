@@ -53,11 +53,11 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
         if trackersViewModel.areVisibleCategoriesEmpty() {
             addEmptyViews()
         } else {
-            addCollectionView()
+            reloadCollectionView()
         }
     }
     
-    func addEmptyViews() {
+    private func addEmptyViews() {
         trackersView.trackersCollectionView.removeFromSuperview()
         trackersView.filterButton.removeFromSuperview()
         view.addSubview(trackersView.emptyImage)
@@ -76,7 +76,7 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
         }
     }
     
-    func addCollectionView() {
+    private func reloadCollectionView() {
         trackersView.emptyImage.removeFromSuperview()
         trackersView.emptyLabel.removeFromSuperview()
         view.addSubview(trackersView.trackersCollectionView)
@@ -294,10 +294,21 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         trackersViewModel.unpinTracker(id: trackerID)
     }
     
-    func editTracker(_ cell: TrackersCollectionViewCell) {}
+    func editTracker(_ cell: TrackersCollectionViewCell) {
+        guard let trackerInfo = cell.trackerInfo,
+              let completedDays = cell.completedDays,
+              let indexPath = cell.indexPath else { return }
+        
+        let editTrackerVC = NewTrackerViewController(typeOfTracker: .habit)
+        let category = trackersViewModel.visibleCategories[indexPath.section].name
+        
+        editTrackerVC.setupEditingVC()
+        editTrackerVC.editingTrackerInfo(tracker: trackerInfo, completedDays: completedDays, category: category)
+        present(editTrackerVC, animated: true)
+    }
     
     func deleteTracker(_ cell: TrackersCollectionViewCell) {
-        alertService.showAlert(controller: self) { [weak self] in
+        alertService.showAlert(event: .removeTracker, controller: self) { [weak self] in
             guard let self = self,
                   let indexPath = trackersView.trackersCollectionView.indexPath(for: cell) else { return }
             

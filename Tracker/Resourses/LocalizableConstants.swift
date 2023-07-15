@@ -60,6 +60,11 @@ enum LocalizableConstants {
         static let colorLabel = NSLocalizedString("newTrackerVC.colorLabel", comment: "")
     }
     
+    enum EditingTrackerVC {
+        static let editTitle = NSLocalizedString("editingTrackerVC.editTitle", comment: "")
+        static let saveButton = NSLocalizedString("editingTrackerVC.saveButton", comment: "")
+    }
+    
     enum CategoryVC {
         static let categoryTitle = NSLocalizedString("categoryVC.categoryTitle", comment: "")
         static let emptyStateLabel = NSLocalizedString("categoryVC.emptyStateLabel", comment: "")
@@ -107,7 +112,9 @@ enum LocalizableConstants {
     }
     
     enum Alert {
-        static let title = NSLocalizedString("alert.title", comment: "")
+        static let removeTrackerTitle = NSLocalizedString("alert.removeTracker.title", comment: "")
+        static let removeCategoryTitle = NSLocalizedString("alert.removeCategory.title", comment: "")
+        static let removeCategoryMessage = NSLocalizedString("alert.removeCategory.message", comment: "")
         static let cancel = NSLocalizedString("alert.cancel", comment: "")
         static let delete = NSLocalizedString("alert.delete", comment: "")
     }

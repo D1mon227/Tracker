@@ -76,6 +76,12 @@ final class TrackerCategoryStore: NSObject, TrackerCategoryStoreProtocol {
         appDelegate.saveContext()
     }
     
+    func deleteCategory(category: String) {
+        guard let object = fetchedResultsController.fetchedObjects?.first(where: { $0.name == category }) else { return }
+        context.delete(object)
+        appDelegate.saveContext()
+    }
+    
     func isCategoryExist(category: String) -> Bool {
         guard let categories = fetchedResultsController.fetchedObjects else { return false }
         

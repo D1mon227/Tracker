@@ -56,4 +56,8 @@ final class CategoryViewModel: CategoryViewModelProtocol {
         
         visibleCategories = categories
     }
+    
+    func deleteCategory(category: String) {
+        dataProvider.deleteCategory(category: category)
+    }
 }

@@ -25,16 +25,16 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     }
     
     @objc private func switchToNewHabitViewController() {
-        let newHabitVC = NewTrackerViewController()
+        let newHabitVC = NewTrackerViewController(typeOfTracker: .habit)
         newHabitVC.createViewController = self
-        newHabitVC.typeOfTracker = .habit
+        newHabitVC.setupNewTrackerVC()
         present(newHabitVC, animated: true)
     }
     
     @objc private func switchToNewUnregularEventViewController() {
-        let newHabitVC = NewTrackerViewController()
+        let newHabitVC = NewTrackerViewController(typeOfTracker: .unregularEvent)
         newHabitVC.createViewController = self
-        newHabitVC.typeOfTracker = .unregularEvent
+        newHabitVC.setupNewTrackerVC()
         present(newHabitVC, animated: true)
     }
     
