@@ -24,7 +24,7 @@ final class DataProvider {
     var newTrackerViewModel: NewTrackerViewModelProtocol?
     var trackersViewModel: TrackersViewModelProtocol?
     
-    var trackerSchedule: [Int]?
+//    var trackerSchedule: [Int]?
     
     var visibleCategories: [TrackerCategory]? {
         didSet {
@@ -55,6 +55,12 @@ final class DataProvider {
     var selectedSchedule: String? {
         didSet {
             newTrackerViewModel?.isNewTrackerReady()
+        }
+    }
+    
+    var trackerSchedule: [Int]? {
+        didSet {
+            scheduleViewModel?.isScheduleEmpty()
         }
     }
     
@@ -98,8 +104,10 @@ final class DataProvider {
         trackerColor != nil ? true : false
     }
     
-    func didScheduleChoosen() -> Bool {
-        trackerSchedule != nil ? true : false
+    func isCurrentDayFromScheduleExist(_ day: Int) -> Bool {
+        guard let trackerSchedule = trackerSchedule else { return false }
+        
+        return trackerSchedule.contains(day) ? true : false
     }
     
     //MARK: ViewModel
@@ -123,7 +131,6 @@ final class DataProvider {
                                                  color: color,
                                                  emoji: emoji,
                                                  schedule: schedule))
-        resetNewTrackerInfo()
     }
     
     func pinTracker(id: UUID) {

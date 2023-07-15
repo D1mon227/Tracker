@@ -32,8 +32,9 @@ final class ScheduleView {
         element.setTitle(LocalizableConstants.ScheduleVC.doneButton, for: .normal)
         element.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         element.titleLabel?.textAlignment = .center
-        element.backgroundColor = .ypBlack
-        element.tintColor = .ypWhite
+        element.setTitleColor(.white, for: .normal)
+        element.backgroundColor = .ypGray
+        element.isEnabled = false
         return element
     }()
 }

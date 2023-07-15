@@ -13,6 +13,8 @@ final class ScheduleViewModel: ScheduleViewModelProtocol {
     
     @Observable
     private(set) var schedule: [Int] = []
+    @Observable
+    private(set) var checkScheduleForCreate = false
     
     init() {
         dataProvider.bindScheduleViewModel(controller: self)
@@ -20,10 +22,12 @@ final class ScheduleViewModel: ScheduleViewModelProtocol {
     
     func addDaysToSchedule(day: Int) {
         schedule.append(day)
+        isScheduleEmpty()
     }
     
     func removeDayFromSchedule(index: Int) {
         schedule.remove(at: index)
+        isScheduleEmpty()
     }
     
     func setSchedule() {
@@ -32,5 +36,17 @@ final class ScheduleViewModel: ScheduleViewModelProtocol {
         dataProvider.trackerSchedule = schedule
         
         schedule = []
+    }
+    
+    func returnNumberOfDay(from index: IndexPath) -> Int {
+        scheduleService.addDayToSchedule(day: Resourses.WeekDay.allCases[index.row].localizedString)
+    }
+    
+    func isCurrentDayExistInSchedule(day: Int) -> Bool {
+        dataProvider.isCurrentDayFromScheduleExist(day) ? true : false
+    }
+    
+    func isScheduleEmpty() {
+        checkScheduleForCreate = schedule.count == 0 ? false : true
     }
 }

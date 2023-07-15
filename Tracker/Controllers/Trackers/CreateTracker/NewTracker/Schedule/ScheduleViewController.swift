@@ -29,6 +29,22 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
             guard let self = self else { return }
             viewController?.reloadTableView()
         }
+        
+        scheduleViewModel.$checkScheduleForCreate.bind { [weak self] value in
+            guard let self = self else { return }
+            value == true ? self.enableDoneButton() : self.disableDoneButton()
+        }
+    }
+    
+    func enableDoneButton() {
+        scheduleView.doneButton.isEnabled = true
+        scheduleView.doneButton.backgroundColor = .ypBlack
+        scheduleView.doneButton.setTitleColor(.ypWhite, for: .normal)
+    }
+    
+    func disableDoneButton() {
+        scheduleView.doneButton.isEnabled = false
+        scheduleView.doneButton.backgroundColor = .ypGray
     }
     
     private func setupTableView() {
@@ -59,6 +75,13 @@ extension ScheduleViewController: UITableViewDataSource {
         cell.delegate = self
         
         cell.configureCell(text: Resourses.WeekDay.allCases[indexPath.row].localizedString)
+        let numberOfDay = scheduleViewModel.returnNumberOfDay(from: indexPath)
+       
+        if scheduleViewModel.isCurrentDayExistInSchedule(day: numberOfDay) {
+            cell.switcher.isOn = true
+            scheduleViewModel.addDaysToSchedule(day: numberOfDay)
+        }
+        
         cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         return cell
     }

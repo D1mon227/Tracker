@@ -32,6 +32,11 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
         bindViewModel()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        newTrackerViewModel.resetNewTrackerInfo()
+    }
+    
     init(typeOfTracker: TypeOfTracker) {
         super.init(nibName: nil, bundle: nil)
         newTrackerView.scrollView.addSubview(newTrackerView.habitNameTextField)
@@ -120,7 +125,6 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     
     @objc private func createTracker() {
         newTrackerViewModel.createNewTracker()
-        newTrackerViewModel.resetNewTrackerInfo()
         dismissVC()
         createViewController?.switchToTrackerVC()
     }

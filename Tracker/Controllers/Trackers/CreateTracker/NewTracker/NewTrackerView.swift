@@ -89,6 +89,7 @@ final class NewTrackerView {
         element.layer.cornerRadius = 16
         element.setTitle(LocalizableConstants.NewTrackerVC.createButton, for: .normal)
         element.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        element.titleLabel?.textAlignment = .center
         element.setTitleColor(.white, for: .normal)
         element.backgroundColor = .ypGray
         element.isEnabled = false
