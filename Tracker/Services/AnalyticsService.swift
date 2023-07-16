@@ -8,7 +8,7 @@
 import Foundation
 import YandexMobileMetrica
 
-enum Event: String {
+enum Events: String {
     case open = "open"
     case close = "close"
     case click = "click"
@@ -71,7 +71,7 @@ final class AnalyticsService {
         YMMYandexMetrica.activate(with: configuration)
     }
     
-    func report(typeOfEvent: Event, screen: Screen, item: Item?) {
+    func report(typeOfEvent: Events, screen: Screen, item: Item?) {
         var params: [AnyHashable: Any] = [:]
         
         if item == nil {
