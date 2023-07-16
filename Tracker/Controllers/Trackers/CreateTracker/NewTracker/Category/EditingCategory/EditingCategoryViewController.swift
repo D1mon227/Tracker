@@ -11,9 +11,11 @@ import SnapKit
 final class EditingCategoryViewController: UIViewController {
     private let editingCategoryView = EditingCategoryView()
     private let editingCategoryViewModel = EditingCategoryViewModel()
+    private let analyticsService = AnalyticsService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        analyticsService.report(typeOfEvent: .open, screen: .editingCategoryVC, item: nil)
         addView()
         setupTarget()
         editingCategoryView.textField.delegate = self
@@ -41,6 +43,8 @@ final class EditingCategoryViewController: UIViewController {
         guard let newCategory = editingCategoryView.textField.text else { return }
         
         editingCategoryViewModel.editCategory(newCategory: newCategory)
+        
+        analyticsService.report(typeOfEvent: .close, screen: .editingCategoryVC, item: nil)
         dismiss(animated: true)
     }
 }

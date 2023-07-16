@@ -27,10 +27,17 @@ final class FilterViewController: UIViewController {
         return element
     }()
     
+    private let analyticsService = AnalyticsService.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        analyticsService.report(typeOfEvent: .open, screen: .filterVC, item: nil)
         addView()
         setupTableView()
+    }
+    
+    deinit {
+        analyticsService.report(typeOfEvent: .close, screen: .filterVC, item: nil)
     }
     
     private func setupTableView() {

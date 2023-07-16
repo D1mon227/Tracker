@@ -18,11 +18,13 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     var createViewController: CreateTrackerViewControllerProtocol?
     private(set) var newTrackerView = NewTrackerView()
     private let newTrackerViewModel = NewTrackerViewModel()
+    private let analyticsService = AnalyticsService.shared
     var typeOfTracker: TypeOfTracker?
     var trackerID: UUID?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        analyticsService.report(typeOfEvent: .open, screen: .newTrackerVC, item: nil)
         newTrackerViewModel.view = self
         setupViews()
         setupTableView()
@@ -35,6 +37,7 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         newTrackerViewModel.resetNewTrackerInfo()
+        analyticsService.report(typeOfEvent: .close, screen: .newTrackerVC, item: nil)
     }
     
     init(typeOfTracker: TypeOfTracker) {
@@ -120,11 +123,13 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     }
     
     @objc private func dismissVC() {
+        analyticsService.report(typeOfEvent: .click, screen: .newTrackerVC, item: .cancel)
         dismiss(animated: true)
     }
     
     @objc private func createTracker() {
         newTrackerViewModel.createNewTracker()
+        analyticsService.report(typeOfEvent: .click, screen: .newTrackerVC, item: .create)
         dismissVC()
         createViewController?.switchToTrackerVC()
     }
@@ -360,11 +365,13 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
             cell.layer.cornerRadius = 16
             cell.backgroundColor = .ypLightGray
             newTrackerViewModel.setTrackerEmoji(emoji: cell.emojiLabel.text ?? "")
+            analyticsService.report(typeOfEvent: .click, screen: .newTrackerVC, item: .emoji)
         case 1:
             cell.layer.cornerRadius = 11
             cell.layer.borderColor = newTrackerViewModel.colors[indexPath.row].withAlphaComponent(0.3).cgColor
             cell.layer.borderWidth = 3
             newTrackerViewModel.setTrackerColor(color: cell.colorImage.backgroundColor ?? UIColor())
+            analyticsService.report(typeOfEvent: .click, screen: .newTrackerVC, item: .color)
         default:
             cell.backgroundColor = .gray
         }

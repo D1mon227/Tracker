@@ -12,13 +12,19 @@ final class NewCategoryViewController: UIViewController, NewCategoryViewControll
     
     private(set) var newCategoryView = NewCategoryView()
     private let dataProvider = DataProvider.shared
+    private let analyticsService = AnalyticsService.shared
     var viewController: CategoryViewControllerProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        analyticsService.report(typeOfEvent: .open, screen: .newCategoryVC, item: nil)
         addView()
         setupTextField()
         addTarget()
+    }
+    
+    deinit {
+        analyticsService.report(typeOfEvent: .click, screen: .newCategoryVC, item: nil)
     }
     
     private func setupTextField() {
@@ -32,6 +38,8 @@ final class NewCategoryViewController: UIViewController, NewCategoryViewControll
     @objc private func addCategory() {
         guard let categoryName = newCategoryView.newCategoryTextField.text else { return }
         dataProvider.addCategory(category: categoryName)
+        
+        analyticsService.report(typeOfEvent: .close, screen: .newCategoryVC, item: .newCategory)
         dismiss(animated: true)
     }
 }

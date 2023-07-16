@@ -8,7 +8,7 @@
 import Foundation
 import YandexMobileMetrica
 
-enum Events: String {
+enum Event: String {
     case open = "open"
     case close = "close"
     case click = "click"
@@ -19,9 +19,10 @@ enum Screen: String {
     case createTrackerVC = "CreateTrackerVC"
     case newTrackerVC = "NewTrackerVC"
     case categoryVC = "CategoryVC"
+    case newCategoryVC = "NewCategoryVC"
     case scheduleVC = "ScheduleVC"
     case statisticVC = "StatisticVC"
-    case editingCategory = "EditingCategoryVC"
+    case editingCategoryVC = "EditingCategoryVC"
     case editingTrackerVC = "EditingTrackerVC"
     case filterVC = "FilterVC"
 }
@@ -45,7 +46,9 @@ enum Item: String {
     case color = "color"
     case create = "create"
     case cancel = "cancel"
-    case nameDidEnter = "nameDidEnter"
+    
+    // Category:
+    case newCategory = "newCategory"
     
     // Schedule:
     case everyDay = "everyDay"
@@ -56,10 +59,6 @@ enum Item: String {
     case todaysTrackers = "todaysTrackers"
     case completedTrackers = "completedTrackers"
     case uncompletedTrackers = "uncompletedTrackers"
-    
-    // EditingTrackerVC
-    case decreaseDays = "decreaseDays"
-    case increaseDays = "increaseDays"
 }
 
 final class AnalyticsService {
@@ -72,7 +71,7 @@ final class AnalyticsService {
         YMMYandexMetrica.activate(with: configuration)
     }
     
-    func report(typeOfEvent: Events, screen: Screen, item: Item?) {
+    func report(typeOfEvent: Event, screen: Screen, item: Item?) {
         var params: [AnyHashable: Any] = [:]
         
         if item == nil {

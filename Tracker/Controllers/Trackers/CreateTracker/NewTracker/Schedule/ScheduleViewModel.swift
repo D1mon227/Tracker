@@ -10,6 +10,7 @@ import Foundation
 final class ScheduleViewModel: ScheduleViewModelProtocol {
     private let dataProvider = DataProvider.shared
     private let scheduleService = ScheduleService()
+    private let analyticsService = AnalyticsService.shared
     
     @Observable
     private(set) var schedule: [Int] = []
@@ -32,6 +33,13 @@ final class ScheduleViewModel: ScheduleViewModelProtocol {
     
     func setSchedule() {
         let scheduleDay = schedule.count == 7 ? LocalizableConstants.ScheduleVC.everyDay : scheduleService.arrayToString(array: schedule)
+        
+        if scheduleDay == LocalizableConstants.ScheduleVC.everyDay {
+            analyticsService.report(typeOfEvent: .click, screen: .scheduleVC, item: .everyDay)
+        } else {
+            analyticsService.report(typeOfEvent: .click, screen: .scheduleVC, item: .notEveryDay)
+        }
+        
         dataProvider.selectedSchedule = scheduleDay
         dataProvider.trackerSchedule = schedule
         

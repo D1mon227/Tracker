@@ -15,9 +15,11 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
     private(set) var scheduleView = ScheduleView()
     private let scheduleViewModel = ScheduleViewModel()
     private let scheduleService = ScheduleService()
+    private let analyticsService = AnalyticsService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        analyticsService.report(typeOfEvent: .open, screen: .scheduleVC, item: nil)
         addView()
         setupTableView()
         addTarget()
@@ -59,6 +61,7 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
     
     @objc private func returnToNewTrackerVC() {
         scheduleViewModel.setSchedule()
+        analyticsService.report(typeOfEvent: .close, screen: .scheduleVC, item: nil)
         dismiss(animated: true)
     }
 }
