@@ -36,4 +36,9 @@ extension UIColor {
     static var colorSelection16: UIColor { UIColor(named: "colorSelection16") ?? .systemPink}
     static var colorSelection17: UIColor { UIColor(named: "colorSelection17") ?? .purple}
     static var colorSelection18: UIColor { UIColor(named: "colorSelection18") ?? .green}
+    
+    //MARK: gradientColors
+    static var leftGradientColor: UIColor { UIColor(named: "leftGradientColor") ?? .blue}
+    static var centerGradientColor: UIColor { UIColor(named: "centerGradientColor") ?? .green}
+    static var rightGradientColor: UIColor { UIColor(named: "rightGradientColor") ?? .red}
 }

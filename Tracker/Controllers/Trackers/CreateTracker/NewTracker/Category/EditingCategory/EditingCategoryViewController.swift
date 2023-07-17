@@ -45,6 +45,7 @@ final class EditingCategoryViewController: UIViewController {
         editingCategoryViewModel.editCategory(newCategory: newCategory)
         
         analyticsService.report(typeOfEvent: .close, screen: .editingCategoryVC, item: nil)
+        
         dismiss(animated: true)
     }
 }

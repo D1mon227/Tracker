@@ -103,3 +103,9 @@
 "alert.removeCategory.message" = "Deleting a category will result in the loss of all its trackers";
 "alert.cancel" = "Cancel";
 "alert.delete" = "Delete";
+
+//MARK: StatisticVC
+"statisticVC.bestPeriod" = "The best period";
+"statisticVC.perfectDays" = "Perfect days";
+"statisticVC.totalCompletedTrackers" = "Trackers completed";
+"statisticVC.averageValue" = "Average value";

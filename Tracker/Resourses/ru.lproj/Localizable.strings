@@ -103,3 +103,9 @@
 "alert.removeCategory.message" = "Удаление категории приведет к потере всех её трекеров";
 "alert.cancel" = "Отменить";
 "alert.delete" = "Удалить";
+
+//MARK: StatisticVC
+"statisticVC.bestPeriod" = "Лучший период";
+"statisticVC.perfectDays" = "Идеальные дни";
+"statisticVC.totalCompletedTrackers" = "Трекеров завершено";
+"statisticVC.averageValue" = "Среднее значение";

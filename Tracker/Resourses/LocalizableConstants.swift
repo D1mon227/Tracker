@@ -19,9 +19,13 @@ enum LocalizableConstants {
         static let statisticTabBarTitle = NSLocalizedString("tabBar.statisticTabBarTitle", comment: "")
     }
     
-    enum StatisticsVC {
+    enum StatisticVC {
         static let statisticsNavigationTitle = NSLocalizedString("statisticsVC.navigationTitle", comment: "")
         static let emptyStateLabel = NSLocalizedString("statisticsVC.emptyStateLabel", comment: "")
+        static let bestPeriod = NSLocalizedString("statisticVC.bestPeriod", comment: "")
+        static let perfectDays = NSLocalizedString("statisticVC.perfectDays", comment: "")
+        static let totalCompletedTrackers = NSLocalizedString("statisticVC.totalCompletedTrackers", comment: "")
+        static let averageValue = NSLocalizedString("statisticVC.averageValue", comment: "")
     }
     
     enum TrackersVC {

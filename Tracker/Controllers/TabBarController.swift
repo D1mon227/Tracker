@@ -31,7 +31,7 @@ final class TabBarController: UITabBarController {
         
         statisticNavigationController.navigationBar.prefersLargeTitles = true
         statisticNavigationController.navigationItem.largeTitleDisplayMode = .automatic
-        statisticNavigationController.navigationBar.topItem?.title = LocalizableConstants.StatisticsVC.statisticsNavigationTitle
+        statisticNavigationController.navigationBar.topItem?.title = LocalizableConstants.StatisticVC.statisticsNavigationTitle
         
         trackerNavigationController.tabBarItem = UITabBarItem(title: LocalizableConstants.TabBar.trackersTabBarTitle,
                                                         image: UIImage(systemName: "record.circle.fill"),

@@ -23,8 +23,7 @@ final class DataProvider {
     var scheduleViewModel: ScheduleViewModelProtocol?
     var newTrackerViewModel: NewTrackerViewModelProtocol?
     var trackersViewModel: TrackersViewModelProtocol?
-    
-//    var trackerSchedule: [Int]?
+    var statisticViewModel: StatisticViewModelProtocol?
     
     var visibleCategories: [TrackerCategory]? {
         didSet {
@@ -216,6 +215,10 @@ final class DataProvider {
     
     func bindTrackersViewModel(controller: TrackersViewModelProtocol) {
         trackersViewModel = controller
+    }
+    
+    func bindStatisticViewModel(controller: StatisticViewModelProtocol) {
+        statisticViewModel = controller
     }
 }
 

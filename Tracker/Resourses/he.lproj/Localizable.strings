@@ -103,3 +103,9 @@
 "alert.removeCategory.message" = "מחיקת קטגוריה תגרום לאובדן כל העוקבים שלה";
 "alert.cancel" = "ביטול";
 "alert.delete" = "מחק";
+
+//MARK: StatisticVC
+"statisticVC.bestPeriod" = "התקופה הטובה ביותר";
+"statisticVC.perfectDays" = "ימים מושלמים";
+"statisticVC.totalCompletedTrackers" = "עוקבים הושלמו";
+"statisticVC.averageValue" = "ערך ממוצע";
