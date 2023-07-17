@@ -25,13 +25,19 @@ final class DataProvider {
     var trackersViewModel: TrackersViewModelProtocol?
     var statisticViewModel: StatisticViewModelProtocol?
     
+    var statisticsService: StatisticServiceProtocol?
+    
     var visibleCategories: [TrackerCategory]? {
         didSet {
             trackersViewModel?.setupVisibleTrackers()
         }
     }
     
-    var completedTrackers: [TrackerRecord]? = []
+    var completedTrackers: [TrackerRecord]? {
+        didSet {
+            setRecordToStatisticsService()
+        }
+    }
     
     private var categoryName: [String]? {
         didSet {
@@ -112,6 +118,10 @@ final class DataProvider {
     //MARK: ViewModel
     func updateCategoryViewModel() -> [String] {
         categoryName ?? []
+    }
+    
+    func didUpdateStatistic() {
+        statisticViewModel?.isStatisticExists()
     }
     
     //MARK: TrackerStore:
@@ -198,6 +208,22 @@ final class DataProvider {
     
     func fetchRecordFromStore() {
         completedTrackers = trackerRecordStore?.fetchTrackerRecords()
+    }
+    
+    //MARK: TrackerStatistic
+    func getRecordsStatisticModel() -> TrackerStatistic {
+        statisticsService?.statisticModel ?? TrackerStatistic(bestPeriod: 0,
+                                                              perfectDays: 0,
+                                                              totalCompletedTrackers: 0,
+                                                              averageValue: 0)
+    }
+    
+    func setRecordToStatisticsService() {
+        statisticsService?.provideStatisticModel(record: completedTrackers)
+        
+        if completedTrackers?.count == 0 {
+            statisticsService?.removeAllStatistics()
+        }
     }
     
     //MARK: SetupViewModelProtocols

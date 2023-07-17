@@ -167,6 +167,24 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
         trackersViewModel.searchText = trackersView.searchTextField.text
         reloadViews()
     }
+    
+    private func isPerfectDayToday() {
+        var counter = 0
+        for trackerCell in trackersView.trackersCollectionView.visibleCells {
+            guard let trackerCell = trackerCell as? TrackersCollectionViewCell else { return }
+            if trackerCell.isCompleted == true {
+                counter += 1
+            } else {
+                counter -= 1
+            }
+        }
+
+        if counter == trackersView.trackersCollectionView.visibleCells.count {
+            trackersViewModel.changeCountOfPerfectDays(isAdd: true)
+        } else {
+            trackersViewModel.changeCountOfPerfectDays(isAdd: false)
+        }
+    }
 }
 
 //MARK: UICollectionViewDataSource
@@ -278,6 +296,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         
         analyticsService.report(typeOfEvent: .click, screen: .trackersVC, item: .track)
         trackersView.trackersCollectionView.reloadItems(at: [indexPath])
+        isPerfectDayToday()
     }
     
     func uncompleteTracker(id: UUID, at indexPath: IndexPath) {
@@ -285,6 +304,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         trackersViewModel.deleteRecord(tracker: trackerRecord)
         
         trackersView.trackersCollectionView.reloadItems(at: [indexPath])
+        isPerfectDayToday()
     }
     
     func pinTracker(_ cell: TrackersCollectionViewCell) {

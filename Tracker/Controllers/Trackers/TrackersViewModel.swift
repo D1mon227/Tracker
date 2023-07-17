@@ -41,6 +41,8 @@ final class TrackersViewModel: TrackersViewModelProtocol {
         dataProvider.trackerStore = TrackerStore()
         dataProvider.trackerCategoryStore = TrackerCategoryStore()
         dataProvider.trackerRecordStore = TrackerRecordStore()
+        dataProvider.statisticsService = StatisticService()
+        
         dataProvider.fetchVisibleCategoriesFromStore()
         dataProvider.getCategoryName()
         dataProvider.fetchRecordFromStore()
@@ -123,4 +125,10 @@ final class TrackersViewModel: TrackersViewModelProtocol {
         }
     }
     
+    func changeCountOfPerfectDays(isAdd: Bool) {
+        guard let date = currentDate else { return }
+        let statisticService = StatisticService()
+
+        isAdd ? statisticService.setNewPerfectDaysValue(date: date) : statisticService.removePerfectDays(date: date)
+    }
 }

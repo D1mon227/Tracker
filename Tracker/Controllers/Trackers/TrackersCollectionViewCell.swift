@@ -63,7 +63,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     
     weak var delegate: TrackerCollectionViewCellDelegate?
     
-    private var isCompleted: Bool = false
+    var isCompleted: Bool = false
     private var trackerID: UUID?
     private let dataProvider = DataProvider.shared
     private var pinUnpinTrackerLabel: String?
