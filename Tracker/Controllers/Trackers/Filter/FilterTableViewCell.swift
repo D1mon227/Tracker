@@ -9,7 +9,7 @@ import UIKit
 
 final class FilterTableViewCell: UITableViewCell {
     
-    private lazy var label: UILabel = {
+    lazy var label: UILabel = {
         let element = UILabel()
         element.font = .systemFont(ofSize: 17, weight: .regular)
         element.textColor = .ypBlack

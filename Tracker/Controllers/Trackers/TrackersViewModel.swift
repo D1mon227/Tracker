@@ -24,6 +24,7 @@ final class TrackersViewModel: TrackersViewModelProtocol {
         visibleCategories.count
     }
     
+    var hideFilterButton: Bool? = false
     var emptyImage: UIImage?
     var emptyLabel: String?
     var searchText: String? {
@@ -36,6 +37,8 @@ final class TrackersViewModel: TrackersViewModelProtocol {
     
     @Observable
     private(set) var visibleCategories: [TrackerCategory] = []
+    @Observable
+    private(set) var needChangeDate: Bool?
     
     init() {
         dataProvider.trackerStore = TrackerStore()
@@ -55,6 +58,10 @@ final class TrackersViewModel: TrackersViewModelProtocol {
         } else {
             return false
         }
+    }
+    
+    func todaysFilterDidEnable() {
+        needChangeDate = true
     }
     
     func fetchCompletedCategoriesFromStore() {
@@ -123,6 +130,55 @@ final class TrackersViewModel: TrackersViewModelProtocol {
             return TrackerCategory(name: category.name,
                                    trackerArray: filterTrackers)
         }
+    }
+    
+    func searchDifferentTrackers(visibleCategories: [TrackerCategory]?, completedCategories: [TrackerRecord]?) -> [TrackerCategory] {
+        guard let visibleCategories = visibleCategories,
+              let completedCategories = completedCategories else { return [] }
+        
+        return visibleCategories.compactMap { visibleCategory in
+            let differentTrackers = visibleCategory.trackerArray.compactMap { visibleTracker in
+                completedCategories.contains { $0.id == visibleTracker.id } ? nil : visibleTracker
+            }
+            
+            return differentTrackers.isEmpty ? nil : TrackerCategory(name: visibleCategory.name, trackerArray: differentTrackers)
+        }
+    }
+    
+    private func searchSameTrackers(visible: [TrackerCategory]?, completed: [TrackerRecord]?) -> [TrackerCategory] {
+        guard let visible = visible, let completed = completed else {
+            return []
+        }
+        
+        var result: [TrackerCategory] = []
+        
+        for visibleCategory in visible {
+            var sameTrackers: [Tracker] = []
+            
+            for visibleTracker in visibleCategory.trackerArray {
+                for completedTracker in completed {
+                    if visibleTracker.id == completedTracker.id {
+                        sameTrackers.append(visibleTracker)
+                    }
+                }
+            }
+            
+            if !sameTrackers.isEmpty {
+                var updatedCategory = visibleCategory
+                updatedCategory.trackerArray = sameTrackers
+                result.append(updatedCategory)
+            }
+        }
+        
+        return result
+    }
+    
+    func updateVisibleTrackersWithFilterCompleted(visible: [TrackerCategory]?, completed: [TrackerRecord]?) {
+        visibleCategories = searchSameTrackers(visible: visible, completed: completed)
+    }
+    
+    func updateVisibleTrackersWithFilterUncompleted(visible: [TrackerCategory]?, completed: [TrackerRecord]?) {
+        visibleCategories = searchDifferentTrackers(visibleCategories: visible, completedCategories: completed)
     }
     
     func changeCountOfPerfectDays(isAdd: Bool) {

@@ -19,8 +19,8 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     private(set) var newTrackerView = NewTrackerView()
     private let newTrackerViewModel = NewTrackerViewModel()
     private let analyticsService = AnalyticsService.shared
+    private var trackerID: UUID?
     var typeOfTracker: TypeOfTracker?
-    var trackerID: UUID?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,7 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
         setupTableView()
         setupCollectionView()
         setupTextField()
-        setupTarget()
+//        setupTargets()
         bindViewModel()
     }
     
@@ -116,7 +116,7 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
         newTrackerView.habitNameTextField.delegate = self
     }
     
-    private func setupTarget() {
+    func setupTargets() {
         newTrackerView.cancelButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
         newTrackerView.createButton.addTarget(self, action: #selector(createTracker), for: .touchUpInside)
         newTrackerView.habitNameTextField.addTarget(self, action: #selector(setupWarningLabel), for: [.editingChanged, .editingDidEnd])

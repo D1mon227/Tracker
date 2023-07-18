@@ -81,6 +81,12 @@ final class DataProvider {
         }
     }
     
+    var currentFilter: String? {
+        didSet {
+            currentFilterDidUpdate()
+        }
+    }
+    
     func resetNewTrackerInfo() {
         trackerName = nil
         selectedCategory = nil
@@ -122,6 +128,28 @@ final class DataProvider {
     
     func didUpdateStatistic() {
         statisticViewModel?.isStatisticExists()
+    }
+    
+    func getVisibleTrackers() -> [TrackerRecord]? {
+        fetchRecordFromStore()
+        return completedTrackers
+    }
+    
+    func currentFilterDidUpdate() {
+        switch currentFilter {
+        case Resourses.Filters.allTrackers.localizedString:
+            trackersViewModel?.filterTrackers(text: "")
+        case Resourses.Filters.todayTrackers.localizedString:
+            trackersViewModel?.todaysFilterDidEnable()
+        case Resourses.Filters.completed.localizedString:
+            trackersViewModel?.filterTrackers(text: "")
+            trackersViewModel?.updateVisibleTrackersWithFilterCompleted(visible: trackersViewModel?.visibleCategories, completed: getCompletedTrackers())
+        case Resourses.Filters.uncompleted.localizedString:
+            trackersViewModel?.filterTrackers(text: "")
+            trackersViewModel?.updateVisibleTrackersWithFilterUncompleted(visible: trackersViewModel?.visibleCategories, completed: getCompletedTrackers())
+        default:
+            return
+        }
     }
     
     //MARK: TrackerStore:

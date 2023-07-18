@@ -30,6 +30,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         let newHabitVC = NewTrackerViewController(typeOfTracker: .habit)
         newHabitVC.createViewController = self
         newHabitVC.setupNewTrackerVC()
+        newHabitVC.setupTargets()
         
         analyticsService.report(typeOfEvent: .close, screen: .createTrackerVC, item: nil)
         analyticsService.report(typeOfEvent: .close, screen: .createTrackerVC, item: .habit)
@@ -40,6 +41,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         let newHabitVC = NewTrackerViewController(typeOfTracker: .unregularEvent)
         newHabitVC.createViewController = self
         newHabitVC.setupNewTrackerVC()
+        newHabitVC.setupTargets()
         
         analyticsService.report(typeOfEvent: .close, screen: .createTrackerVC, item: nil)
         analyticsService.report(typeOfEvent: .close, screen: .createTrackerVC, item: .unregularEvent)

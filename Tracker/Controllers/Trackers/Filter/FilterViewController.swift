@@ -28,6 +28,7 @@ final class FilterViewController: UIViewController {
     }()
     
     private let analyticsService = AnalyticsService.shared
+    private let filterViewModel = FilterViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +60,7 @@ extension FilterViewController: UITableViewDataSource {
         cell.configureCell(text: Resourses.Filters.allCases[indexPath.row].localizedString)
         cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         
+        cell.accessoryType = cell.label.text == filterViewModel.getCurrentFilter() ? .checkmark : .none
         return cell
     }
     
@@ -71,14 +73,13 @@ extension FilterViewController: UITableViewDataSource {
 //MARK: UITableViewDelegate
 extension FilterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        if let cell = tableView.cellForRow(at: indexPath) {
-            if cell.accessoryType == .checkmark {
-                cell.accessoryType = .none
-            } else {
-                cell.accessoryType = .checkmark
-            }
-        }
+        guard let cell = tableView.cellForRow(at: indexPath) as? FilterTableViewCell else { return }
+
+        cell.accessoryType = cell.accessoryType == UITableViewCell.AccessoryType.none ? .checkmark : .none
+        filterViewModel.setCurrentFilter(selected: cell.label.text ?? "")
+        
+        
+        dismiss(animated: true)
     }
 }
 

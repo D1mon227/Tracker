@@ -35,6 +35,16 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
             guard let self = self else { return }
             self.reloadViews()
         }
+        
+        trackersViewModel.$needChangeDate.bind { [weak self] value in
+            guard let self = self else { return }
+            
+            if value == true {
+                self.trackersView.datePicker.date = Date()
+                self.trackersViewModel.currentDate = trackersView.datePicker.date
+                self.trackersViewModel.filterTrackers(text: "")
+            }
+        }
     }
 
     private func setupViews() {
