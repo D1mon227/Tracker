@@ -26,6 +26,7 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
         super.viewDidLoad()
         analyticsService.report(event: .open, screen: .newTrackerVC, item: nil)
         newTrackerViewModel.view = self
+        newTrackerView.scrollView.delegate = self
         setupViews()
         setupTableView()
         setupCollectionView()
@@ -157,7 +158,7 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     }
 }
 
-extension NewTrackerViewController: UITextFieldDelegate {
+extension NewTrackerViewController: UITextFieldDelegate, UIScrollViewDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
     }
@@ -168,6 +169,10 @@ extension NewTrackerViewController: UITextFieldDelegate {
         if trackerName.count <= 38 && trackerName.count > 0 {
             newTrackerViewModel.setTrackerName(name: trackerName)
         }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        newTrackerView.habitNameTextField.endEditing(true)
     }
 }
 
