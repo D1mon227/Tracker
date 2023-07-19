@@ -33,8 +33,8 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
         bindViewModel()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         newTrackerViewModel.resetNewTrackerInfo()
         analyticsService.report(event: .close, screen: .newTrackerVC, item: nil)
     }
