@@ -32,13 +32,14 @@ final class FilterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        analyticsService.report(typeOfEvent: .open, screen: .filterVC, item: nil)
+        analyticsService.report(event: .open, screen: .filterVC, item: nil)
         addView()
         setupTableView()
     }
     
-    deinit {
-        analyticsService.report(typeOfEvent: .close, screen: .filterVC, item: nil)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.report(event: .close, screen: .filterVC, item: nil)
     }
     
     private func setupTableView() {

@@ -154,7 +154,7 @@ extension CategoryViewController: UITableViewDelegate {
 extension CategoryViewController: CategoryTableViewCellDelegate {
     func editCategory(_ cell: CategoryTableViewCell) {
         guard let category = cell.label.text else { return }
-        analyticsService.report(typeOfEvent: .click, screen: .categoryVC, item: .edit)
+        analyticsService.report(event: .click, screen: .categoryVC, item: .edit)
         switchToEditingVC(category)
     }
     
@@ -162,7 +162,7 @@ extension CategoryViewController: CategoryTableViewCellDelegate {
         alertService.showAlert(event: .removeCategory, controller: self) { [weak self] in
             guard let self = self,
                   let category = cell.label.text else { return }
-            self.analyticsService.report(typeOfEvent: .click, screen: .categoryVC, item: .delete)
+            self.analyticsService.report(event: .click, screen: .categoryVC, item: .delete)
             self.categoryViewModel.deleteCategory(category: category)
         }
     }

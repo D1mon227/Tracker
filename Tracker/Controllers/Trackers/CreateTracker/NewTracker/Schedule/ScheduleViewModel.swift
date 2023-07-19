@@ -35,9 +35,9 @@ final class ScheduleViewModel: ScheduleViewModelProtocol {
         let scheduleDay = schedule.count == 7 ? LocalizableConstants.ScheduleVC.everyDay : scheduleService.arrayToString(array: schedule)
         
         if scheduleDay == LocalizableConstants.ScheduleVC.everyDay {
-            analyticsService.report(typeOfEvent: .click, screen: .scheduleVC, item: .everyDay)
+            analyticsService.report(event: .click, screen: .scheduleVC, item: .everyDay)
         } else {
-            analyticsService.report(typeOfEvent: .click, screen: .scheduleVC, item: .notEveryDay)
+            analyticsService.report(event: .click, screen: .scheduleVC, item: .notEveryDay)
         }
         
         dataProvider.selectedSchedule = scheduleDay

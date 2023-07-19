@@ -72,7 +72,8 @@ extension CategoryTableViewCell: UIContextMenuInteractionDelegate {
                     self.editCategory(cell: self)
                 },
                 UIAction(title: LocalizableConstants.ContextMenu.deleteButton,
-                         image: deleteImage, attributes: .destructive) { [weak self] _ in
+                         image: deleteImage,
+                         attributes: .destructive) { [weak self] _ in
                     guard let self = self else { return }
                     self.deleteCategory(cell: self)
                 }

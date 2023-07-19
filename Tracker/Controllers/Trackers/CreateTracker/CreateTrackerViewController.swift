@@ -16,7 +16,7 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        analyticsService.report(typeOfEvent: .open, screen: .createTrackerVC, item: nil)
+        analyticsService.report(event: .open, screen: .createTrackerVC, item: nil)
         addViews()
         addTargets()
     }
@@ -32,8 +32,8 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         newHabitVC.setupNewTrackerVC()
         newHabitVC.setupTargets()
         
-        analyticsService.report(typeOfEvent: .close, screen: .createTrackerVC, item: nil)
-        analyticsService.report(typeOfEvent: .close, screen: .createTrackerVC, item: .habit)
+        analyticsService.report(event: .close, screen: .createTrackerVC, item: nil)
+        analyticsService.report(event: .close, screen: .createTrackerVC, item: .habit)
         present(newHabitVC, animated: true)
     }
     
@@ -43,8 +43,8 @@ final class CreateTrackerViewController: UIViewController, CreateTrackerViewCont
         newHabitVC.setupNewTrackerVC()
         newHabitVC.setupTargets()
         
-        analyticsService.report(typeOfEvent: .close, screen: .createTrackerVC, item: nil)
-        analyticsService.report(typeOfEvent: .close, screen: .createTrackerVC, item: .unregularEvent)
+        analyticsService.report(event: .close, screen: .createTrackerVC, item: nil)
+        analyticsService.report(event: .close, screen: .createTrackerVC, item: .unregularEvent)
         present(newHabitVC, animated: true)
     }
     

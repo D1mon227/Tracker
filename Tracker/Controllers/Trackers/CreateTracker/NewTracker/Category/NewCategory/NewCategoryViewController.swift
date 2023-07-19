@@ -17,14 +17,15 @@ final class NewCategoryViewController: UIViewController, NewCategoryViewControll
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        analyticsService.report(typeOfEvent: .open, screen: .newCategoryVC, item: nil)
+        analyticsService.report(event: .open, screen: .newCategoryVC, item: nil)
         addView()
         setupTextField()
         addTarget()
     }
     
-    deinit {
-        analyticsService.report(typeOfEvent: .click, screen: .newCategoryVC, item: nil)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.report(event: .click, screen: .newCategoryVC, item: nil)
     }
     
     private func setupTextField() {
@@ -39,7 +40,7 @@ final class NewCategoryViewController: UIViewController, NewCategoryViewControll
         guard let categoryName = newCategoryView.newCategoryTextField.text else { return }
         dataProvider.addCategory(category: categoryName)
         
-        analyticsService.report(typeOfEvent: .close, screen: .newCategoryVC, item: .newCategory)
+        analyticsService.report(event: .close, screen: .newCategoryVC, item: .newCategory)
         dismiss(animated: true)
     }
 }

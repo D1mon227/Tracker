@@ -9,56 +9,56 @@ import Foundation
 import YandexMobileMetrica
 
 enum Events: String {
-    case open = "open"
-    case close = "close"
-    case click = "click"
+    case open
+    case close
+    case click
 }
 
 enum Screen: String {
-    case trackersVC = "TrackersVC"
-    case createTrackerVC = "CreateTrackerVC"
-    case newTrackerVC = "NewTrackerVC"
-    case categoryVC = "CategoryVC"
-    case newCategoryVC = "NewCategoryVC"
-    case scheduleVC = "ScheduleVC"
-    case statisticVC = "StatisticVC"
-    case editingCategoryVC = "EditingCategoryVC"
-    case editingTrackerVC = "EditingTrackerVC"
-    case filterVC = "FilterVC"
+    case main
+    case createTrackerVC
+    case newTrackerVC
+    case categoryVC
+    case newCategoryVC
+    case scheduleVC
+    case statisticVC
+    case editingCategoryVC
+    case editingTrackerVC
+    case filterVC
 }
 
 enum Item: String {
     // TrackerVC:
-    case addTrack = "add_track"
-    case track = "track"
-    case filter = "filter"
-    case edit = "edit"
-    case delete = "delete"
+    case add_track
+    case track
+    case filter
+    case edit
+    case delete
     
     // CreateTrackerVC:
-    case habit = "habit"
-    case unregularEvent = "unregularEvent"
+    case habit
+    case unregularEvent
     
     // NewTrackerVC:
-    case category = "category"
-    case schedule = "schedule"
-    case emoji = "emoji"
-    case color = "color"
-    case create = "create"
-    case cancel = "cancel"
+    case category
+    case schedule
+    case emoji
+    case color
+    case create
+    case cancel
     
     // Category:
-    case newCategory = "newCategory"
+    case newCategory
     
     // Schedule:
-    case everyDay = "everyDay"
-    case notEveryDay = "notEveryDay"
+    case everyDay
+    case notEveryDay
     
     // FilterVC:
-    case allTrackers = "allTrackers"
-    case todaysTrackers = "todaysTrackers"
-    case completedTrackers = "completedTrackers"
-    case uncompletedTrackers = "uncompletedTrackers"
+    case allTrackers
+    case todaysTrackers
+    case completedTrackers
+    case uncompletedTrackers
 }
 
 final class AnalyticsService {
@@ -71,14 +71,14 @@ final class AnalyticsService {
         YMMYandexMetrica.activate(with: configuration)
     }
     
-    func report(typeOfEvent: Events, screen: Screen, item: Item?) {
+    func report(event: Events, screen: Screen, item: Item?) {
         var params: [AnyHashable: Any] = [:]
         
         if item == nil {
-            params = ["event": typeOfEvent.rawValue, "screen": screen.rawValue]
+            params = ["event": event.rawValue, "screen": screen.rawValue]
         } else {
             guard let item = item else { return }
-            params = ["event": typeOfEvent.rawValue, "screen": screen.rawValue, "item": item.rawValue]
+            params = ["event": event.rawValue, "screen": screen.rawValue, "item": item.rawValue]
         }
         YMMYandexMetrica.reportEvent("EVENT", parameters: params, onFailure: { error in
             print("REPORT ERROR: %@", error.localizedDescription)

@@ -19,7 +19,7 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        analyticsService.report(typeOfEvent: .open, screen: .scheduleVC, item: nil)
+        analyticsService.report(event: .open, screen: .scheduleVC, item: nil)
         addView()
         setupTableView()
         addTarget()
@@ -29,7 +29,7 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
     func bindViewModel() {
         scheduleViewModel.$schedule.bind { [weak self] _ in
             guard let self = self else { return }
-            viewController?.reloadTableView()
+            self.viewController?.reloadTableView()
         }
         
         scheduleViewModel.$checkScheduleForCreate.bind { [weak self] value in
@@ -61,7 +61,7 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
     
     @objc private func returnToNewTrackerVC() {
         scheduleViewModel.setSchedule()
-        analyticsService.report(typeOfEvent: .close, screen: .scheduleVC, item: nil)
+        analyticsService.report(event: .close, screen: .scheduleVC, item: nil)
         dismiss(animated: true)
     }
 }

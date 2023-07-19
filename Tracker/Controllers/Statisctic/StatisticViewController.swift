@@ -24,12 +24,12 @@ final class StatisticViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        analyticsService.report(typeOfEvent: .open, screen: .statisticVC, item: nil)
+        analyticsService.report(event: .open, screen: .statisticVC, item: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        analyticsService.report(typeOfEvent: .close, screen: .statisticVC, item: nil)
+        analyticsService.report(event: .close, screen: .statisticVC, item: nil)
     }
     
     private func bindViewModel() {
@@ -40,10 +40,10 @@ final class StatisticViewController: UIViewController {
         
         statisticViewModel.$recordModel.bind { [weak self] model in
             guard let self = self else { return }
-            statisticView.bestPeriod.setCountLabel(value: String(model?.bestPeriod ?? 0))
-            statisticView.perfectDays.setCountLabel(value: String(model?.perfectDays ?? 0))
-            statisticView.totalCompletedTrackers.setCountLabel(value: String(model?.totalCompletedTrackers ?? 0))
-            statisticView.averageValue.setCountLabel(value: String(model?.averageValue ?? 0))
+            self.statisticView.bestPeriod.setCountLabel(value: String(model?.bestPeriod ?? 0))
+            self.statisticView.perfectDays.setCountLabel(value: String(model?.perfectDays ?? 0))
+            self.statisticView.totalCompletedTrackers.setCountLabel(value: String(model?.totalCompletedTrackers ?? 0))
+            self.statisticView.averageValue.setCountLabel(value: String(model?.averageValue ?? 0))
         }
     }
     

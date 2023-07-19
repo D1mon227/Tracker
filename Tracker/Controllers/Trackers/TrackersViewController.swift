@@ -17,7 +17,7 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        analyticsService.report(typeOfEvent: .open, screen: .trackersVC, item: nil)
+        analyticsService.report(event: .open, screen: .main, item: nil)
         addViews()
         setupViews()
         setupNavigationController()
@@ -26,8 +26,9 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
         bindViewModel()
     }
     
-    deinit {
-        analyticsService.report(typeOfEvent: .close, screen: .trackersVC, item: nil)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.report(event: .close, screen: .main, item: nil)
     }
     
     func bindViewModel() {
@@ -41,7 +42,7 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
             
             if value == true {
                 self.trackersView.datePicker.date = Date()
-                self.trackersViewModel.currentDate = trackersView.datePicker.date
+                self.trackersViewModel.currentDate = self.trackersView.datePicker.date
                 self.trackersViewModel.filterTrackers(text: "")
             }
         }
@@ -66,11 +67,7 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
     }
     
     func reloadViews() {
-        if trackersViewModel.areVisibleCategoriesEmpty() {
-            addEmptyViews()
-        } else {
-            reloadCollectionView()
-        }
+        trackersViewModel.areVisibleCategoriesEmpty() ? addEmptyViews() : reloadCollectionView()
     }
     
     private func addEmptyViews() {
@@ -118,7 +115,7 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
         newtrackerVC.viewController = self
         trackersView.searchTextField.text = .none
         trackersView.searchTextField.endEditing(true)
-        analyticsService.report(typeOfEvent: .click, screen: .trackersVC, item: .addTrack)
+        analyticsService.report(event: .click, screen: .main, item: .add_track)
         present(newtrackerVC, animated: true)
     }
     
@@ -132,7 +129,7 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
     
     @objc private func switchToFilterViewController() {
         let filterVC = FilterViewController()
-        analyticsService.report(typeOfEvent: .click, screen: .trackersVC, item: .filter)
+        analyticsService.report(event: .click, screen: .main, item: .filter)
         present(filterVC, animated: true)
     }
     
@@ -304,7 +301,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         let trackerRecord = TrackerRecord(id: id, date: trackersView.datePicker.date)
         trackersViewModel.addRecord(tracker: trackerRecord)
         
-        analyticsService.report(typeOfEvent: .click, screen: .trackersVC, item: .track)
+        analyticsService.report(event: .click, screen: .main, item: .track)
         trackersView.trackersCollectionView.reloadItems(at: [indexPath])
         isPerfectDayToday()
     }
@@ -341,23 +338,24 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         let editTrackerVC = NewTrackerViewController(typeOfTracker: .habit)
         let category = trackersViewModel.visibleCategories[indexPath.section].name
         
+        editTrackerVC.setupTargets()
         editTrackerVC.setupEditingVC()
         editTrackerVC.editingTrackerInfo(tracker: trackerInfo, completedDays: completedDays, category: category)
         
-        analyticsService.report(typeOfEvent: .click, screen: .trackersVC, item: .edit)
+        analyticsService.report(event: .click, screen: .main, item: .edit)
         present(editTrackerVC, animated: true)
     }
     
     func deleteTracker(_ cell: TrackersCollectionViewCell) {
         alertService.showAlert(event: .removeTracker, controller: self) { [weak self] in
             guard let self = self,
-                  let indexPath = trackersView.trackersCollectionView.indexPath(for: cell) else { return }
+                  let indexPath = self.trackersView.trackersCollectionView.indexPath(for: cell) else { return }
             
-            let visibleCategories = trackersViewModel.visibleCategories
+            let visibleCategories = self.trackersViewModel.visibleCategories
             let tracker = visibleCategories[indexPath.section].trackerArray[indexPath.row]
             
             self.trackersViewModel.deleteTracker(id: tracker.id)
-            self.analyticsService.report(typeOfEvent: .click, screen: .trackersVC, item: .delete)
+            self.analyticsService.report(event: .click, screen: .main, item: .delete)
             self.setupTrackersFromDatePicker()
         }
     }

@@ -15,7 +15,7 @@ final class EditingCategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        analyticsService.report(typeOfEvent: .open, screen: .editingCategoryVC, item: nil)
+        analyticsService.report(event: .open, screen: .editingCategoryVC, item: nil)
         addView()
         setupTarget()
         editingCategoryView.textField.delegate = self
@@ -44,7 +44,7 @@ final class EditingCategoryViewController: UIViewController {
         
         editingCategoryViewModel.editCategory(newCategory: newCategory)
         
-        analyticsService.report(typeOfEvent: .close, screen: .editingCategoryVC, item: nil)
+        analyticsService.report(event: .close, screen: .editingCategoryVC, item: nil)
         
         dismiss(animated: true)
     }

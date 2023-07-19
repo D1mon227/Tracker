@@ -10,14 +10,14 @@ import SnapKit
 
 final class StatisticCellView: UIView {
     
-    lazy var countLabel: UILabel = {
+    private lazy var countLabel: UILabel = {
         let element = UILabel()
         element.textColor = .ypBlack
         element.font = .boldSystemFont(ofSize: 34)
         return element
     }()
     
-    lazy var descriptionLabel: UILabel = {
+    private lazy var descriptionLabel: UILabel = {
         let element = UILabel()
         element.font = .systemFont(ofSize: 12, weight: .medium)
         element.textColor = .ypBlack

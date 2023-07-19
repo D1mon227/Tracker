@@ -24,20 +24,19 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        analyticsService.report(typeOfEvent: .open, screen: .newTrackerVC, item: nil)
+        analyticsService.report(event: .open, screen: .newTrackerVC, item: nil)
         newTrackerViewModel.view = self
         setupViews()
         setupTableView()
         setupCollectionView()
         setupTextField()
-//        setupTargets()
         bindViewModel()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         newTrackerViewModel.resetNewTrackerInfo()
-        analyticsService.report(typeOfEvent: .close, screen: .newTrackerVC, item: nil)
+        analyticsService.report(event: .close, screen: .newTrackerVC, item: nil)
     }
     
     init(typeOfTracker: TypeOfTracker) {
@@ -123,13 +122,13 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
     }
     
     @objc private func dismissVC() {
-        analyticsService.report(typeOfEvent: .click, screen: .newTrackerVC, item: .cancel)
+        analyticsService.report(event: .click, screen: .newTrackerVC, item: .cancel)
         dismiss(animated: true)
     }
     
     @objc private func createTracker() {
         newTrackerViewModel.createNewTracker()
-        analyticsService.report(typeOfEvent: .click, screen: .newTrackerVC, item: .create)
+        analyticsService.report(event: .click, screen: .newTrackerVC, item: .create)
         dismissVC()
         createViewController?.switchToTrackerVC()
     }
@@ -169,7 +168,6 @@ extension NewTrackerViewController: UITextFieldDelegate {
         if trackerName.count <= 38 && trackerName.count > 0 {
             newTrackerViewModel.setTrackerName(name: trackerName)
         }
-        
     }
 }
 
@@ -365,13 +363,13 @@ extension NewTrackerViewController: UICollectionViewDelegateFlowLayout {
             cell.layer.cornerRadius = 16
             cell.backgroundColor = .ypLightGray
             newTrackerViewModel.setTrackerEmoji(emoji: cell.emojiLabel.text ?? "")
-            analyticsService.report(typeOfEvent: .click, screen: .newTrackerVC, item: .emoji)
+            analyticsService.report(event: .click, screen: .newTrackerVC, item: .emoji)
         case 1:
             cell.layer.cornerRadius = 11
             cell.layer.borderColor = newTrackerViewModel.colors[indexPath.row].withAlphaComponent(0.3).cgColor
             cell.layer.borderWidth = 3
             newTrackerViewModel.setTrackerColor(color: cell.colorImage.backgroundColor ?? UIColor())
-            analyticsService.report(typeOfEvent: .click, screen: .newTrackerVC, item: .color)
+            analyticsService.report(event: .click, screen: .newTrackerVC, item: .color)
         default:
             cell.backgroundColor = .gray
         }

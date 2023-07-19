@@ -91,7 +91,11 @@ final class TrackersViewModel: TrackersViewModelProtocol {
     }
     
     func setupVisibleTrackers() {
-        visibleCategories = dataProvider.getVisibleCategories()
+        if isPinnedTrackersExist() {
+            getVisibleTrackersWithPinned()
+        } else {
+            visibleCategories = dataProvider.getVisibleCategories()
+        }
     }
     
     func addRecord(tracker: TrackerRecord) {
@@ -186,5 +190,22 @@ final class TrackersViewModel: TrackersViewModelProtocol {
         let statisticService = StatisticService()
 
         isAdd ? statisticService.setNewPerfectDaysValue(date: date) : statisticService.removePerfectDays(date: date)
+    }
+    
+    private func isPinnedTrackersExist() -> Bool {
+        dataProvider.getVisibleCategories().contains(where: { $0.name == LocalizableConstants.TrackersVC.pinnedTrackers })
+    }
+    
+    private func getVisibleTrackersWithPinned() {
+        var trackerCategories = dataProvider.getVisibleCategories()
+        
+        if let index = trackerCategories.firstIndex(where: { $0.name == LocalizableConstants.TrackersVC.pinnedTrackers }) {
+            let pinnedTrackers = trackerCategories[index]
+            trackerCategories.remove(at: index)
+            trackerCategories.insert(pinnedTrackers, at: 0)
+            visibleCategories = trackerCategories
+        } else {
+            return
+        }
     }
 }

@@ -32,6 +32,6 @@ final class FilterViewModel {
             return
         }
         
-        analyticsService.report(typeOfEvent: .click, screen: .filterVC, item: eventName)
+        analyticsService.report(event: .click, screen: .filterVC, item: eventName)
     }
 }
