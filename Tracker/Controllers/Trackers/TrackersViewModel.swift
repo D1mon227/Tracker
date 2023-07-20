@@ -92,9 +92,9 @@ final class TrackersViewModel: TrackersViewModelProtocol {
     
     func setupVisibleTrackers() {
         if isPinnedTrackersExist() {
-            getVisibleTrackersWithPinned()
+            filterTrackersWithPinned(text: "")
         } else {
-            visibleCategories = dataProvider.getVisibleCategories()
+            filterTrackers(text: "")
         }
     }
     
@@ -117,7 +117,7 @@ final class TrackersViewModel: TrackersViewModelProtocol {
         guard let date = currentDate,
               let text = text?.lowercased() else { return }
         
-        setupVisibleTrackers()
+        visibleCategories = dataProvider.getVisibleCategories()
         visibleCategories = visibleCategories.compactMap { category in
             let filterTrackers = category.trackerArray.filter { tracker in
                 guard let schedule = tracker.schedule else { return false }
@@ -136,7 +136,31 @@ final class TrackersViewModel: TrackersViewModelProtocol {
         }
     }
     
-    func searchDifferentTrackers(visibleCategories: [TrackerCategory]?, completedCategories: [TrackerRecord]?) -> [TrackerCategory] {
+    func filterTrackersWithPinned(text: String?) {
+        guard let date = currentDate,
+              let text = text?.lowercased() else { return }
+        
+        getVisibleTrackersWithPinned()
+        visibleCategories = visibleCategories.compactMap { category in
+            let filterTrackers = category.trackerArray.filter { tracker in
+                guard let schedule = tracker.schedule else { return false }
+                let filterText = text.isEmpty || tracker.name.lowercased().contains(text)
+                let trackerDate = dateService.getNumberOfSelectedDay(date: date)
+                
+                return schedule.contains(trackerDate) && filterText
+            }
+            
+            if filterTrackers.isEmpty {
+                return nil
+            }
+            
+            return TrackerCategory(name: category.name,
+                                   trackerArray: filterTrackers)
+        }
+    }
+    
+    func searchDifferentTrackers(visibleCategories: [TrackerCategory]?,
+                                 completedCategories: [TrackerRecord]?) -> [TrackerCategory] {
         guard let visibleCategories = visibleCategories,
               let completedCategories = completedCategories else { return [] }
         
@@ -149,7 +173,8 @@ final class TrackersViewModel: TrackersViewModelProtocol {
         }
     }
     
-    private func searchSameTrackers(visible: [TrackerCategory]?, completed: [TrackerRecord]?) -> [TrackerCategory] {
+    private func searchSameTrackers(visible: [TrackerCategory]?,
+                                    completed: [TrackerRecord]?) -> [TrackerCategory] {
         guard let visible = visible, let completed = completed else {
             return []
         }

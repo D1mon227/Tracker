@@ -51,11 +51,7 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
     }
     
     func reloadViews() {
-        if categoryViewModel.areVisibleCategoriesEmpty() {
-            reloadEmptyViews()
-        } else {
-            reloadTableView()
-        }
+        categoryViewModel.areVisibleCategoriesEmpty() ? reloadEmptyViews() : reloadTableView()
     }
     
     private func reloadEmptyViews() {
