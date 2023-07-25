@@ -13,7 +13,7 @@ final class TrackerTests: XCTestCase {
     let trackersViewController = TrackersViewController()
     let statisticsViewController = StatisticViewController()
     let createTrackersViewController = CreateTrackerViewController()
-    let newTrackerViewController = NewTrackerViewController()
+    let newTrackerViewController = NewTrackerViewController(typeOfTracker: nil)
     let categoryViewController = CategoryViewController()
     let newCategoryViewController = NewCategoryViewController()
     let scheduleViewController = ScheduleViewController()

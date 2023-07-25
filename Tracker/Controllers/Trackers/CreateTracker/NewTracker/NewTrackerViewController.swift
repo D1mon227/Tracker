@@ -40,7 +40,7 @@ final class NewTrackerViewController: UIViewController, NewTrackerViewController
         analyticsService.report(event: .close, screen: .newTrackerVC, item: nil)
     }
     
-    init(typeOfTracker: TypeOfTracker) {
+    init(typeOfTracker: TypeOfTracker?) {
         super.init(nibName: nil, bundle: nil)
         newTrackerView.scrollView.addSubview(newTrackerView.habitNameTextField)
         if typeOfTracker == .habit {
