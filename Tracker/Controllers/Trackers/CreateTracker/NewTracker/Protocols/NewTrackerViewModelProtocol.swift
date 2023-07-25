@@ -12,6 +12,7 @@ protocol NewTrackerViewModelProtocol: AnyObject {
     var emojies: [String] { get }
     var colors: [UIColor] { get }
     func createNewTracker()
+    func editTracker(id: UUID)
     func setTrackerEmoji(emoji: String)
     func setTrackerColor(color: UIColor)
     func resetNewTrackerInfo()

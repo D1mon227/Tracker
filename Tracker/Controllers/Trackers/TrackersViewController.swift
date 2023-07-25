@@ -10,11 +10,14 @@ import SnapKit
 
 final class TrackersViewController: UIViewController, TrackerViewControllerProtocol {
     
-    private let trackersView = TrackersView()
-    var trackersViewModel = TrackersViewModel()
+    private(set) var trackersView = TrackersView()
+    private let trackersViewModel = TrackersViewModel()
+    private let alertService = AlertService()
+    private let analyticsService = AnalyticsService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        analyticsService.report(event: .open, screen: .main, item: nil)
         addViews()
         setupViews()
         setupNavigationController()
@@ -23,10 +26,25 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
         bindViewModel()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.report(event: .close, screen: .main, item: nil)
+    }
+    
     func bindViewModel() {
         trackersViewModel.$visibleCategories.bind { [weak self] _ in
             guard let self = self else { return }
             self.reloadViews()
+        }
+        
+        trackersViewModel.$needChangeDate.bind { [weak self] value in
+            guard let self = self else { return }
+            
+            if value == true {
+                self.trackersView.datePicker.date = Date()
+                self.trackersViewModel.currentDate = self.trackersView.datePicker.date
+                self.trackersViewModel.filterTrackers(text: "")
+            }
         }
     }
 
@@ -49,14 +67,10 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
     }
     
     func reloadViews() {
-        if trackersViewModel.areVisibleCategoriesEmpty() {
-            addEmptyViews()
-        } else {
-            addCollectionView()
-        }
+        trackersViewModel.areVisibleCategoriesEmpty() ? addEmptyViews() : reloadCollectionView()
     }
     
-    func addEmptyViews() {
+    private func addEmptyViews() {
         trackersView.trackersCollectionView.removeFromSuperview()
         trackersView.filterButton.removeFromSuperview()
         view.addSubview(trackersView.emptyImage)
@@ -75,7 +89,7 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
         }
     }
     
-    func addCollectionView() {
+    private func reloadCollectionView() {
         trackersView.emptyImage.removeFromSuperview()
         trackersView.emptyLabel.removeFromSuperview()
         view.addSubview(trackersView.trackersCollectionView)
@@ -101,6 +115,7 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
         newtrackerVC.viewController = self
         trackersView.searchTextField.text = .none
         trackersView.searchTextField.endEditing(true)
+        analyticsService.report(event: .click, screen: .main, item: .add_track)
         present(newtrackerVC, animated: true)
     }
     
@@ -114,6 +129,7 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
     
     @objc private func switchToFilterViewController() {
         let filterVC = FilterViewController()
+        analyticsService.report(event: .click, screen: .main, item: .filter)
         present(filterVC, animated: true)
     }
     
@@ -125,7 +141,6 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
             make.height.equalTo(22)
             make.trailing.equalToSuperview().offset(-16)
             make.centerY.equalTo(trackersView.searchTextField)
-            make.width.equalTo(83)
         }
         
         trackersView.searchTextField.snp.makeConstraints { make in
@@ -159,6 +174,24 @@ final class TrackersViewController: UIViewController, TrackerViewControllerProto
         trackersViewModel.searchText = trackersView.searchTextField.text
         reloadViews()
     }
+    
+    private func isPerfectDayToday() {
+        var counter = 0
+        for trackerCell in trackersView.trackersCollectionView.visibleCells {
+            guard let trackerCell = trackerCell as? TrackersCollectionViewCell else { return }
+            if trackerCell.isCompleted == true {
+                counter += 1
+            } else {
+                counter -= 1
+            }
+        }
+
+        if counter == trackersView.trackersCollectionView.visibleCells.count {
+            trackersViewModel.changeCountOfPerfectDays(isAdd: true)
+        } else {
+            trackersViewModel.changeCountOfPerfectDays(isAdd: false)
+        }
+    }
 }
 
 //MARK: UICollectionViewDataSource
@@ -179,6 +212,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TrackerCollectionViewCell", for: indexPath) as? TrackersCollectionViewCell else { return UICollectionViewCell() }
         let records = trackersViewModel.getCompletedCategories()
         let visibleCategories = trackersViewModel.visibleCategories
+        let sectionName = visibleCategories[indexPath.section].name
         let tracker = visibleCategories[indexPath.section].trackerArray[indexPath.row]
         
         cell.delegate = self
@@ -191,6 +225,8 @@ extension TrackersViewController: UICollectionViewDataSource {
                            isCompleted: isCompletedToday,
                            completedDays: completedDays,
                            indexPath: indexPath)
+        cell.isTrackerPined = sectionName == LocalizableConstants.TrackersVC.pinnedTrackers ? true : false
+        cell.pinnedImage.isHidden = sectionName == LocalizableConstants.TrackersVC.pinnedTrackers ? false : true
         
         if trackersViewModel.checkDate() {
             cell.unlockDoneButton()
@@ -265,7 +301,9 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         let trackerRecord = TrackerRecord(id: id, date: trackersView.datePicker.date)
         trackersViewModel.addRecord(tracker: trackerRecord)
         
+        analyticsService.report(event: .click, screen: .main, item: .track)
         trackersView.trackersCollectionView.reloadItems(at: [indexPath])
+        isPerfectDayToday()
     }
     
     func uncompleteTracker(id: UUID, at indexPath: IndexPath) {
@@ -273,18 +311,53 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         trackersViewModel.deleteRecord(tracker: trackerRecord)
         
         trackersView.trackersCollectionView.reloadItems(at: [indexPath])
+        isPerfectDayToday()
     }
     
-    func editTracker(_ cell: TrackersCollectionViewCell) {}
-    
-    func deleteTracker(_ cell: TrackersCollectionViewCell) {
+    func pinTracker(_ cell: TrackersCollectionViewCell) {
         guard let indexPath = trackersView.trackersCollectionView.indexPath(for: cell) else { return }
         
-        let visibleCategories = trackersViewModel.visibleCategories
-        let tracker = visibleCategories[indexPath.section].trackerArray[indexPath.row]
+        let trackerID = trackersViewModel.visibleCategories[indexPath.section].trackerArray[indexPath.row].id
         
-        trackersViewModel.deleteTracker(id: tracker.id)
-        setupTrackersFromDatePicker()
+        trackersViewModel.pinTracker(id: trackerID)
+    }
+    
+    func unpinTracker(_ cell: TrackersCollectionViewCell) {
+        guard let indexPath = trackersView.trackersCollectionView.indexPath(for: cell) else { return }
+        
+        let trackerID = trackersViewModel.visibleCategories[indexPath.section].trackerArray[indexPath.row].id
+        
+        trackersViewModel.unpinTracker(id: trackerID)
+    }
+    
+    func editTracker(_ cell: TrackersCollectionViewCell) {
+        guard let trackerInfo = cell.trackerInfo,
+              let completedDays = cell.completedDays,
+              let indexPath = cell.indexPath else { return }
+        
+        let editTrackerVC = NewTrackerViewController(typeOfTracker: .habit)
+        let category = trackersViewModel.visibleCategories[indexPath.section].name
+        
+        editTrackerVC.setupTargets()
+        editTrackerVC.setupEditingVC()
+        editTrackerVC.editingTrackerInfo(tracker: trackerInfo, completedDays: completedDays, category: category)
+        
+        analyticsService.report(event: .click, screen: .main, item: .edit)
+        present(editTrackerVC, animated: true)
+    }
+    
+    func deleteTracker(_ cell: TrackersCollectionViewCell) {
+        alertService.showAlert(event: .removeTracker, controller: self) { [weak self] in
+            guard let self = self,
+                  let indexPath = self.trackersView.trackersCollectionView.indexPath(for: cell) else { return }
+            
+            let visibleCategories = self.trackersViewModel.visibleCategories
+            let tracker = visibleCategories[indexPath.section].trackerArray[indexPath.row]
+            
+            self.trackersViewModel.deleteTracker(id: tracker.id)
+            self.analyticsService.report(event: .click, screen: .main, item: .delete)
+            self.setupTrackersFromDatePicker()
+        }
     }
 }
 
@@ -301,7 +374,6 @@ extension TrackersViewController {
         guard let navBar = navigationController?.navigationBar else { return }
         view.backgroundColor = .ypWhite
         view.addSubview(trackersView.searchTextField)
-//        view.addSubview(trackersView.trackersCollectionView)
         navBar.addSubview(trackersView.datePicker)
         addConstraints()
     }
@@ -313,7 +385,7 @@ extension TrackersViewController {
             make.height.equalTo(34)
             make.width.equalTo(100)
             make.trailing.equalTo(navBar.snp.trailing).offset(-16)
-            make.bottom.equalTo(navBar.snp.bottom).offset(-11)
+            make.top.equalTo(navBar.snp.top).offset(5)
         }
         
         trackersView.searchTextField.snp.makeConstraints { make in
@@ -321,11 +393,5 @@ extension TrackersViewController {
             make.height.equalTo(36)
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
         }
-        
-//        trackersView.trackersCollectionView.snp.makeConstraints { make in
-//            make.leading.trailing.equalToSuperview()
-//            make.bottom.equalTo(view.safeAreaLayoutGuide)
-//            make.top.equalTo(trackersView.searchTextField.snp.bottom).offset(10)
-//        }
     }
 }

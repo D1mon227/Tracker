@@ -11,8 +11,9 @@ final class NewTrackerViewModel: NewTrackerViewModelProtocol {
     var view: NewTrackerViewControllerProtocol?
     
     private let dataProvider = DataProvider.shared
+    private let scheduleService = ScheduleService()
     
-    let tableViewTitle = ["Категория", "Расписание"]
+    let tableViewTitle = [LocalizableConstants.NewTrackerVC.tableViewCategoryLabel, LocalizableConstants.NewTrackerVC.tableViewScheduleLabel]
     
     var emojies: [String] = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
@@ -26,7 +27,7 @@ final class NewTrackerViewModel: NewTrackerViewModelProtocol {
         .colorSelection13, .colorSelection14, .colorSelection15, .colorSelection16, .colorSelection17, .colorSelection18,
     ]
     
-    @NewTrackerObservable
+    @Observable
     private(set) var checkTrackerForCreate = false
     
     init() {
@@ -64,7 +65,6 @@ final class NewTrackerViewModel: NewTrackerViewModelProtocol {
     }
     
     //MARK: Getting Tracker Info
-    
     func getSelectedCategory() -> String? {
         dataProvider.selectedCategory
     }
@@ -86,5 +86,24 @@ final class NewTrackerViewModel: NewTrackerViewModelProtocol {
         } else {
             checkTrackerForCreate = false
         }
+    }
+    
+    //MARK: Editing Tracker Info
+    func editTracker(id: UUID) {
+        dataProvider.editTracker(id)
+    }
+    
+    func presetTrackerInfo(tracker: Tracker, category: String) {
+        dataProvider.trackerName = tracker.name
+        dataProvider.trackerEmoji = tracker.emoji
+        dataProvider.trackerColor = tracker.color
+        dataProvider.trackerSchedule = tracker.schedule
+        dataProvider.selectedCategory = category
+        
+        guard let schedule = dataProvider.trackerSchedule else { return }
+        
+        let string = schedule.count == 7 ? LocalizableConstants.ScheduleVC.everyDay : scheduleService.arrayToString(array: schedule)
+        
+        dataProvider.selectedSchedule = string
     }
 }

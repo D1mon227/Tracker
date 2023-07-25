@@ -12,12 +12,14 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
     
     var viewController: NewTrackerViewControllerProtocol?
 
-    private let scheduleView = ScheduleView()
+    private(set) var scheduleView = ScheduleView()
     private let scheduleViewModel = ScheduleViewModel()
     private let scheduleService = ScheduleService()
+    private let analyticsService = AnalyticsService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        analyticsService.report(event: .open, screen: .scheduleVC, item: nil)
         addView()
         setupTableView()
         addTarget()
@@ -27,8 +29,24 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
     func bindViewModel() {
         scheduleViewModel.$schedule.bind { [weak self] _ in
             guard let self = self else { return }
-            viewController?.reloadTableView()
+            self.viewController?.reloadTableView()
         }
+        
+        scheduleViewModel.$checkScheduleForCreate.bind { [weak self] value in
+            guard let self = self else { return }
+            value == true ? self.enableDoneButton() : self.disableDoneButton()
+        }
+    }
+    
+    func enableDoneButton() {
+        scheduleView.doneButton.isEnabled = true
+        scheduleView.doneButton.backgroundColor = .ypBlack
+        scheduleView.doneButton.setTitleColor(.ypWhite, for: .normal)
+    }
+    
+    func disableDoneButton() {
+        scheduleView.doneButton.isEnabled = false
+        scheduleView.doneButton.backgroundColor = .ypGray
     }
     
     private func setupTableView() {
@@ -43,6 +61,7 @@ final class ScheduleViewController: UIViewController, ScheduleViewControllerProt
     
     @objc private func returnToNewTrackerVC() {
         scheduleViewModel.setSchedule()
+        analyticsService.report(event: .close, screen: .scheduleVC, item: nil)
         dismiss(animated: true)
     }
 }
@@ -57,7 +76,15 @@ extension ScheduleViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as? ScheduleTableViewCell else { return UITableViewCell() }
         
         cell.delegate = self
-        cell.configureCell(text: Resourses.WeekDay.allCases[indexPath.row].rawValue)
+        
+        cell.configureCell(text: Resourses.WeekDay.allCases[indexPath.row].localizedString)
+        let numberOfDay = scheduleViewModel.returnNumberOfDay(from: indexPath)
+       
+        if scheduleViewModel.isCurrentDayExistInSchedule(day: numberOfDay) {
+            cell.switcher.isOn = true
+            scheduleViewModel.addDaysToSchedule(day: numberOfDay)
+        }
+        
         cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         return cell
     }

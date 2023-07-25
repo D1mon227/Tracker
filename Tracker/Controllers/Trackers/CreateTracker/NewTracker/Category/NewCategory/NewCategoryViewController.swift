@@ -10,15 +10,22 @@ import SnapKit
 
 final class NewCategoryViewController: UIViewController, NewCategoryViewControllerProtocol {
     
-    private let newCategoryView = NewCategoryView()
+    private(set) var newCategoryView = NewCategoryView()
     private let dataProvider = DataProvider.shared
+    private let analyticsService = AnalyticsService.shared
     var viewController: CategoryViewControllerProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        analyticsService.report(event: .open, screen: .newCategoryVC, item: nil)
         addView()
         setupTextField()
         addTarget()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.report(event: .click, screen: .newCategoryVC, item: nil)
     }
     
     private func setupTextField() {
@@ -32,6 +39,8 @@ final class NewCategoryViewController: UIViewController, NewCategoryViewControll
     @objc private func addCategory() {
         guard let categoryName = newCategoryView.newCategoryTextField.text else { return }
         dataProvider.addCategory(category: categoryName)
+        
+        analyticsService.report(event: .close, screen: .newCategoryVC, item: .newCategory)
         dismiss(animated: true)
     }
 }

@@ -11,7 +11,7 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     
     private let dataProvider = DataProvider.shared
     
-    @CategoryObservable
+    @Observable
     private(set) var visibleCategories: [String] = []
     
     init() {
@@ -49,6 +49,15 @@ final class CategoryViewModel: CategoryViewModelProtocol {
     }
     
     func getVisibleCategories() {
-        visibleCategories = dataProvider.updateCategoryViewModel()
+        var categories = dataProvider.updateCategoryViewModel()
+        if let index = categories.firstIndex(where: { $0 == LocalizableConstants.TrackersVC.pinnedTrackers }) {
+            categories.remove(at: index)
+        }
+        
+        visibleCategories = categories
+    }
+    
+    func deleteCategory(category: String) {
+        dataProvider.deleteCategory(category: category)
     }
 }

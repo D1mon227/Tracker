@@ -10,11 +10,13 @@ import SnapKit
 
 final class CategoryViewController: UIViewController, CategoryViewControllerProtocol {
     
-    private let categoryView = CategoryView()
-    private let dataProvider = DataProvider.shared
-    private let categoryViewModel = CategoryViewModel()
     var viewController: NewTrackerViewControllerProtocol?
-    var selectedIndexPath: IndexPath?
+    private(set) var categoryView = CategoryView()
+    private let dataProvider = DataProvider.shared
+    private let analyticsService = AnalyticsService.shared
+    private let categoryViewModel = CategoryViewModel()
+    private let alertService = AlertService()
+    private var selectedIndexPath: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,11 +51,7 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
     }
     
     func reloadViews() {
-        if categoryViewModel.areVisibleCategoriesEmpty() {
-            reloadEmptyViews()
-        } else {
-            reloadTableView()
-        }
+        categoryViewModel.areVisibleCategoriesEmpty() ? reloadEmptyViews() : reloadTableView()
     }
     
     private func reloadEmptyViews() {
@@ -84,6 +82,11 @@ final class CategoryViewController: UIViewController, CategoryViewControllerProt
         }
         categoryView.categoryTableView.reloadData()
     }
+    
+    private func switchToEditingVC(_ category: String) {
+        let editingVC = EditingCategoryViewController(category: category)
+        present(editingVC, animated: true)
+    }
 }
 
 //MARK: UITableViewDataSource
@@ -96,6 +99,7 @@ extension CategoryViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableViewCell", for: indexPath) as? CategoryTableViewCell else { return UITableViewCell() }
         
         cell.viewModel = categoryViewModel.visibleCategories[indexPath.row]
+        cell.delegate = self
         
         cell.accessoryType = cell.label.text == categoryViewModel.selectedCategory ? .checkmark : .none
         
@@ -139,6 +143,23 @@ extension CategoryViewController: UITableViewDelegate {
             categoryViewModel.selectedCategory = cell.label.text ?? ""
             viewController?.reloadTableView()
             dismiss(animated: true)
+        }
+    }
+}
+
+extension CategoryViewController: CategoryTableViewCellDelegate {
+    func editCategory(_ cell: CategoryTableViewCell) {
+        guard let category = cell.label.text else { return }
+        analyticsService.report(event: .click, screen: .categoryVC, item: .edit)
+        switchToEditingVC(category)
+    }
+    
+    func deleteCategory(_ cell: CategoryTableViewCell) {
+        alertService.showAlert(event: .removeCategory, controller: self) { [weak self] in
+            guard let self = self,
+                  let category = cell.label.text else { return }
+            self.analyticsService.report(event: .click, screen: .categoryVC, item: .delete)
+            self.categoryViewModel.deleteCategory(category: category)
         }
     }
 }

@@ -10,11 +10,9 @@ import SnapKit
 
 final class FilterViewController: UIViewController {
     
-    let titles: [String] = ["Все трекеры", "Трекеры на сегодня", "Завершенные", "Не завершенные"]
-    
     private lazy var filterLabel: UILabel = {
         let element = UILabel()
-        element.text = "Фильтры"
+        element.text = LocalizableConstants.FiltersVC.filtersTitle
         element.font = .systemFont(ofSize: 16, weight: .medium)
         element.textColor = .ypBlack
         return element
@@ -24,14 +22,24 @@ final class FilterViewController: UIViewController {
         let element = UITableView()
         element.layer.cornerRadius = 16
         element.separatorStyle = .singleLine
+        element.separatorColor = .ypGray
         element.isScrollEnabled = false
         return element
     }()
     
+    private let analyticsService = AnalyticsService.shared
+    private let filterViewModel = FilterViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        analyticsService.report(event: .open, screen: .filterVC, item: nil)
         addView()
         setupTableView()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.report(event: .close, screen: .filterVC, item: nil)
     }
     
     private func setupTableView() {
@@ -50,8 +58,10 @@ extension FilterViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "FilterTableViewCell", for: indexPath) as? FilterTableViewCell else { return UITableViewCell() }
         
-        cell.configureCell(text: titles[indexPath.row])
+        cell.configureCell(text: Resourses.Filters.allCases[indexPath.row].localizedString)
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         
+        cell.accessoryType = cell.label.text == filterViewModel.getCurrentFilter() ? .checkmark : .none
         return cell
     }
     
@@ -64,14 +74,13 @@ extension FilterViewController: UITableViewDataSource {
 //MARK: UITableViewDelegate
 extension FilterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        if let cell = tableView.cellForRow(at: indexPath) {
-            if cell.accessoryType == .checkmark {
-                cell.accessoryType = .none
-            } else {
-                cell.accessoryType = .checkmark
-            }
-        }
+        guard let cell = tableView.cellForRow(at: indexPath) as? FilterTableViewCell else { return }
+
+        cell.accessoryType = cell.accessoryType == UITableViewCell.AccessoryType.none ? .checkmark : .none
+        filterViewModel.setCurrentFilter(selected: cell.label.text ?? "")
+        
+        
+        dismiss(animated: true)
     }
 }
 

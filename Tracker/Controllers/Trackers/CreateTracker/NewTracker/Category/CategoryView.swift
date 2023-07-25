@@ -11,7 +11,7 @@ final class CategoryView {
     
     lazy var categoryLabel: UILabel = {
         let element = UILabel()
-        element.text = "Категория"
+        element.text = LocalizableConstants.CategoryVC.categoryTitle
         element.font = .systemFont(ofSize: 16, weight: .medium)
         element.textColor = .ypBlack
         return element
@@ -19,7 +19,7 @@ final class CategoryView {
     
     lazy var emptyLabel: UILabel = {
         let element = UILabel()
-        element.text = "Привычки и события можно\nобъединить по смыслу"
+        element.text = LocalizableConstants.CategoryVC.emptyStateLabel
         element.textColor = .ypBlack
         element.numberOfLines = 0
         element.textAlignment = .center
@@ -37,13 +37,14 @@ final class CategoryView {
         let element = UITableView()
         element.layer.cornerRadius = 16
         element.separatorStyle = .singleLine
+        element.separatorColor = .ypGray
         return element
     }()
     
     lazy var addCategoryButton: UIButton = {
         let element = UIButton(type: .system)
         element.layer.cornerRadius = 16
-        element.setTitle("Добавить категорию", for: .normal)
+        element.setTitle(LocalizableConstants.CategoryVC.addCategoryButton, for: .normal)
         element.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         element.titleLabel?.textAlignment = .center
         element.backgroundColor = .ypBlack
